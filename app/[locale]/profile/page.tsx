@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SignOutRow } from "@/components/auth/SignOutRow";
 import { useLocale, useTranslations } from "next-intl";
 import {
   Award,
@@ -111,6 +112,7 @@ export default function ProfilePage() {
           <span className="settings-row-label">{t("account")}</span>
           <ChevronRight size={16} />
         </div>
+        <SignOutRow />
       </div>
     </AppShell>
   );

@@ -123,6 +123,40 @@
     "language": "Guessing language",
     "notifications": "Notifications",
     "account": "Account & privacy",
-    "settings": "Settings"
+    "settings": "Settings",
+    "signOut": "Sign out"
+  },
+  "auth": {
+    "eyebrow": "Closed test",
+    "lede": "Inkwit is currently played by fifty invited people. Your code gets you in.",
+    "modeLabel": "Sign in or create an account",
+    "modes": {
+      "signin": "I have an account",
+      "signup": "First time here"
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "code": "Invite code",
+      "codeHint": "Six characters after the dash. Case does not matter."
+    },
+    "actions": {
+      "signin": "Sign in",
+      "signup": "Create account"
+    },
+    "confirmEmail": "Account created. Confirm it with the link we emailed you, then sign in.",
+    "noInvite": "No code? Phase 0 is closed and the project owner hands out invites.",
+    "errors": {
+      "missingInvite": "You need an invite code to create an account.",
+      "badInvite": "That code does not work — someone may have used it, or there is a typo.",
+      "emailTaken": "An account with this email already exists. Switch to sign in.",
+      "weakPassword": "Password needs at least six characters.",
+      "badCredentials": "Email or password does not match.",
+      "unconfirmed": "This account is not confirmed yet. Check your email.",
+      "tooMany": "Too many attempts. Try again in a moment.",
+      "generic": "Sign-in failed. Try again.",
+      "emailInvalid": "Supabase rejects this email address. Try another — test domains like example.com will not pass.",
+      "signupsClosed": "Account creation is closed right now."
+    }
   }
 }

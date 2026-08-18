@@ -103,11 +103,17 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
 
 ## Blok C — Kreslení end-to-end
 
-- `[ ] C0` **Supabase klient v aplikaci + přihlašovací obrazovka.** Aplikace zatím
-  Supabase vůbec nezná — běží na mock datech. Sem patří `@supabase/ssr`, správa
-  sezení v middlewaru, obrazovka s e-mailem a kódem pozvánky a zamčení tras.
-  Vynucení pozvánky už v databázi je (A5), tohle je jen cesta, kudy se k němu dostat.
-  *Kritérium:* nepřihlášený uživatel se nedostane na žádnou herní obrazovku.
+- `[x] C0` **Supabase klient + přihlašovací obrazovka.** `@supabase/ssr`, session
+  v middlewaru vedle next-intl, obrazovka `/login` v tokenech design systému,
+  odhlášení v profilu.
+  *Ověřeno:* všech 6 herních tras přesměruje nepřihlášeného na `/login`, jazyk
+  i návratová cesta se zachovají (`/en/guess` → `/en/login?dal=/guess`).
+  Trigger pozvánky se zapojí i do ostré registrační cesty — ověřeno proti
+  Supabase, neplatný kód vrací HTTP 500 s errcode `23514` a účet nevznikne.
+
+  **Otevřené k rozhodnutí:** potvrzování e-mailu v Supabase. Když je zapnuté,
+  tester musí kliknout na odkaz v e-mailu a vestavěné SMTP má nízký limit odeslání.
+  Pro padesát lidí ve fázi 0 je jednodušší ho vypnout — pozvánka je brána, ne e-mail.
 - `[ ] C1` **Nabídka tří konceptů ze serveru**, s předností vyžádaných (blok E).
 - `[ ] C2` **Uložení kresby a tahů.** Klient posílá vektory, **server nevěří
   ničemu** — ani časům tahů. Body jako **ploché pole** `[x,y,t,…]` + encode/decode

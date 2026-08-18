@@ -1411,3 +1411,170 @@ a {
     flex-direction: row;
   }
 }
+
+/* ---------- Přihlášení ---------- */
+
+.auth-screen {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.auth-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: center;
+  text-align: center;
+}
+
+.auth-logo {
+  font-family: var(--font-display), sans-serif;
+  font-weight: var(--weight-display-strong);
+  font-size: 42px;
+  line-height: 1;
+  letter-spacing: var(--tracking-hero);
+}
+
+.auth-lede {
+  color: var(--text-secondary);
+  max-width: 30ch;
+}
+
+.auth-panel {
+  background: var(--surface-card);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--pad-card);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.auth-modes {
+  display: flex;
+  gap: 6px;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.auth-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Kód se čte z papíru nebo do telefonu — mono a rozpálcované, ať se nespletou znaky. */
+.auth-code {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--surface-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0 14px;
+  height: 48px;
+}
+
+.auth-code:focus-within {
+  border-color: var(--action-primary);
+}
+
+.auth-code-prefix {
+  font-family: var(--font-mono), monospace;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.auth-code input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 16px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.auth-code input::placeholder {
+  color: var(--border-strong);
+  letter-spacing: 0.16em;
+}
+
+/* Chybová plachetka: text je --text, ne --danger.
+   design-system.md: --danger na --danger-tint dává 4.27, tedy pod AA. */
+.auth-note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.auth-note svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.auth-note-error {
+  background: var(--surface-danger);
+  border: 1px solid var(--danger);
+}
+
+.auth-note-error svg {
+  color: var(--danger);
+}
+
+.auth-note-info {
+  background: var(--surface-success);
+  border: 1px solid var(--olive-600);
+}
+
+.auth-note-info svg {
+  color: var(--olive-700);
+}
+
+.auth-foot {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13.5px;
+}
+
+.spin {
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation: none;
+  }
+}

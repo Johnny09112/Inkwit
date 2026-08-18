@@ -15,3 +15,6 @@ out/
 
 # Claude Code — lokální, neverzované
 .claude/settings.local.json
+
+# Pozvánky do uzavřené skupiny — repo je veřejné, kódy do gitu nepatří
+pozvanky-*.txt
