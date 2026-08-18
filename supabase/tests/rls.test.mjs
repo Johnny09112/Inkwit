@@ -182,6 +182,35 @@ async function main() {
   await mustFail("tah nejde přidat k cizí kresbě",
     `insert into public.drawing_strokes values ('${LIVE}',9,'${ALICE}','brush','#000',1,'[0,0,0]'::jsonb)`);
 
+  console.log("\nPohled feed_drawings nesmí prozradit tajemství:\n");
+  const FEED_ALLOWED = new Set([
+    "id", "author_id", "author_name", "source_locale",
+    "device_kind", "guess_count", "solved_count", "thumbs_count", "published_at",
+  ]);
+  const feedCols = (
+    await db.query(`select column_name from information_schema.columns
+      where table_schema = 'public' and table_name = 'feed_drawings'`)
+  ).rows.map((r) => r.column_name);
+  const forbidden = feedCols.filter((c) => !FEED_ALLOWED.has(c));
+  report(forbidden.length === 0,
+    "pohled nevrací žádný sloupec mimo povolený seznam",
+    `navíc: ${forbidden.join(", ")}`);
+
+  // Pomocné funkce nesmí být ve schématu `public`, protože to PostgREST
+  // vystavuje jako /rest/v1/rpc/…. Volat je přímo v SQL naopak MUSÍ jít —
+  // politiky je volají právy dotazujícího se uživatele. Samotnou nedostupnost
+  // přes REST tady ověřit nejde, PGlite žádné REST nemá; ověřuje se to,
+  // co ji zaručuje: umístění mimo public.
+  console.log("\nPomocné funkce jsou schované mimo veřejné API:\n");
+  const helpers = (
+    await db.query(`select n.nspname, p.proname from pg_proc p
+      join pg_namespace n on n.oid = p.pronamespace
+      where p.proname in ('current_tenant_id', 'can_view_drawing', 'handle_new_user')`)
+  ).rows;
+  const inPublic = helpers.filter((h) => h.nspname === "public").map((h) => h.proname);
+  report(helpers.length === 3, "všechny tři pomocné funkce existují", `nalezeno ${helpers.length}`);
+  report(inPublic.length === 0, "žádná z nich není ve schématu public", inPublic.join(", "));
+
   // Append-only ledger platí i pro server, ne jen pro klienta.
   await db.exec(`update public.ledger set delta = 999 where user_id = '${BOB}'`);
   const delta = (await db.query(`select delta from public.ledger where user_id='${BOB}'`)).rows[0].delta;
