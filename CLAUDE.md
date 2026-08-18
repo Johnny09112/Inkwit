@@ -8,6 +8,8 @@ Asynchronní kreslicí a hádací hra. Web-first (PWA), dvojjazyčná CZ + EN od
 
 Nakreslíš zadaný pojem, tvoje kresba jde do komunity, lidé ji hádají na tři pokusy ve svém jazyce a hodnotí ji. Není to real-time lobby hra (skribbl, Gartic) ani hra pro dvojici (Draw Something) — je to **asynchronní komunita kolem kreseb, které zůstávají**.
 
+**Hádá se nad hotovým obrázkem.** Kresba se hádajícímu nevykresluje postupně. Přehrání tah po tahu je **volitelné tlačítko**, jehož hlavní role je až po uhodnutí — jako odměna a jako export do sdílitelného GIFu. Poměr obou variant rozhodne měření ve fázi 0, ne debata; podrobnosti v `docs/product.md`.
+
 ## Povaha projektu
 
 Cílem je **mít produkt na světě**; příjem je bonus, ne podmínka. Majitel na tom pracuje part-time vedle jiných projektů, takže **nejvzácnějším zdrojem je jeho čas, ne peníze.**
@@ -19,13 +21,13 @@ Praktický dopad na každé rozhodnutí: nenavrhuj nic, co vyžaduje pravidelnou
 Tyhle věci nejsou feature, jsou to omezení architektury. Nikdy je neobcházej bez explicitního souhlasu majitele projektu.
 
 1. **Školní tenant je tvrdě izolovaný.** Žádný veřejný obsah dovnitř ani ven, žádné volné textové zprávy mezi žáky, žádné profily ani sledování, žádné uživatelské slovníky. Student nemá e-mail, jen kód od učitele. Důvod: nezletilí, GDPR/COPPA/DSA. Retrofit by znamenal přepis datového modelu.
-2. **Kresba se ukládá jako vektorové tahy, nikdy jako bitmapa.** Umožňuje to přehrání kresby (klíčová funkce), undo, libovolné rozlišení a drží to náklady na egress. Bitmapa se generuje až jako odvozený náhled.
+2. **Kresba se ukládá jako vektorové tahy, nikdy jako bitmapa.** Umožňuje to undo, libovolné rozlišení, přehrání kresby a export GIFu — a hlavně nese časové značky bodů, bez kterých nejde detekovat čmáranice. Drží to i náklady na egress. Bitmapa se generuje až jako odvozený náhled.
 3. **Žádné pay-to-win.** Placené ani vysloužené funkce nesmí ovlivnit férovost: žádné pokusy navíc, násobiče bodů, výhody v žebříčku.
 4. **Slovní zásoba jsou koncepty, ne překlady.** Nikdy nepřekládej za běhu. Viz `docs/data-model.md`.
 5. **Žádné reklamy.** Nikdy, ani ve free verzi. Monetizace jde přes firemní místnosti a prémiové funkce.
 6. **Balanc odměn je serverová konfigurace, ne konstanty v kódu.** Musí jít měnit bez deploye.
 7. **Trust score se uživateli nikdy nezobrazuje jako číslo** a prahy se nezveřejňují.
-8. **Žádná kresba se nezobrazí veřejně před automatickou kontrolou obsahu.**
+8. **Žádná kresba se nezobrazí veřejně před automatickou kontrolou obsahu.** Ve fázi 0 je hra uzavřená skupina ~50 pozvaných, takže žádné veřejné zobrazení neexistuje a pravidlo platí triviálně. Klasifikátor musí běžet **dřív, než se hra otevře komukoli zvenčí** — viz `docs/roadmap.md`.
 
 ## Stack
 

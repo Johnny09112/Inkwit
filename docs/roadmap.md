@@ -4,11 +4,14 @@
 
 Ověřuje **jedinou hypotézu: budou lidé dobrovolně kreslit pro cizí lidi bez okamžité zpětné vazby?**
 
+**Uzavřená skupina ~50 pozvaných, žádná veřejná registrace.** Není to detail nasazení, ale podmínka rozsahu: automatická kontrola obsahu je až fáze 1, takže veřejná hra by ve fázi 0 porušila neporušitelné pravidlo 8 v `CLAUDE.md`. Ruční review majitelem unese padesát pozvaných lidí, otevřený internet ne.
+
 V rozsahu:
-- přihlášení, výběr jazyka
+- přihlášení (pozvánkou), výběr jazyka
 - kreslicí plátno (PointerEvent, vektorové tahy, undo)
 - výběr ze tří konceptů
-- hádání s přehráním kresby, tři pokusy, CZ + EN
+- hádání nad hotovým obrázkem, tři pokusy, CZ + EN
+- přehrání tahů na tlačítko (a měření, jestli se vůbec používá — viz níže)
 - hvězdičky, palec (1×/den)
 - nahlášení + ruční review majitelem
 - jeden denní žebříček
@@ -20,9 +23,13 @@ Trust score a surge jsou nadstavby nad chováním, které se teprve ověřuje. K
 
 **Kritérium postupu:** ≥20 % uživatelů se druhý den vrátí a nakreslí další kresbu.
 
+**Vedlejší měření — výchozí zobrazení při hádání.** Dvě skupiny: jedna vidí jen hotový obrázek, druhá má navíc tlačítko „přehrát". Sleduje se počet uhodnutých kreseb na sezení a návrat druhý den. Rozhoduje test, ne názor — zdůvodnění obou stran je v `docs/product.md`.
+
 ## Fáze 1 — udržitelná smyčka
 
 Trust score a probační fronta · automatická kontrola obsahu · vyžádání kresby · surge · ligy · malá sada odznaků · přehrání jako sdílitelný GIF.
+
+**Automatická kontrola obsahu je brána k veřejnému spuštění.** Dokud neběží, hra zůstává uzavřenou skupinou z fáze 0 (pravidlo 8).
 
 ## Fáze 2 — školy (placené, s výjimkami)
 

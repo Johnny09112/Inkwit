@@ -4,9 +4,10 @@ Asynchronní kreslicí a hádací hra. Web-first (PWA), dvojjazyčná CZ + EN od
 
 > Pracovní název. Repozitář, DB a balíčky = `inkwit`. Branding a doména se řeší až před spuštěním.
 
-Nakreslíš zadaný pojem, tvoje kresba jde do komunity, lidé sledují její **přehrání tah po tahu**
-a hádají na tři pokusy ve svém jazyce. Není to real-time lobby hra ani hra pro dvojici —
-je to asynchronní komunita kolem kreseb, které **zůstávají**.
+Nakreslíš zadaný pojem, tvoje kresba jde do komunity a lidé ji hádají na tři pokusy ve svém
+jazyce — nad hotovým obrázkem. Po uhodnutí si můžou přehrát, jak kresba vznikala, tah po tahu,
+a sdílet to jako GIF. Není to real-time lobby hra ani hra pro dvojici — je to asynchronní
+komunita kolem kreseb, které **zůstávají**.
 
 ## Stav
 

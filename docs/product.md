@@ -9,11 +9,16 @@
 4. Po odeslání projde kresba automatickou kontrolou obsahu, pak vstupuje do distribuce.
 
 **Hádání**
-1. Hádající vidí **přehrání kresby tah po tahu**, ne finální obrázek. To je klíčový zážitek — hádající sleduje cizího člověka přemýšlet.
+1. Hádající vidí **hotový obrázek**. Kresba se nevykresluje postupně — žádné čekání.
 2. **Tři pokusy**, volný text, ve zvoleném jazyce (CZ nebo EN).
 3. Čím dřív uhodne, tím víc hvězdiček kresba dostane.
-4. Po vyřešení (nebo vyčerpání pokusů) může dát **palec nahoru — jednou denně celkem**, tedy je to vzácný hlas, ne lajk.
-5. Kdykoliv může kresbu nahlásit.
+4. **Přehrání tah po tahu je volitelné** — tlačítko „přehrát". Hlavní role je až po uhodnutí: jako odměna a jako export do sdílitelného GIFu.
+5. Po vyřešení (nebo vyčerpání pokusů) může dát **palec nahoru — jednou denně celkem**, tedy je to vzácný hlas, ne lajk.
+6. Kdykoliv může kresbu nahlásit.
+
+**Proč přehrání není výchozí (rozhodnuto 2026-08-18).** Argument pro přehrání je jediný, ale netriviální: statický obrázek uhodneš nebo neuhodneš a je to za dvě vteřiny, kdežto přehrání dělá z hádání malý příběh — je to jediné, co drží hádání od mechanického odklikávání. Navíc se z něj dá udělat sdílitelný GIF, což je marketingový kanál zadarmo. Proti stojí čekání u každé jednotlivé kresby, které v broadcast modelu platíš stokrát za sezení.
+
+Proto: výchozí = hotový obrázek, přehrání na tlačítko. **Co je lepší, rozhodne test ve fázi 0 na dvou skupinách** — je to přesně ta věc, kterou má měření rozseknout. Sledovaná čísla: počet uhodnutých kreseb na sezení a návrat druhý den.
 
 **Archivace**
 Kresba se archivuje po N neuhodnutích, kde **N škáluje s obtížností konceptu** (snadné slovo zmizí dřív, těžké dostane víc šancí). Autorovi se počet neuhodnutí **nezobrazuje** — jen kolik lidí uhodlo.
@@ -126,7 +131,7 @@ Synchronní teambuildingový režim. **Není součástí hlavní hry** a nespou�
 ## Co se přebírá z Draw Something
 
 Fungovalo a nikdo to dnes nedělá:
-- **přehrání kresby jako animace** — nejlepší část toho produktu
+- **přehrání kresby jako animace** — nejlepší část toho produktu, ale tady jako volitelná odměna po uhodnutí, ne jako výchozí zobrazení při hádání
 - **volba ze tří konceptů o různé obtížnosti**
 - **žádný časový limit při kreslení**
 - **nesoutěžní rámování pro slabé kreslíře** — DS bylo záměrně kooperativní, aby v něm mohli hrát lidé, co kreslit neumí
