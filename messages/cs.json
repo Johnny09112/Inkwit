@@ -138,7 +138,12 @@
       "email": "E-mail",
       "password": "Heslo",
       "code": "Kód pozvánky",
-      "codeHint": "Šest znaků za pomlčkou. Velká a malá písmena jsou jedno."
+      "codeHint": "Šest znaků za pomlčkou. Velká a malá písmena jsou jedno.",
+      "name": "Jméno",
+      "nameHint": "Aspoň tři znaky. Uvidí ho ostatní u tvých kreseb.",
+      "nameChecking": "Zjišťuju, jestli je volné…",
+      "nameTaken": "Tohle jméno už někdo má.",
+      "nameFree": "Volné."
     },
     "actions": {
       "signin": "Přihlásit se",
@@ -156,7 +161,8 @@
       "tooMany": "Moc pokusů za sebou. Zkus to za chvíli znovu.",
       "generic": "Přihlášení se nepovedlo. Zkus to znovu.",
       "emailInvalid": "Tuhle e-mailovou adresu Supabase odmítá. Zkus jinou — testovací domény jako example.com neprojdou.",
-      "signupsClosed": "Zakládání účtů je právě zavřené."
+      "signupsClosed": "Zakládání účtů je právě zavřené.",
+      "nameTaken": "Tohle jméno mezitím někdo obsadil. Zvol jiné — kód pozvánky ti zůstal."
     }
   }
 }

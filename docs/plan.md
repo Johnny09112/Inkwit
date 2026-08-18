@@ -111,9 +111,15 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
   Trigger pozvánky se zapojí i do ostré registrační cesty — ověřeno proti
   Supabase, neplatný kód vrací HTTP 500 s errcode `23514` a účet nevznikne.
 
-  **Otevřené k rozhodnutí:** potvrzování e-mailu v Supabase. Když je zapnuté,
-  tester musí kliknout na odkaz v e-mailu a vestavěné SMTP má nízký limit odeslání.
-  Pro padesát lidí ve fázi 0 je jednodušší ho vypnout — pozvánka je brána, ne e-mail.
+  **Potvrzování e-mailu je vypnuté** (rozhodnuto 2026-08-18). Bránou je pozvánka,
+  ne schránka. Nastavení žije v `supabase/config.toml` a nasazuje se přes
+  `npx supabase config push` — POZOR, ten soubor je zdroj pravdy a příští push
+  přepíše změny udělané v dashboardu. Před veřejným spuštěním se potvrzování
+  musí zapnout spolu s vlastním SMTP.
+
+  **Jméno v profilu je unikátní** a volí si ho uživatel při registraci. Kontrola
+  volnosti běží během psaní, unikátnost vynucuje databáze. Obsazené jméno
+  pozvánku nespotřebuje — ověřeno testem i naostro.
 - `[ ] C1` **Nabídka tří konceptů ze serveru**, s předností vyžádaných (blok E).
 - `[ ] C2` **Uložení kresby a tahů.** Klient posílá vektory, **server nevěří
   ničemu** — ani časům tahů. Body jako **ploché pole** `[x,y,t,…]` + encode/decode

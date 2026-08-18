@@ -138,7 +138,12 @@
       "email": "Email",
       "password": "Password",
       "code": "Invite code",
-      "codeHint": "Six characters after the dash. Case does not matter."
+      "codeHint": "Six characters after the dash. Case does not matter.",
+      "name": "Name",
+      "nameHint": "At least three characters. Others see it on your drawings.",
+      "nameChecking": "Checking availability…",
+      "nameTaken": "That name is taken.",
+      "nameFree": "Available."
     },
     "actions": {
       "signin": "Sign in",
@@ -156,7 +161,8 @@
       "tooMany": "Too many attempts. Try again in a moment.",
       "generic": "Sign-in failed. Try again.",
       "emailInvalid": "Supabase rejects this email address. Try another — test domains like example.com will not pass.",
-      "signupsClosed": "Account creation is closed right now."
+      "signupsClosed": "Account creation is closed right now.",
+      "nameTaken": "Someone took that name in the meantime. Pick another — your invite code is still valid."
     }
   }
 }

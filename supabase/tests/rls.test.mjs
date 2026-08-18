@@ -278,10 +278,107 @@ async function main() {
   report((await asUser(ALICE, count("public.invites"))) === "ERROR",
     "klient nemůže vyjmenovat pozvánky");
 
-  // Append-only ledger platí i pro server, ne jen pro klienta.
-  await db.exec(`update public.ledger set delta = 999 where user_id = '${BOB}'`);
-  const delta = (await db.query(`select delta from public.ledger where user_id='${BOB}'`)).rows[0].delta;
-  report(delta === 10, "ledger nejde přepsat ani ze serveru", `delta=${delta}`);
+  console.log("\nJméno v profilu je unikátní:\n");
+
+  await db.exec(`insert into public.invites (code, note, max_uses) values ('INK-JMENA', 'test', 5);`);
+
+  /** Založí uživatele se jménem. Vrací true, když prošel. */
+  async function signupAs(name, code = "INK-JMENA") {
+    await db.exec("savepoint s");
+    try {
+      await db.query(`insert into auth.users (raw_user_meta_data) values ($1)`, [
+        JSON.stringify({ display_name: name, invite_code: code }),
+      ]);
+      return true;
+    } catch {
+      await db.exec("rollback to savepoint s");
+      return false;
+    }
+  }
+
+  await db.exec("begin");
+  report(await signupAs("Marek Novák"), "jméno s mezerou a diakritikou projde");
+  report(!(await signupAs("marek novák")), "totéž jméno jinou velikostí písmen neprojde");
+  report(!(await signupAs("ab")), "kratší než tři znaky neprojde");
+  // Okrajové mezery se ořežou, ne odmítnou — zkopírovaná mezera navíc není
+  // chyba uživatele. Uloženo je pak čisté jméno.
+  report(await signupAs("  Jitka  "), "jméno s okrajovými mezerami se ořízne, ne odmítne");
+  const trimmed = (
+    await db.query(`select count(*)::int n from public.profiles where display_name = 'Jitka'`)
+  ).rows[0].n;
+  report(trimmed === 1, "uložené jméno je bez okrajových mezer");
+
+  // Kontrola tvaru ale musí držet i proti přímému zápisu do tabulky.
+  await db.exec("savepoint shape");
+  let shapeHeld = false;
+  try {
+    await db.query(`update public.profiles set display_name = ' Jitka ' where display_name = 'Jitka'`);
+  } catch {
+    shapeHeld = true;
+  }
+  await db.exec("rollback to savepoint shape");
+  report(shapeHeld, "přímý zápis neoříznutého jména neprojde");
+  report(!(await signupAs("Jana    K")), "jméno s vícenásobnou mezerou neprojde");
+  report(await signupAs("Jana K"), "normální jméno projde");
+
+  // Klíčové: když jméno spadne, registrace se odroluje CELÁ. Pozvánka se
+  // nesmí spotřebovat — jinak by člověk přišel o kód kvůli obsazenému jménu.
+  const usedBefore = (
+    await db.query(`select used_count from public.invites where code = 'INK-JMENA'`)
+  ).rows[0].used_count;
+  await signupAs("Jana K");
+  const usedAfter = (
+    await db.query(`select used_count from public.invites where code = 'INK-JMENA'`)
+  ).rows[0].used_count;
+  report(usedBefore === usedAfter, "obsazené jméno nespotřebuje pozvánku", `${usedBefore} → ${usedAfter}`);
+
+  // Účet bez zvoleného jména (zakládaný ručně) dostane náhradu, která projde.
+  await db.exec(`insert into auth.users (raw_user_meta_data) values ('{"invite_code":"INK-JMENA"}'::jsonb)`);
+  const fallback = (
+    await db.query(`select count(*)::int n from public.profiles where display_name like 'Kreslíř %'`)
+  ).rows[0].n;
+  report(fallback === 1, "účet bez jména dostane náhradní, které projde kontrolou");
+
+  const avail = await db.query(`select public.display_name_available('Jana K') a,
+                                       public.display_name_available('Nikdo Takový') b`);
+  report(avail.rows[0].a === false && avail.rows[0].b === true,
+    "kontrola volného jména odpovídá správně");
+  await db.exec("rollback");
+
+  console.log("\nLedger je append-only, ale nebrání smazání účtu:\n");
+
+  // Append-only drží odebrané právo, ne pravidlo. Pravidlo by rozbilo kaskádu
+  // z cizích klíčů a účet by pak nešel smazat vůbec (viz migrace
+  // 20260818230000). Ověřuje se obojí — ochrana i to, že mazání jde.
+  for (const role of ["authenticated", "service_role"]) {
+    await db.exec("begin");
+    let denied = false;
+    try {
+      await db.exec(`set local role ${role}`);
+      await db.exec(`update public.ledger set delta = 999 where user_id = '${BOB}'`);
+    } catch {
+      denied = true;
+    }
+    await db.exec("rollback");
+    report(denied, `role ${role} nepřepíše ledger`);
+  }
+
+  await db.exec("begin");
+  await db.exec(`insert into public.ledger (user_id, delta, reason) values ('${ALICE}', 5, 'test')`);
+  let deleted = false;
+  let deleteError = "";
+  try {
+    await db.query(`delete from auth.users where id = '${ALICE}'`);
+    deleted = true;
+  } catch (e) {
+    deleteError = e.message.split("\n")[0];
+  }
+  const leftovers = deleted
+    ? (await db.query(`select count(*)::int n from public.profiles where id = '${ALICE}'`)).rows[0].n
+    : -1;
+  await db.exec("rollback");
+  report(deleted, "účet jde smazat i se záznamy v ledgeru (GDPR)", deleteError);
+  report(leftovers === 0, "po smazání účtu nezůstane profil");
 
   console.log(`\n${passed} prošlo, ${failed} selhalo`);
   await db.close();

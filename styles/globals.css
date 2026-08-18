@@ -1578,3 +1578,25 @@ a {
     animation: none;
   }
 }
+
+.auth-hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+  min-height: 1.35em;
+  display: block;
+}
+
+.auth-hint-taken,
+.auth-hint-free {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.auth-hint-taken {
+  color: var(--danger);
+}
+
+.auth-hint-free {
+  color: var(--olive-700);
+}

@@ -1,0 +1,42 @@
+# Nastavení Supabase projektu ve verzované podobě.
+#
+# POZOR: `supabase config push` posílá do projektu CELÝ tenhle soubor. Co tu
+# není napsané, se nastaví na výchozí hodnotu CLI — tenhle soubor je tedy
+# zdroj pravdy, ne doplněk. Změny udělané v dashboardu příští push přepíše.
+
+project_id = "iticpkeqirjfwkelhrvl"
+
+[auth]
+# Adresa, na kterou vedou odkazy z e-mailů. Po nasazení na Vercel sem patří
+# ostrá doména, jinak by odkazy vedly na localhost.
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000"]
+
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+
+# Registrace je otevřená na úrovni Supabase, protože bránu tvoří pozvánka
+# vynucená triggerem v databázi (viz migrace 20260818210000_invites.sql).
+enable_signup = true
+enable_anonymous_sign_ins = false
+enable_manual_linking = false
+minimum_password_length = 6
+
+[auth.email]
+enable_signup = true
+
+# Fáze 0 potvrzování e-mailu NEPOUŽÍVÁ. Bránou je pozvánka, ne schránka —
+# a vestavěné odesílání pošty má tak nízký limit, že by padesát testerů
+# zaseklo. Než se hra otevře veřejně, tohle se musí zapnout spolu s vlastním
+# SMTP serverem.
+enable_confirmations = false
+double_confirm_changes = true
+secure_password_change = false
+max_frequency = "1m0s"
+otp_length = 6
+otp_expiry = 3600
+
+[auth.sms]
+enable_signup = false
+enable_confirmations = false

@@ -1,9 +1,9 @@
 "use client";
 
-import { AlertTriangle, Check, Loader2 } from "lucide-react";
+import { AlertTriangle, Check, Loader2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -22,10 +22,41 @@ export function LoginForm() {
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
+
+  const trimmedName = name.trim();
+  const nameLongEnough = trimmedName.length >= 3;
+  const [nameTaken, setNameTaken] = useState<boolean | null>(null);
+  const [checkingName, setCheckingName] = useState(false);
+
+  /**
+   * Jestli je jméno volné, se ptáme během psaní — dozvědět se to až po
+   * odeslání je zbytečně pozdě. Unikátnost stejně vynucuje databáze; tohle je
+   * jen laskavost, ne kontrola.
+   */
+  useEffect(() => {
+    if (mode !== "signup" || !nameLongEnough) {
+      setNameTaken(null);
+      return;
+    }
+    setCheckingName(true);
+    const timer = setTimeout(async () => {
+      const { data, error: err } = await createClient().rpc("display_name_available", {
+        p_name: trimmedName,
+      });
+      setNameTaken(err ? null : data === false);
+      setCheckingName(false);
+    }, 400);
+
+    return () => {
+      clearTimeout(timer);
+      setCheckingName(false);
+    };
+  }, [trimmedName, nameLongEnough, mode]);
 
   /**
    * Supabase vrací chyby anglicky. Rozhoduje `code`, ne text hlášky — texty se
@@ -60,6 +91,8 @@ export function LoginForm() {
         return t("errors.tooMany");
       case "signup_disabled":
         return t("errors.signupsClosed");
+      case "23505": // unique_violation — jméno v profilu už někdo má
+        return t("errors.nameTaken");
       case "23514": // check_violation z private.enforce_invite()
       case "unexpected_failure":
         return forMode === "signup" ? t("errors.badInvite") : t("errors.generic");
@@ -89,7 +122,9 @@ export function LoginForm() {
         const { data, error: err } = await supabase.auth.signUp({
           email: email.trim(),
           password,
-          options: { data: { invite_code: `INK-${cleaned}` } },
+          options: {
+            data: { invite_code: `INK-${cleaned}`, display_name: trimmedName },
+          },
         });
 
         if (err) {
@@ -182,6 +217,40 @@ export function LoginForm() {
 
         {mode === "signup" && (
           <div className="auth-field">
+            <label className="t-label" htmlFor="name">
+              {t("fields.name")}
+            </label>
+            <input
+              id="name"
+              className="input"
+              type="text"
+              autoComplete="nickname"
+              required
+              minLength={3}
+              maxLength={24}
+              aria-describedby="name-hint"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <span id="name-hint" className="auth-hint" aria-live="polite">
+              {!nameLongEnough && t("fields.nameHint")}
+              {nameLongEnough && checkingName && t("fields.nameChecking")}
+              {nameLongEnough && !checkingName && nameTaken === true && (
+                <span className="auth-hint-taken">
+                  <X size={13} aria-hidden="true" /> {t("fields.nameTaken")}
+                </span>
+              )}
+              {nameLongEnough && !checkingName && nameTaken === false && (
+                <span className="auth-hint-free">
+                  <Check size={13} aria-hidden="true" /> {t("fields.nameFree")}
+                </span>
+              )}
+            </span>
+          </div>
+        )}
+
+        {mode === "signup" && (
+          <div className="auth-field">
             <label className="t-label" htmlFor="code">
               {t("fields.code")}
             </label>
@@ -203,7 +272,7 @@ export function LoginForm() {
                 onChange={(e) => setCode(e.target.value)}
               />
             </div>
-            <span id="code-hint" className="auth-foot" style={{ textAlign: "left" }}>
+            <span id="code-hint" className="auth-hint">
               {t("fields.codeHint")}
             </span>
           </div>
@@ -224,7 +293,11 @@ export function LoginForm() {
         </p>
       )}
 
-      <button type="submit" className="btn btn-primary btn-lg" disabled={busy}>
+      <button
+        type="submit"
+        className="btn btn-primary btn-lg"
+        disabled={busy || (mode === "signup" && nameTaken === true)}
+      >
         {busy && <Loader2 size={17} className="spin" aria-hidden="true" />}
         {mode === "signup" ? t("actions.signup") : t("actions.signin")}
       </button>
