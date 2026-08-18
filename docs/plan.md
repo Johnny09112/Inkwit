@@ -20,7 +20,7 @@ neexistuje. Fáze 0 je uzavřená skupina ~50 pozvaných.
 | Blok | Co | Stav | Blokuje |
 |---|---|---|---|
 | **0** | Hotové UI nad mock daty | `[x]` | — |
-| **A** | Backend základ — projekt, schéma, RLS, konfigurace, auth | `[~]` | vše ostatní |
+| **A** | Backend základ — projekt, schéma, RLS, konfigurace, auth | `[~]` | zbývá A5 (auth) |
 | **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[ ]` | D |
 | **C** | Kreslení end-to-end | `[ ]` | D |
 | **D** | Hádání end-to-end | `[ ]` | F |
@@ -45,17 +45,17 @@ neměřitelnou verzi znamená prošvihnout jediný účel fáze 0.
   První pokus vznikl omylem v `eu-west-1` a byl zahozen a založen znovu, dokud
   byl prázdný. Free plán dovoluje dva aktivní projekty a oba jsou obsazené
   (`Customer_finder`, `Inkwit`) — dopady viz „Free plán" níž.
-- `[ ] A2` **Schéma přes migrace.** Tabulky dle `data-model.md`: `concepts`,
-  `concept_locales`, `profiles`, `drawings`, `drawing_strokes`, `guesses`,
-  `reactions`, `reports`, `concept_requests`, `game_config`, `ledger`.
-  *Kritérium:* migrace projde načisto na prázdné DB a `supabase db reset` je
-  opakovatelný.
-- `[ ] A3` **RLS na všech tabulkách.** Zvlášť: `profiles.reliability` a
-  `trust_band` nesmí být čitelné klientem (pravidlo 7).
-  *Kritérium:* test, který se přihlásí jako běžný uživatel a **neuvidí** cizí
-  `reliability`, cizí rozepsané kresby ani cizí `ledger`. Ne proklikání — test.
-- `[ ] A4` **`game_config` a čtení konfigurace.** Odměny, prahy, limity
-  (pravidlo 6). *Kritérium:* změna hodnoty v DB se projeví bez deploye.
+- `[x] A2` **Schéma přes migrace.** 14 tabulek v `supabase/migrations/`.
+  Přibyly oproti `data-model.md` dvě: `concept_answers` a `profile_trust` —
+  obojí kvůli tomu, že RLS je řádková a sloupec skrýt neumí.
+  *Ověřeno:* `npm run test:db` pouští migrace na prázdné DB.
+- `[x] A3` **RLS na všech 14 tabulkách**, + pohled `feed_drawings`, který
+  hádajícímu nepustí `concept_id`.
+  *Ověřeno:* 22 testů v `supabase/tests/rls.test.mjs`, včetně izolace školního
+  tenantu, denního limitu palce a čtvrtého pokusu o uhodnutí.
+- `[x] A4` **`game_config`** — 14 klíčů, z toho 9 veřejných. Prahy trust score
+  a koruny jsou neveřejné (pravidlo 7) přes sloupec `is_public`.
+  *Zbývá ověřit:* že se změna hodnoty projeví bez deploye — až bude co číst (blok C).
 - `[ ] A5` **Auth pozvánkou + `profiles`.** Fáze 0 nemá veřejnou registraci.
   *Kritérium:* bez platné pozvánky účet nevznikne.
 

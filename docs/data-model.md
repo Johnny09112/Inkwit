@@ -24,6 +24,18 @@ concept_locales
   UNIQUE (concept_id, locale)
 ```
 
+**Text konceptu je tajemství hry — klient ho nikdy nečte přímo.**
+`prompt` je odpověď a `accepted` je seznam všech přijímaných odpovědí; kdo si je
+přečte, vyhrál všechno. Proto jsou `concepts`, `concept_locales` i `concept_answers`
+pro klienta zavřené a **kreslíř dostává svoje tři koncepty ze serveru**.
+`accepted` je navíc v samostatné tabulce `concept_answers`, aby se nedalo omylem
+vytáhnout spolu se zadáním.
+
+**Ze stejného důvodu je tajemství i `drawings.concept_id`.** Kdyby ho hádající viděl,
+spáruje dvě kresby stejného konceptu a druhou má zadarmo. Klient proto tabulku
+`drawings` nečte napřímo — feed jde přes pohled `feed_drawings`, který `concept_id`
+neobsahuje (a spolu s ním ani signály detekce čmáranic).
+
 **Pravidla:**
 - Kreslíř kreslí **koncept**. Hádající hádá ve **svém** jazyce. Nikdy se nepřekládá za běhu.
 - `accepted` musí u češtiny pokrýt pády, zdrobněliny a synonyma: `pes, psa, psi, pejsek, hafan, štěně`. Bez toho je hra nehratelná.
@@ -136,14 +148,21 @@ profiles
   locale_primary
   locale_guessing   text[]
   level, xp
-  reliability       real     0..1, interní, NIKDY se nezobrazuje
-  trust_band        new | verified | trusted
   skill_rating      real     ovlivňuje doporučování a žebříčky
   is_minor          boolean
   tenant_id         → tenants   NULL = veřejný uživatel
+
+profile_trust
+  user_id           → profiles
+  reliability       real     0..1, interní, NIKDY se nezobrazuje
+  trust_band        new | verified | trusted
 ```
 
-`reliability` a `trust_band` nesmí být čitelné klientem. Přes RLS je vystav jen serveru.
+**Trust score je v samostatné tabulce, ne ve sloupcích `profiles`.** Dřívější znění
+říkalo „přes RLS vystav jen serveru" — to nejde: **RLS je řádková, ne sloupcová.**
+Neumí skrýt sloupec v řádku, který uživatel jinak vidět smí, a profil sám vidět musí.
+Column-level `GRANT` by to zvládl, ale pak klientu selže i obyčejné `select *`.
+Oddělená tabulka bez jediné politiky je jediná varianta, kterou nejde omylem odkrýt.
 
 ## Tenanty (školy a firmy)
 
