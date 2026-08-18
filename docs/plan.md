@@ -11,6 +11,17 @@
 **Stav k 2026-08-18:** hotové UI všech 10 obrazovek nad mock daty. Backend
 neexistuje. Fáze 0 je uzavřená skupina ~50 pozvaných.
 
+## Nasazování migrací
+
+Migrace do Supabase pouští Claude sám přes `npx supabase db push` — CLI má
+přihlášení uložené z uživatelova `supabase login`. Po každém push se kontroluje
+Supabase security advisor.
+
+**Destruktivní migrace** (drop tabulky nebo sloupce, přetypování se ztrátou dat)
+se ukazují uživateli PŘED spuštěním. Přidávání tabulek, indexů a politik jde rovnou.
+
+Lokální ověření běží na PGlite (`npm run test:db`) — Docker není potřeba.
+
 ## Legenda
 
 `[ ]` čeká · `[~]` rozpracováno · `[x]` hotovo a ověřeno · `[!]` blokováno
