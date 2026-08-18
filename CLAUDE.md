@@ -51,6 +51,8 @@ Tyhle věci nejsou feature, jsou to omezení architektury. Nikdy je neobcházej 
 - `docs/product.md` — herní smyčka, bodování, trust score, moderace, anti-čmáranice
 - `docs/data-model.md` — schéma, koncepty a jazykové varianty, stavy kresby
 - `docs/roadmap.md` — rozsah MVP, monetizace, metriky, otevřené otázky
+- `docs/plan.md` — pracovní plán fáze 0 (bloky, kroky, stav) — sem se dopisuje
+- `licenses/` — licence a atribuce písem (SIL OFL 1.1)
 - `docs/design-system.md` — barevná paleta, fonty, kontrast (úvodní návrh)
 
 ## Metriky, podle kterých se rozhoduje

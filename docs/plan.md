@@ -20,7 +20,7 @@ neexistuje. Fáze 0 je uzavřená skupina ~50 pozvaných.
 | Blok | Co | Stav | Blokuje |
 |---|---|---|---|
 | **0** | Hotové UI nad mock daty | `[x]` | — |
-| **A** | Backend základ — projekt, schéma, RLS, konfigurace, auth | `[!]` | vše ostatní |
+| **A** | Backend základ — projekt, schéma, RLS, konfigurace, auth | `[~]` | vše ostatní |
 | **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[ ]` | D |
 | **C** | Kreslení end-to-end | `[ ]` | D |
 | **D** | Hádání end-to-end | `[ ]` | F |
@@ -40,9 +40,10 @@ neměřitelnou verzi znamená prošvihnout jediný účel fáze 0.
 
 **Účel:** aby existovalo kam ukládat a aby to bylo od začátku bezpečné.
 
-- `[!] A1` **Založit Supabase projekt.** Blokováno — je to **placená akce
-  vyžadující rozhodnutí majitele**. Do té doby jede vývoj proti lokálnímu
-  Supabase (`supabase start`), což je zdarma a schéma se přenese migracemi.
+- `[x] A1` **Supabase projekt založen** (2026-08-18) — `Inkwit`, ref
+  `aqzrfftvsmkhkldovyfz`, organizace na **free plánu**, region `eu-west-1` (Irsko).
+  **K rozhodnutí: region.** Free plán dovoluje dva aktivní projekty a oba jsou
+  obsazené (`Customer_finder`, `Inkwit`). Detaily dopadů viz „Free plán" níž.
 - `[ ] A2` **Schéma přes migrace.** Tabulky dle `data-model.md`: `concepts`,
   `concept_locales`, `profiles`, `drawings`, `drawing_strokes`, `guesses`,
   `reactions`, `reports`, `concept_requests`, `game_config`, `ledger`.
@@ -134,14 +135,35 @@ režim, relay režim.
 
 ## Rozhodnutí, která čekají na majitele
 
-1. **Supabase projekt** — placená akce, blokuje blok A. Do té doby lokální vývoj.
-2. **Self-host fontů** — teď `next/font/google` (stáhne se při buildu, servíruje
-   z vlastní domény). `docs/design-system.md` chtěl woff2 binárky; současné
-   řešení dává totéž bez správy souborů. **Otázka: stačí to, nebo dodáš binárky?**
-3. **Tmavý režim** — nerozhodnuto, z palety se neodvodí 1:1. Do fáze 0 nepatří,
+1. **Region Supabase projektu.** Inkwit vznikl v `eu-west-1` (Irsko). Pro česky
+   cílený produkt je blíž `eu-central-1` (Frankfurt) — zhruba o 20 ms na round trip.
+   **Region se u existujícího projektu nemění**; přesun = nový projekt a migrace.
+   Teď je projekt prázdný, takže je to úkon na dvě minuty a zdarma. Za měsíc s daty
+   už ne. Rozhodnout dřív, než vznikne první migrace.
+2. **Tmavý režim** — nerozhodnuto, z palety se neodvodí 1:1. Do fáze 0 nepatří,
    ale ovlivní tokeny.
-4. **Kolik neuhodnutí do archivace** a jak škáluje s obtížností (otázka #3
+3. **Kolik neuhodnutí do archivace** a jak škáluje s obtížností (otázka #3
    v `roadmap.md`). Potřeba před D1.
+4. **Kódování bodů tahu.** `data-model.md` navrhuje `[{x,y,t}]`. Ploché pole
+   `[x,y,t,x,y,t,…]` je v jsonb zhruba **3× menší**, protože neopakuje klíče.
+   Netýká se to jen úložiště — každé hádání ta data stahuje, takže to řídí i egress,
+   který je na free plánu užší než úložiště. Rozhodnout před A2.
+
+## Free plán — co z něj plyne
+
+Organizace je na free plánu (ověřeno 2026-08-18). Pro fázi 0 to **stačí**, ale tři věci
+je potřeba znát dopředu:
+
+- **Dva aktivní projekty na účet, a oba jsou obsazené.** Pozastavené se nepočítají
+  (`mas-copilot` a `Johnny09112's Project` jsou pozastavené). Další projekt =
+  pozastavit něco, nebo platit.
+- **Projekt se po týdnu nízké aktivity sám pozastaví.** Během běžícího testu s padesáti
+  lidmi nehrozí; hrozí *mezi* fázemi. Obnovit jde do 90 dnů, data zůstávají.
+- **Zálohy nejdou stáhnout.** Tohle je ta nepříjemná. Výstup fáze 0 je jediná věc,
+  kvůli které se dělá — když se DB ztratí, ztratí se odpověď. Řešení je pravidelný
+  `pg_dump` na vlastní disk, ne upgrade.
+
+Kvóty free plánu: 500 MB DB na projekt, **5 GB egress**, 1 GB storage, 50 000 MAU.
 
 ## Log
 

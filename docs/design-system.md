@@ -97,14 +97,18 @@ takže jantarová plocha sama sebe od pozadí neodliší — potřebuje okraj ne
   mono na 11 px slitý.
 - Type scale (velikosti nadpisů, řádkování, spacing) **není určená** — přijde s UI kitem.
 
-### Načítání: nerozhodnuto
+### Načítání: vyřešeno (2026-08-18)
 
-Fonty jsou zatím **linkované z Google Fonts**. Alternativa je self-host přes
-`next/font/local`, k tomu je potřeba dodat binárky (woff2). Rozhodnout před fází 0:
-self-host je jeden request navíc odbouraný, žádná třetí strana v render path a
-lepší LCP na PWA, ale je to ruční správa souborů. Argument pro self-host je u tohoto
-projektu silnější (PWA, offline-friendly), takže výchozí návrh je **self-host, jakmile
-budou binárky** — do té doby Google Fonts.
+**Písma se self-hostují.** `next/font/google` je stáhne při buildu a Next je servíruje
+z vlastní domény; za běhu nejde ani jeden request na Google. Ověřeno v prohlížeči na
+produkčním buildu — všechny requesty míří na vlastní origin.
+
+Původní návrh chtěl `next/font/local` a ruční woff2 binárky. **Není potřeba:** výsledek
+je z hlediska GDPR i výkonu totožný, jen bez správy souborů v repu. Ruční cestu má smysl
+zvolit jedině při vlastním subsettingu — a ten u IBM Plex spustí pravidlo vyhrazeného názvu.
+
+Licence, atribuce a co z OFL plyne: `licenses/README.md`. **Všechny tři rodiny se načítají
+se subsety `latin` + `latin-ext`** — bez `latin-ext` by chyběla česká diakritika.
 
 ## Co ještě chybí
 

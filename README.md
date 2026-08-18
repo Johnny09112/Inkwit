@@ -24,6 +24,7 @@ komunita kolem kreseb, které **zůstávají**.
 | `docs/roadmap.md` | Rozsah MVP, fáze 0–3, monetizace, ekonomika, otevřené otázky |
 | `docs/design-system.md` | Barevná paleta „Oves a oliva“, fonty, kontrastní pravidla (úvodní návrh) |
 | `_claude/` | Dlouhodobá paměť projektu (rozhodnutí, patterny, bugy, živý kontext) |
+| `licenses/` | Licence a atribuce použitých písem (SIL OFL 1.1) |
 
 **Než začneš cokoli navrhovat, přečti neporušitelná pravidla v `CLAUDE.md`.**
 Jsou to omezení architektury, ne featury — retrofit některých z nich znamená přepis datového modelu.

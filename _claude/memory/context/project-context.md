@@ -18,6 +18,8 @@ aplikaci (App Router, TS strict, next-intl CZ+EN, `middleware.ts`) s implementac
 všech 10 obrazovek z wireframů, zatím nad mock daty (`lib/mock.ts`). Žádné migrace,
 žádný Supabase projekt, žádný backend. Rozsah fáze 0 se 2026-08-18 rozšířil
 o notifikace autorovi a minimální vyžádání kresby — obojí nese retenční hypotézu.
+Appka (Next.js UI nad mock daty) je od 2026-08-18 v gitu. Supabase projekt `Inkwit`
+založen na free plánu.
 Produktový návrh ve třech dokumentech (`docs/product.md`, `docs/data-model.md`,
 `docs/roadmap.md`) + `CLAUDE.md` s osmi neporušitelnými pravidly.
 
@@ -68,12 +70,18 @@ schéma podle `docs/data-model.md`, napojení místo `lib/mock.ts`.
 
 ### Produktové otevřené otázky
 
-Šest otázek je v `docs/roadmap.md`. Nejrizikovější je #1 — čím nahradit sdílenou
-sérii z Draw Something. Je to jediná díra, kterou nejde zalepit později bez přepisu
-motivační vrstvy.
+Šest otázek je v `docs/roadmap.md`. Otázka #1 je zodpovězená (viz
+[[retence-bez-sdilene-serie]]) a přeformulovaná na „vrací notifikace o cizí akci
+člověka ke kreslení?" — odpoví ji až měření ve fázi 0. Zbylé jsou kalibrační,
+ne existenční.
 
 ### Před backendem
 
-- Založit Supabase projekt (placená akce → vyžaduje potvrzení majitele).
-- Rozhodnout, jestli `game_config` vzniká už ve fázi 0 (pravidlo 6 říká, že
-  balanc nesmí být konstanta v kódu — pak ano, i pro hvězdičky a palec).
+- **Region Supabase projektu** — vznikl v `eu-west-1` (Irsko), blíž je `eu-central-1`.
+  Měnit jde jen přesunem na nový projekt: teď je prázdný a je to zdarma, později ne.
+  Viz [[supabase-free-plan-a-region]].
+- **Kódování bodů tahu** — ploché pole `[x,y,t,…]` místo objektů je v jsonb ~3× menší
+  a řídí egress, který je na free plánu užší omezení než úložiště. Rozhodnout před schématem.
+- `game_config` vzniká už ve fázi 0 (pravidlo 6 — balanc nesmí být konstanta v kódu).
+- **Zálohy:** free plán je nedovolí stáhnout. Naplánovat `pg_dump` dřív, než v DB
+  budou data z testu.
