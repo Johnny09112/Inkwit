@@ -22,6 +22,7 @@ komunita kolem kreseb, které **zůstávají**.
 | `docs/product.md` | Herní smyčka, bodování, trust score, moderace, anti-čmáranice, relay režim |
 | `docs/data-model.md` | Schéma Postgres/Supabase, koncepty a jazykové varianty, stavy kresby, RLS |
 | `docs/roadmap.md` | Rozsah MVP, fáze 0–3, monetizace, ekonomika, otevřené otázky |
+| `docs/design-system.md` | Barevná paleta „Oves a oliva“, fonty, kontrastní pravidla (úvodní návrh) |
 | `_claude/` | Dlouhodobá paměť projektu (rozhodnutí, patterny, bugy, živý kontext) |
 
 **Než začneš cokoli navrhovat, přečti neporušitelná pravidla v `CLAUDE.md`.**
