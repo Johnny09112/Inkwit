@@ -48,10 +48,14 @@ const LIVE = "66666666-6666-6666-6666-666666666666";
 const DRAFT = "77777777-7777-7777-7777-777777777777";
 
 const SEED = `
+-- Od kroku A5 nevznikne účet bez platné pozvánky, takže i testovací uživatelé
+-- musí projít stejnou cestou jako skuteční.
+insert into public.invites (code, note, max_uses) values ('INK-SEED', 'testovací data', 10);
+
 insert into auth.users (id, raw_user_meta_data) values
-  ('${ALICE}', '{"display_name":"Alice"}'),
-  ('${BOB}',   '{"display_name":"Bob"}'),
-  ('${PUPIL}', '{"display_name":"Žák"}');
+  ('${ALICE}', '{"display_name":"Alice","invite_code":"INK-SEED"}'),
+  ('${BOB}',   '{"display_name":"Bob","invite_code":"INK-SEED"}'),
+  ('${PUPIL}', '{"display_name":"Žák","invite_code":"INK-SEED"}');
 
 insert into public.tenants (id, kind, name, owner_id, join_code)
   values ('${SCHOOL}', 'school', 'ZŠ Testov', '${BOB}', 'ABC123');
@@ -210,6 +214,69 @@ async function main() {
   const inPublic = helpers.filter((h) => h.nspname === "public").map((h) => h.proname);
   report(helpers.length === 3, "všechny tři pomocné funkce existují", `nalezeno ${helpers.length}`);
   report(inPublic.length === 0, "žádná z nich není ve schématu public", inPublic.join(", "));
+
+  console.log("\nÚčet nevznikne bez platné pozvánky (kritérium A5):\n");
+
+  /** Zkusí založit uživatele se zadanými metadaty. Vrací true, když prošel. */
+  async function trySignup(meta) {
+    await db.exec("begin");
+    let created = false;
+    try {
+      await db.query(`insert into auth.users (raw_user_meta_data) values ($1)`, [meta]);
+      created = true;
+    } catch {
+      created = false;
+    }
+    await db.exec("rollback");
+    return created;
+  }
+
+  await db.exec(`
+    insert into public.invites (code, note, max_uses) values ('INK-PLATNA', 'test', 1);
+    insert into public.invites (code, note, revoked_at) values ('INK-ZRUSENA', 'test', now());
+    insert into public.invites (code, note, expires_at) values ('INK-PROSLA', 'test', now() - interval '1 day');
+    insert into public.invites (code, note, max_uses, used_count) values ('INK-VYCERPANA', 'test', 1, 1);
+  `);
+
+  report(!(await trySignup(JSON.stringify({}))), "bez kódu účet nevznikne");
+  report(!(await trySignup(JSON.stringify({ invite_code: "INK-NEEXISTUJE" }))), "s vymyšleným kódem nevznikne");
+  report(!(await trySignup(JSON.stringify({ invite_code: "INK-ZRUSENA" }))), "se zrušenou pozvánkou nevznikne");
+  report(!(await trySignup(JSON.stringify({ invite_code: "INK-PROSLA" }))), "s prošlou pozvánkou nevznikne");
+  report(!(await trySignup(JSON.stringify({ invite_code: "INK-VYCERPANA" }))), "s vyčerpanou pozvánkou nevznikne");
+  report(await trySignup(JSON.stringify({ invite_code: "INK-PLATNA" })), "s platnou pozvánkou vznikne");
+  report(await trySignup(JSON.stringify({ invite_code: "ink-platna" })), "kód není citlivý na velikost písmen");
+
+  // Pozvánka se po použití spotřebuje a podruhé neprojde.
+  await db.exec("begin");
+  await db.query(`insert into auth.users (raw_user_meta_data) values ($1)`, [
+    JSON.stringify({ invite_code: "INK-PLATNA", display_name: "Nováček" }),
+  ]);
+  // Savepoint: očekávaná chyba jinak zablokuje celou transakci a další
+  // dotazy by spadly na 25P02 místo aby něco ověřily.
+  await db.exec("savepoint second_use");
+  let secondUse = true;
+  try {
+    await db.query(`insert into auth.users (raw_user_meta_data) values ($1)`, [
+      JSON.stringify({ invite_code: "INK-PLATNA" }),
+    ]);
+  } catch {
+    secondUse = false;
+  }
+  await db.exec("rollback to savepoint second_use");
+  const newProfile = (
+    await db.query(`select count(*)::int n from public.profiles where display_name = 'Nováček'`)
+  ).rows[0].n;
+  const newTrust = (
+    await db.query(`select count(*)::int n from public.profile_trust t
+      join public.profiles p on p.id = t.user_id where p.display_name = 'Nováček'`)
+  ).rows[0].n;
+  await db.exec("rollback");
+  report(!secondUse, "jednorázová pozvánka podruhé neprojde");
+  report(newProfile === 1, "s účtem vznikne profil");
+  report(newTrust === 1, "s profilem vznikne i záznam trust score");
+
+  report((await asUser(ALICE, count("public.invites"))) === "ERROR",
+    "klient nemůže vyjmenovat pozvánky");
 
   // Append-only ledger platí i pro server, ne jen pro klienta.
   await db.exec(`update public.ledger set delta = 999 where user_id = '${BOB}'`);

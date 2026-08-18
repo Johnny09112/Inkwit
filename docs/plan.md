@@ -31,7 +31,7 @@ Lokální ověření běží na PGlite (`npm run test:db`) — Docker není pot�
 | Blok | Co | Stav | Blokuje |
 |---|---|---|---|
 | **0** | Hotové UI nad mock daty | `[x]` | — |
-| **A** | Backend základ — projekt, schéma, RLS, konfigurace, auth | `[~]` | zbývá A5 (auth) |
+| **A** | Backend základ — projekt, schéma, RLS, konfigurace, auth | `[x]` | — |
 | **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[ ]` | D |
 | **C** | Kreslení end-to-end | `[ ]` | D |
 | **D** | Hádání end-to-end | `[ ]` | F |
@@ -67,8 +67,24 @@ neměřitelnou verzi znamená prošvihnout jediný účel fáze 0.
 - `[x] A4` **`game_config`** — 14 klíčů, z toho 9 veřejných. Prahy trust score
   a koruny jsou neveřejné (pravidlo 7) přes sloupec `is_public`.
   *Zbývá ověřit:* že se změna hodnoty projeví bez deploye — až bude co číst (blok C).
-- `[ ] A5` **Auth pozvánkou + `profiles`.** Fáze 0 nemá veřejnou registraci.
-  *Kritérium:* bez platné pozvánky účet nevznikne.
+- `[x] A5` **Auth pozvánkou.** Tabulky `invites` a `invite_redemptions`,
+  trigger `private.enforce_invite()` nad `auth.users`. Vypínatelné klíčem
+  `signup_requires_invite` v `game_config` — vypnout znamená zveřejnit hru,
+  takže ne dřív, než běží klasifikátor obsahu.
+  *Ověřeno:* 11 testů — bez kódu, vymyšlený, zrušený, prošlý i vyčerpaný kód
+  účet nezaloží; platný ano a podruhé už ne. S účtem vzniká profil i trust záznam.
+
+**Vygenerování pozvánek** (majitel nebo Claude přes `supabase db push` / SQL):
+
+```sql
+insert into public.invites (code, note)
+select private.new_invite_code(), 'fáze 0 — tester ' || g
+from generate_series(1, 50) g;
+```
+
+`invites.tenant_id` je připravené na fázi 2: žák nemá e-mail a vstupuje kódem
+od učitele, takže účet rovnou vzniká uvnitř tenanta. Doplnit zpětně by znamenalo
+sahat na zakládání účtů, což je nejcitlivější místo schématu.
 
 ## Blok B — Obsah
 
@@ -87,6 +103,11 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
 
 ## Blok C — Kreslení end-to-end
 
+- `[ ] C0` **Supabase klient v aplikaci + přihlašovací obrazovka.** Aplikace zatím
+  Supabase vůbec nezná — běží na mock datech. Sem patří `@supabase/ssr`, správa
+  sezení v middlewaru, obrazovka s e-mailem a kódem pozvánky a zamčení tras.
+  Vynucení pozvánky už v databázi je (A5), tohle je jen cesta, kudy se k němu dostat.
+  *Kritérium:* nepřihlášený uživatel se nedostane na žádnou herní obrazovku.
 - `[ ] C1` **Nabídka tří konceptů ze serveru**, s předností vyžádaných (blok E).
 - `[ ] C2` **Uložení kresby a tahů.** Klient posílá vektory, **server nevěří
   ničemu** — ani časům tahů. Body jako **ploché pole** `[x,y,t,…]` + encode/decode
