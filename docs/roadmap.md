@@ -14,6 +14,7 @@ V rozsahu:
 - přehrání tahů na tlačítko (a měření, jestli se vůbec používá — viz níže)
 - hvězdičky, palec (1×/den)
 - notifikace autorovi „tvoji kresbu někdo uhodl / dal jí palec" — nese retenční hypotézu, viz níže
+- **minimální vyžádání kresby** — tlačítko „chci vidět tenhle pojem", vyžádaný koncept se přednostně nabízí kreslířům, notifikace oběma směry, denní limit žádostí
 - nahlášení + ruční review majitelem
 - jeden denní žebříček
 - základní logování metrik
@@ -28,11 +29,13 @@ Trust score a surge jsou nadstavby nad chováním, které se teprve ověřuje. K
 
 **Vedlejší měření — drží retenci notifikace o cizí akci?** Sleduje se, jestli zpráva *„tvoji kresbu uhodli 4 lidé, Jana ti dala palec"* vrátí člověka **ke kreslení**, ne jen k hádání. Je to test náhrady za sdílenou sérii z Draw Something (sekce Retence v `docs/product.md`).
 
-**Omezení tohoto testu, ať se výsledek nečte špatně:** silnější polovina mechaniky — *vyžádání kresby konkrétním člověkem* — je až ve fázi 1. Fáze 0 tedy testuje jen slabší signál. Záporný výsledek proto **není důkaz, že směr nefunguje**; je to důvod přitáhnout vyžádání kresby dřív, ne mechaniku zavrhnout.
+**Proto je vyžádání kresby v rozsahu, i když rozšiřuje MVP** (rozhodnuto 2026-08-18). Bez něj by fáze 0 testovala jen slabší polovinu mechaniky — „někdo tě uhodl" — a záporný výsledek by nešlo odlišit od „netestovali jsme to pořádně".
+
+Minimální verze = tlačítko u konceptu, přednost vyžádaných konceptů v nabídce kreslíři, notifikace oběma směry, denní limit žádostí v `game_config`. **Mimo rozsah zůstává** surge, ekonomika žádostí (placení kredity) a cílení na konkrétního kreslíře — to je fáze 1.
 
 ## Fáze 1 — udržitelná smyčka
 
-Trust score a probační fronta · automatická kontrola obsahu · vyžádání kresby · surge · ligy · malá sada odznaků · přehrání jako sdílitelný GIF.
+Trust score a probační fronta · automatická kontrola obsahu · **vyžádání kresby v plné verzi** (ekonomika žádostí, cílení na konkrétního kreslíře) · surge · ligy · malá sada odznaků · přehrání jako sdílitelný GIF.
 
 **Automatická kontrola obsahu je brána k veřejnému spuštění.** Dokud neběží, hra zůstává uzavřenou skupinou z fáze 0 (pravidlo 8).
 

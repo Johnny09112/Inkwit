@@ -14,7 +14,8 @@ updated: 2026-08-18
 ## Aktuální stav
 
 **Fáze: před fází 0.** Repo obsahuje jen dokumentaci, žádný kód, žádné migrace,
-žádný Supabase projekt. Hotový je produktový návrh ve třech dokumentech
+žádný Supabase projekt. Rozsah fáze 0 se 2026-08-18 rozšířil o notifikace autorovi
+a minimální vyžádání kresby — obojí nese retenční hypotézu. Hotový je produktový návrh ve třech dokumentech
 (`docs/product.md`, `docs/data-model.md`, `docs/roadmap.md`) + `CLAUDE.md`
 s osmi neporušitelnými pravidly.
 
@@ -36,6 +37,8 @@ Nic se neimplementuje. Před startem fáze 0 čekají na rozhodnutí otevřené 
 - **Přehrání kresby při hádání** → majitel opravil zápis v `docs/product.md`: hádá se
   nad **hotovým obrázkem**, přehrání je volitelné tlačítko a odměna po uhodnutí.
   Poměr obou variant se měří ve fázi 0. Viz [[hadani-nad-hotovym-obrazkem]].
+- **Otevřená otázka #1 (náhrada sdílené série)** → sérii nenahrazujeme 1:1; retenci
+  nese cizí akce nad tvojí kresbou. Viz [[retence-bez-sdilene-serie]].
 
 ### Otevřené rozpory (nalezeno 2026-08-18, nerozhodnuto)
 

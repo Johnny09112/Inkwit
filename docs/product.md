@@ -31,7 +31,7 @@ Tři páky, které zásobování drží:
 
 1. **Ekonomika.** Kreslení dává násobně víc než hádání. Konkrétní poměr = serverová konfigurace, laděná testem. Strop: nad ~10:1 se hádání stane bezcenným.
 2. **Surge.** Když zásoba neuhodnutých kreseb klesne pod práh, systém sám zvedne odměnu za kreslení a aktivně ho nabídne.
-3. **Poptávka jako trigger.** „Marek si vyžádal kresbu pojmu *trapas*." Konkrétní člověk čeká na konkrétní věc — silnější motivace než body.
+3. **Poptávka jako trigger.** „Marek si vyžádal kresbu pojmu *trapas*." Konkrétní člověk čeká na konkrétní věc — silnější motivace než body. **V minimální verzi už ve fázi 0**, protože nese retenční hypotézu: tlačítko „chci vidět tenhle pojem", vyžádané koncepty mají přednost v nabídce kreslíři, notifikace jde oběma směry (žadateli, že je hotovo; kreslíři, že splnil konkrétnímu člověku konkrétní přání). Denní limit žádostí, jinak je to spam kanál.
 
 ## Bodování a žebříčky
 
@@ -56,7 +56,7 @@ Draw Something drželo lidi **sdílenou sérií mezi dvěma hráči** — nevrac
 
 **Retenci nese cizí akce nad tvojí kresbou.** Tentýž stroj, bez té křehkosti:
 
-- **Vyžádání kresby** — *„Marek si vyžádal kresbu pojmu trapas."* Konkrétní člověk, konkrétní očekávání, cizí akce jako spouštěč. Strukturálně je to série, jen Marek není jediný partner, na kterém hra visí. (Níž je vedené jako páka na zásobování — je to zároveň hlavní retenční mechanika.)
+- **Vyžádání kresby** — *„Marek si vyžádal kresbu pojmu trapas."* Konkrétní člověk, konkrétní očekávání, cizí akce jako spouštěč. Strukturálně je to série, jen Marek není jediný partner, na kterém hra visí. (Níž je vedené jako páka na zásobování — je to zároveň hlavní retenční mechanika, a proto je v minimální verzi už v rozsahu fáze 0.)
 - **Emoční odměna autorovi**, povinná: *„Tvoji chobotnici uhodli 4 lidé, Jana ti dala palec."* Tohle Draw Something nikdy nedodalo, protože obrázky mizely. Tady je to hlavní výhoda.
 
 **Co se měří ve fázi 0:** jestli tyhle notifikace vrátí člověka **ke kreslení**, ne jen k hádání. Retenční problém je na straně kreslířů — hádání je levné a nekonečné, takže cokoli, co odměňuje objem aktivity, nafoukne retenci hádačů, zatímco zásoba neuhodnutých kreseb padá dál.

@@ -17,7 +17,14 @@ kombinace „ty vs. zbytek světa" + cizí akce nad tvojí kresbou. Achievementy
 nadstavba **po** ověření smyčky, ne odpověď na retenci.
 
 **Co se měří ve fázi 0:** jestli notifikace typu *„někdo něco udělal s tvojí kresbou"*
-vrátí člověka **ke kreslení** (ne jen k hádání). Logování už je v rozsahu fáze 0.
+vrátí člověka **ke kreslení** (ne jen k hádání).
+
+**Rozšíření rozsahu fáze 0 (2026-08-18, tentýž den):** do MVP jde i **minimální
+vyžádání kresby**. Původně byla celá mechanika až ve fázi 1, což by znamenalo, že
+fáze 0 testuje jen slabší polovinu a záporný výsledek nejde odlišit od „netestovali
+jsme to pořádně". Minimální verze = tlačítko, přednost vyžádaných konceptů v nabídce
+kreslíři, notifikace oběma směry, denní limit v `game_config`. Mimo rozsah zůstává
+surge, ekonomika žádostí a cílení na konkrétního kreslíře.
 
 ## Proč — mechanika, ne motivace
 
@@ -66,6 +73,12 @@ Broadcast je odolnější. Trvalé kresby jsou navíc aktivum, které DS nemělo
 - `docs/roadmap.md`, **rozsah fáze 0** — doplněny notifikace autorovi. Bez nich by
   nebylo co měřit; předtím v rozsahu chyběly, ačkoli na nich hypotéza stojí.
 
-**Pozor na čtení výsledku fáze 0:** silnější polovina mechaniky (vyžádání kresby
-konkrétním člověkem) je až ve fázi 1, takže fáze 0 testuje jen slabší signál.
-Záporný výsledek je důvod přitáhnout vyžádání dřív, ne zavrhnout směr.
+- `docs/data-model.md` — nová sekce **Vyžádání kresby** s tabulkou `concept_requests`.
+- `docs/roadmap.md`, **fáze 1** — vyžádání kresby přeznačeno na „plnou verzi"
+  (ekonomika žádostí, cílení), protože minimální verze je už ve fázi 0.
+
+**Klíčové u vyžádání, ať se to neudělá jako fronta úkolů:** notifikace musí jít
+**oběma směry**. Žadateli, že je hotovo, a kreslíři, že splnil konkrétnímu člověku
+konkrétní přání. Druhá polovina je ta, která nese retenci — bez ní je to jen todo list.
+A `expires_at` je povinné: otevřené žádosti se musí uklidit samy, jinak vzniká fronta
+vyžadující ruční obsluhu.

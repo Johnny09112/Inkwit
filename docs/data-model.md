@@ -98,6 +98,31 @@ reports
 
 Jeden uživatel smí hádat každou kresbu **jen jednou** (max tři pokusy v rámci jednoho sezení). Vynucuj serverově, ne v UI.
 
+## Vyžádání kresby
+
+Nese hlavní retenční hypotézu (viz `docs/product.md`, sekce Retence), proto je v minimální verzi už ve fázi 0 — ne až s ekonomikou žádostí.
+
+```
+concept_requests
+  id
+  concept_id      → concepts
+  requester_id    → profiles
+  locale          'cs' | 'en'     v jakém jazyce chce žadatel hádat
+  status          open | fulfilled | expired
+  fulfilled_by    → drawings      NULL, dokud nikdo nenakreslil
+  created_at      timestamptz
+  expires_at      timestamptz
+  UNIQUE (concept_id, requester_id) WHERE status = 'open'
+```
+
+**Pravidla:**
+- **Otevřená žádost zvedá prioritu konceptu v nabídce tří konceptů kreslíři.** Nabídka není náhodná — vyžádané koncepty jdou dopředu. Bez tohohle je žádost jen přání do prázdna.
+- **Notifikace jdou oběma směry.** Žadateli, že je hotovo; kreslíři, že splnil konkrétnímu člověku konkrétní přání. Druhá polovina je ta, která nese retenci — bez ní je to jen fronta úkolů.
+- **Splní ji kterákoli kresba toho konceptu**, ne konkrétní kreslíř. Cílení je až fáze 1.
+- **`expires_at` je povinné.** Otevřené žádosti se samy uklidí — jinak vzniká fronta, kterou musí někdo ručně čistit, což je přesně to, co si projekt nemůže dovolit.
+- **Denní limit žádostí na uživatele** patří do `game_config`, ne do kódu. Bez limitu je to spam kanál.
+- Veřejná hra jen. Uvnitř školního tenantu žádosti nejsou — koncepty tam volí učitel.
+
 ## Uživatel a trust
 
 ```
