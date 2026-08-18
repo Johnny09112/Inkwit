@@ -32,7 +32,7 @@ Lokální ověření běží na PGlite (`npm run test:db`) — Docker není pot�
 |---|---|---|---|
 | **0** | Hotové UI nad mock daty | `[x]` | — |
 | **A** | Backend základ — projekt, schéma, RLS, konfigurace, auth | `[x]` | — |
-| **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[ ]` | D |
+| **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[~]` | D |
 | **C** | Kreslení end-to-end | `[ ]` | D |
 | **D** | Hádání end-to-end | `[ ]` | F |
 | **E** | Retenční smyčka — vyžádání a notifikace | `[ ]` | — |
@@ -91,15 +91,25 @@ sahat na zakládání účtů, což je nejcitlivější místo schématu.
 **Účel:** bez přijímaných tvarů je hra v češtině nehratelná. Není to
 programování, je to kurátorská práce — a je jí víc, než se zdá.
 
-- `[ ] B1` **Sada konceptů pro fázi 0.** Odhad 80–150 konceptů, rozložených po
-  obtížnosti 1–3. Označit `is_cross_language` (`zámek`, `trapas` = false).
-- `[ ] B2` **Přijímané tvary CZ.** Pády, zdrobněliny, synonyma — `pes, psa, psi,
-  pejsek, hafan, štěně`. *Kritérium:* na vzorku 20 konceptů zkusit, co lidi
-  reálně napíšou, a doplnit chybějící tvary.
-- `[ ] B3` **Přijímané tvary EN.**
+- `[~] B1` **Sada konceptů — návrh hotový, čeká na projetí majitelem.**
+  120 pojmů v `supabase/seed/concepts.json`: 58 snadných, 40 středních, 22 těžkých,
+  v šesti kategoriích. Jen jednojazyčné: `zámek`, `trapas`, `štěstí`.
+- `[~] B2` **Přijímané tvary CZ** — 437 tvarů v návrhu. Plné skloňování tam
+  VĚDOMĚ není; spoléhá se na normalizaci a fuzzy shodu. *Zbývá kritérium:*
+  na vzorku zkusit, co lidé reálně napíšou.
+- `[~] B3` **Přijímané tvary EN** — 268 tvarů v návrhu.
 - `[ ] B4` **Porovnávací funkce.** Normalizace diakritiky → lowercase → trim →
-  shoda → Levenshtein ≤ 1–2 podle délky. *Kritérium:* testy včetně pastí na
-  krátká slova (`pes`/`les`/`ves` se nesmí uhodnout navzájem).
+  shoda → fuzzy pro překlepy.
+
+  **Prahy fuzzy shody podle délky — podloženo daty, ne odhadem.** Kontrola sady
+  našla **22 dvojic tvarů kratších než pět znaků, které se liší jediným znakem**
+  a patří RŮZNÝM pojmům: `pes`/`děs`, `slon`/`shon`, `výr`/`sýr`, `dům`/`dub`,
+  `klíč`/`klid`, `duha`/`duna`, anglicky `cat`/`bat`/`car`, `bear`/`pear`/`fear`,
+  `sun`/`run`/`bun`, `book`/`boot`/`bolt`. Levenshtein ≤ 1 by je zaměnil.
+
+  Návrh: **do 4 znaků jen přesná shoda**, 5–7 znaků vzdálenost 1, 8+ vzdálenost 2.
+  *Kritérium:* test, který projede všechny dvojice z `concepts.json` a ověří,
+  že žádná odpověď neuhodne cizí pojem.
 
 ## Blok C — Kreslení end-to-end
 
