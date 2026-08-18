@@ -13,8 +13,15 @@
 2. **Tři pokusy**, volný text, ve zvoleném jazyce (CZ nebo EN).
 3. Čím dřív uhodne, tím víc hvězdiček kresba dostane.
 4. **Přehrání tah po tahu je volitelné** — tlačítko „přehrát". Hlavní role je až po uhodnutí: jako odměna a jako export do sdílitelného GIFu.
-5. Po vyřešení (nebo vyčerpání pokusů) může dát **palec nahoru — jednou denně celkem**, tedy je to vzácný hlas, ne lajk.
-6. Kdykoliv může kresbu nahlásit.
+5. **U nejtěžších pojmů se po prvním špatném tipu ukáže nápověda** — první písmeno a délka odpovědi (`n········ / 9`). Tři pokusy na „nostalgii" jsou jinak u většiny hráčů tři prohry.
+6. Po vyřešení (nebo vyčerpání pokusů) může dát **palec nahoru — jednou denně celkem**, tedy je to vzácný hlas, ne lajk.
+7. Kdykoliv může kresbu nahlásit.
+
+**Nápověda se počítá, nepíše.** První písmeno a délka se odvodí ze zadání, takže tisíc nových pojmů znamená nula nových rozhodnutí. Ruční nápověda existuje jako výjimka pro pojmy, kde písmeno nepomůže — ne jako pravidlo. Kdy a od jaké obtížnosti se nabízí, je serverová konfigurace (`hint_after_attempt`, `hint_min_difficulty`).
+
+**Otevřené: jak se nápověda promítne do hvězdiček.** Hvězdičky měří, jak rychle byla kresba uhodnuta, tedy její srozumitelnost — a uhodnutí s nápovědou o srozumitelnosti nevypovídá. Ve fázi 0 se proto nápověda jen **zaznamenává** (`guesses.hint_shown`) a bodování nemění; rozhodne se, až budou žebříčky něco znamenat. Návrh: do metriky srozumitelnosti počítat **jen tipy bez nápovědy**, aby zůstalo jasné, co vlastně měří.
+
+**Vedlejšek, se kterým se počítá:** nápověda navádí na základní tvar. Kdo by u „spěchu" napsal „chvat", po nápovědě `s····` to nejspíš neudělá. Přijímané tvary tím neztrácejí smysl — jen se hádající častěji trefí do toho kanonického.
 
 **Proč přehrání není výchozí (rozhodnuto 2026-08-18).** Argument pro přehrání je jediný, ale netriviální: statický obrázek uhodneš nebo neuhodneš a je to za dvě vteřiny, kdežto přehrání dělá z hádání malý příběh — je to jediné, co drží hádání od mechanického odklikávání. Navíc se z něj dá udělat sdílitelný GIF, což je marketingový kanál zadarmo. Proti stojí čekání u každé jednotlivé kresby, které v broadcast modelu platíš stokrát za sezení.
 

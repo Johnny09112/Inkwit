@@ -146,6 +146,13 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
   a férové (nejstarší neuhodnuté první), bez trust score.
 - `[ ] D2` **Serverová validace odpovědi.** Tři pokusy, jedno sezení na kresbu.
   *Kritérium:* čtvrtý pokus přes API neprojde.
+- `[ ] D2b` **Nápověda u nejtěžších pojmů.** Po prvním špatném tipu se vrátí
+  první písmeno a délka odpovědi. **Počítá se ze zadání, nepíše ručně** — jinak
+  tisíc pojmů znamená tisíc nápověd. Prahy jsou v `game_config`
+  (`hint_after_attempt`, `hint_min_difficulty`), sloupec `guesses.hint_shown`
+  a konfigurace už existují.
+  *Kritérium:* nápověda se nedá získat dřív než po špatném tipu — server ji
+  posílá až v odpovědi na něj, nikdy dopředu.
 - `[ ] D3` **Hvězdičky a palec.** Palec 1×/den **serverově** (pravidlo: vzácný
   hlas). *Kritérium:* druhý palec téhož dne přes API neprojde.
 - `[ ] D4` **Přehrání tahů z uložených vektorů.** Tlačítko, ne výchozí zobrazení.

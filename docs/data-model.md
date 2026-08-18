@@ -96,6 +96,7 @@ guesses
   attempt_no  1..3
   text_raw    text
   is_correct  boolean
+  hint_shown  boolean      dostal hráč u tohoto tipu nápovědu?
   created_at  timestamptz
   UNIQUE (drawing_id, user_id, attempt_no)
 ```
