@@ -13,6 +13,7 @@ V rozsahu:
 - hádání nad hotovým obrázkem, tři pokusy, CZ + EN
 - přehrání tahů na tlačítko (a měření, jestli se vůbec používá — viz níže)
 - hvězdičky, palec (1×/den)
+- notifikace autorovi „tvoji kresbu někdo uhodl / dal jí palec" — nese retenční hypotézu, viz níže
 - nahlášení + ruční review majitelem
 - jeden denní žebříček
 - základní logování metrik
@@ -24,6 +25,10 @@ Trust score a surge jsou nadstavby nad chováním, které se teprve ověřuje. K
 **Kritérium postupu:** ≥20 % uživatelů se druhý den vrátí a nakreslí další kresbu.
 
 **Vedlejší měření — výchozí zobrazení při hádání.** Dvě skupiny: jedna vidí jen hotový obrázek, druhá má navíc tlačítko „přehrát". Sleduje se počet uhodnutých kreseb na sezení a návrat druhý den. Rozhoduje test, ne názor — zdůvodnění obou stran je v `docs/product.md`.
+
+**Vedlejší měření — drží retenci notifikace o cizí akci?** Sleduje se, jestli zpráva *„tvoji kresbu uhodli 4 lidé, Jana ti dala palec"* vrátí člověka **ke kreslení**, ne jen k hádání. Je to test náhrady za sdílenou sérii z Draw Something (sekce Retence v `docs/product.md`).
+
+**Omezení tohoto testu, ať se výsledek nečte špatně:** silnější polovina mechaniky — *vyžádání kresby konkrétním člověkem* — je až ve fázi 1. Fáze 0 tedy testuje jen slabší signál. Záporný výsledek proto **není důkaz, že směr nefunguje**; je to důvod přitáhnout vyžádání kresby dřív, ne mechaniku zavrhnout.
 
 ## Fáze 1 — udržitelná smyčka
 
@@ -125,7 +130,7 @@ Otevřená věc k rozhodnutí: **co se stane, když zájem opadne.** U projektu,
 
 ## Otevřené otázky
 
-1. **Čím nahradit sdílenou sérii z Draw Something?** Nejsilnější retenční mechanika toho žánru a broadcast model ji přímo nemá. Bez odpovědi hrozí, že produkt drží lidi tři týdny.
+1. **Vrací notifikace o cizí akci člověka ke kreslení?** Sdílenou sérii z Draw Something **nenahrazujeme jedna ku jedné** — rozhodnuto 2026-08-18, zdůvodnění v `docs/product.md`, sekce Retence. Retenci má nést vyžádání kresby a emoční odměna autorovi: tentýž stroj jako série (vyvolá tě cizí akce), bez její křehkosti. Otevřené zůstává, **jestli to stačí**. Měří se ve fázi 0 a měří se návrat *ke kreslení*, ne k hádání. Když vyjde záporně, je to pořád nejvážnější díra návrhu.
 2. **Poměr odměn kreslení : hádání.** Nechat na testech, ale zafixovat strop (~10:1) a cílovou metriku předem.
 3. **Kolik neuhodnutí do archivace** a jak přesně škáluje s obtížností.
 4. **Jak vypadá moderace bez lidské obsluhy.** Vzhledem k povaze projektu to není otázka „kdo to bude dělat", ale „jak to udělat, aby to nikdo dělat nemusel". Komunitní moderátoři z důvěryhodného pásma jsou pravděpodobná odpověď, ale potřebují návrh dřív, než přijde první krize.

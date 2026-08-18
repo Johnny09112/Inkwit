@@ -56,3 +56,16 @@ Broadcast je odolnější. Trvalé kresby jsou navíc aktivum, které DS nemělo
   s minimem hlasů, nebo korunu přiznat jako cenu za srozumitelnost.
 - **Notifikovat jen zisk koruny, nikdy ztrátu.** Slovo se nevybírá → korunu nelze
   bránit. Zpráva o ztrátě je špatná zpráva bez páky.
+
+## Promítnuto do dokumentů (2026-08-18)
+
+- `docs/product.md`, sekce **Retence** — přepsána na rozhodnutou variantu; zrušeni
+  tři dřívější kandidáti (osobní série, série mezi dvojicí, „čeká na 3. uhodnutí").
+- `docs/roadmap.md`, **otevřená otázka #1** — přeformulována z „čím nahradit sérii"
+  na „vrací notifikace o cizí akci člověka ke kreslení?".
+- `docs/roadmap.md`, **rozsah fáze 0** — doplněny notifikace autorovi. Bez nich by
+  nebylo co měřit; předtím v rozsahu chyběly, ačkoli na nich hypotéza stojí.
+
+**Pozor na čtení výsledku fáze 0:** silnější polovina mechaniky (vyžádání kresby
+konkrétním člověkem) je až ve fázi 1, takže fáze 0 testuje jen slabší signál.
+Záporný výsledek je důvod přitáhnout vyžádání dřív, ne zavrhnout směr.

@@ -50,14 +50,27 @@ Odznaků málo a s jasným významem. Dvě stě odznaků nemá cenu žádný.
 
 ## Retence
 
-Slabé místo návrhu. Draw Something drželo lidi **sdílenou sérií mezi dvěma hráči** — nevracíš se pro body, ale abys nezabil něco, co s někým tři měsíce stavíš. Broadcast model tohle přímo nemá.
+Draw Something drželo lidi **sdílenou sérií mezi dvěma hráči** — nevracíš se pro body, ale abys nezabil něco, co s někým tři měsíce stavíš. Broadcast model tohle přímo nemá.
 
-Náhrady k otestování (viz otevřené otázky):
-- osobní série dnů, kdy tě někdo uhodl
-- série mezi dvojicí, která se navzájem sleduje
-- „tvoje kresba čeká na 3. uhodnutí" jako notifikační háček
+**Rozhodnuto 2026-08-18: sérii nenahrazujeme jedna ku jedné.** Série neřešila *důvod* se vrátit, řešila **kdo tě vyvolá** — smyčku taktovala cizí akce (partner tahl → notifikace → tvůj tah), ty sis nemusel pamatovat, že hra existuje. Druhá půlka: neporušil jsi ji sobě, ale konkrétnímu člověku. Zároveň měla vlastní katastrofický režim — když partner přestal hrát, hra skončila.
 
-Rychlá emoční odměna autorovi je povinná: *„Tvoji chobotnici uhodli 4 lidé, Jana ti dala palec."* Tohle Draw Something nikdy nedodalo, protože obrázky mizely. Tady je to hlavní výhoda.
+**Retenci nese cizí akce nad tvojí kresbou.** Tentýž stroj, bez té křehkosti:
+
+- **Vyžádání kresby** — *„Marek si vyžádal kresbu pojmu trapas."* Konkrétní člověk, konkrétní očekávání, cizí akce jako spouštěč. Strukturálně je to série, jen Marek není jediný partner, na kterém hra visí. (Níž je vedené jako páka na zásobování — je to zároveň hlavní retenční mechanika.)
+- **Emoční odměna autorovi**, povinná: *„Tvoji chobotnici uhodli 4 lidé, Jana ti dala palec."* Tohle Draw Something nikdy nedodalo, protože obrázky mizely. Tady je to hlavní výhoda.
+
+**Co se měří ve fázi 0:** jestli tyhle notifikace vrátí člověka **ke kreslení**, ne jen k hádání. Retenční problém je na straně kreslířů — hádání je levné a nekonečné, takže cokoli, co odměňuje objem aktivity, nafoukne retenci hádačů, zatímco zásoba neuhodnutých kreseb padá dál.
+
+**Achievementy jsou nadstavba po ověření smyčky, ne odpověď na retenci.** Až se budou stavět, platí dvě omezení:
+
+- **Žádná denní série za kreslení.** Je to znovuzavedení kvóty, kterou návrh záměrně zrušil (viz `docs/roadmap.md`), a tlak odčárat čmáranici před půlnocí — tedy motor proti vlastnímu detektoru snahy.
+- **Koruna „nejlepší obrázek u slova" jen jako klouzavé okno** (např. posledních 7 dní). Trvalá koruna je globální žebříček, kvůli kterému vznikly ligy, jen bez resetu. Camping neřeší, protože slovo se dostává ze tří nabídnutých, nevybírá se.
+
+U koruny zbývá rozhodnout tři věci:
+
+1. **Práh objemu.** Při malé komunitě dostane většina konceptů jednu až tři kresby za týden — koruna je pak účast, ne výhra, a devalvuje se obráceně, než potřebuješ. Udělovat až nad N kresbami v okně; N patří do `game_config`.
+2. **Kterou osou se udílí.** Hvězdičky a palce jsou oddělené schválně, protože jsou v konfliktu; jedna koruna je slepí zpátky. Hvězdičkami vyhraje nejotřelejší možná kresba. Palci narazíš na to, že **denní zásoba palců v systému se rovná počtu aktivních lidí** — drtivá většina kreseb má nula a koruna se rozhodne poměrem 1:0, což měří spíš distribuční štěstí než kvalitu. Buď palce s minimem hlasů, nebo korunu přiznat jako cenu za srozumitelnost.
+3. **Notifikovat jen zisk, nikdy ztrátu.** Slovo se nevybírá, takže korunu **nelze bránit** — zpráva „tvoje kresba už není nejlepší pes týdne" je špatná zpráva bez páky, po jaké lidé vypínají notifikace.
 
 ## Trust score
 
