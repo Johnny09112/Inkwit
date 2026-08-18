@@ -1,0 +1,128 @@
+{
+  "app": {
+    "name": "Inkwit"
+  },
+  "nav": {
+    "draw": "Draw",
+    "guess": "Guess",
+    "mine": "Mine",
+    "leaderboards": "Leaderboards",
+    "profile": "Profile"
+  },
+  "common": {
+    "supply": "Supply {n}",
+    "close": "Close",
+    "credit": "credit +{n}"
+  },
+  "difficulty": {
+    "1": "Easy · ★",
+    "2": "Medium · ★★",
+    "3": "Hard · ★★★"
+  },
+  "draw": {
+    "canvasHint": "canvas · vector strokes",
+    "send": "Send drawing",
+    "sendShort": "Send",
+    "sizePx": "{n} px",
+    "tools": {
+      "brush": "Brush",
+      "eraser": "Eraser",
+      "undo": "Undo",
+      "move": "Pan",
+      "clear": "Clear all",
+      "preview": "Preview without tools",
+      "palette": "More colors",
+      "size": "Stroke size",
+      "zoom": "Zoom"
+    },
+    "colors": {
+      "title": "Colors",
+      "recent": "Recently used",
+      "mine": "My palette",
+      "edit": "Edit palette",
+      "add": "Add color",
+      "apply": "Apply",
+      "hex": "Color hex code"
+    }
+  },
+  "submit": {
+    "step": "Step 1 of 2 · check",
+    "chip": "One moment",
+    "title": "This looks very rushed — send it?",
+    "preview": "drawing preview",
+    "note": "Nothing gets blocked. We're just checking it isn't a mistake — you can keep drawing anytime.",
+    "confirm": "Send anyway",
+    "back": "Back to drawing",
+    "doneStep": "Step 2 · after sending",
+    "doneTitle": "Done, your drawing is on its way",
+    "doneNote": "You'll hear from us when someone guesses it.",
+    "creditChip": "Credit +{n}",
+    "drawNext": "Draw another",
+    "goGuess": "Go guess"
+  },
+  "guess": {
+    "title": "Guess",
+    "finished": "finished drawing",
+    "placeholder": "What is it?",
+    "submit": "Guess",
+    "wrong": "Not quite. {left, plural, one {One try left.} other {# tries left.}}",
+    "attemptsLeft": "{left, plural, one {1 try} other {# tries}} left",
+    "failed": "Not this time. It was “{concept}”.",
+    "skip": "Skip",
+    "report": "Report",
+    "play": "Play"
+  },
+  "solved": {
+    "chip": "Solved · {stars}",
+    "thumbLimit": "1 / day",
+    "thumb": "Thumbs up",
+    "playback": "drawing · stroke-by-stroke replay",
+    "next": "Next drawing",
+    "play": "Play",
+    "gif": "GIF",
+    "author": "Artist: {name}",
+    "summary": "Solved on the {attempt, select, first {first} second {second} other {third}} try. {count, plural, one {1 person} other {# people}} guessed this drawing."
+  },
+  "empty": {
+    "title": "Supply is low",
+    "note": "Nothing to guess right now. Drawing a concept earns double credit — and someone asked for one.",
+    "requested": "Requested concepts",
+    "wants": "{name} wants “{concept}”",
+    "cta": "Draw for double credit"
+  },
+  "pick": {
+    "title": "Pick a concept",
+    "requested": "Requested: {name} wants “{concept}”",
+    "cta": "Draw the selected concept"
+  },
+  "mine": {
+    "title": "My drawings",
+    "filters": {
+      "all": "All {n}",
+      "solved": "Solved {n}",
+      "waiting": "Waiting {n}"
+    },
+    "guessed": "{count, plural, other {# guessed}}",
+    "thumbs": "{count, plural, one {# thumb} other {# thumbs}}",
+    "waiting": "waiting for its 1st guess"
+  },
+  "leaderboards": {
+    "title": "Leaderboards",
+    "tabs": {
+      "guesser": "Guesser",
+      "drawer": "Artist",
+      "popularity": "Popularity"
+    },
+    "league": "League {league} · {players, plural, one {1 player} other {# players}} · ends in {days, plural, one {1 day} other {# days}}",
+    "you": "You"
+  },
+  "profile": {
+    "title": "Profile",
+    "meta": "Level {level} · {drawings, plural, one {1 drawing} other {# drawings}} · {guesses, plural, one {1 guess} other {# guesses}}",
+    "badges": "Badges · {earned} of {total}",
+    "language": "Guessing language",
+    "notifications": "Notifications",
+    "account": "Account & privacy",
+    "settings": "Settings"
+  }
+}

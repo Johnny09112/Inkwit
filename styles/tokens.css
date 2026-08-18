@@ -1,0 +1,106 @@
+/* Design tokeny — zdroj: design projekt „Inkwit vizuální směr" (tokens/*.css).
+   Fonty se nenačítají tady, ale přes next/font v layoutu (self-host při buildu);
+   --font-display/--font-body/--font-mono plní next/font. */
+
+:root {
+  /* Base — warm oat paper, "Oves a oliva" */
+  --oat-100: #fffcf5; /* canvas / paper white */
+  --oat-200: #f8f3e9;
+  --oat-300: #f3ecdf; /* app background */
+  --oat-400: #e0d5c1; /* hairline border on oat */
+  --oat-500: #cfc1a6; /* stronger border, disabled fill */
+
+  --ink-900: #2b261f; /* text, warm near-black */
+  --ink-700: #4a443c; /* secondary text */
+  --ink-500: #7a7266; /* tertiary text, meta */
+
+  --olive-700: #43522f; /* hover / pressed */
+  --olive-600: #52633a; /* primary action */
+  --olive-100: #e7eadf; /* olive tint surface */
+
+  --butter-500: #e9b44c; /* accent */
+  --butter-100: #fbefd4; /* accent tint surface */
+
+  --brick-600: #b5462f; /* error / destructive */
+  --brick-100: #f6e0d9; /* error tint surface */
+
+  /* Semantic aliases — prefer these in components */
+  --bg-app: var(--oat-300);
+  --surface-canvas: var(--oat-100);
+  --surface-card: var(--oat-100);
+  --surface-sunken: var(--oat-200);
+  --surface-accent: var(--butter-100);
+  --surface-success: var(--olive-100);
+  --surface-danger: var(--brick-100);
+
+  --text-primary: var(--ink-900);
+  --text-secondary: var(--ink-700);
+  --text-muted: var(--ink-500);
+  --text-on-action: var(--oat-100);
+
+  --action-primary: var(--olive-600);
+  --action-primary-hover: var(--olive-700);
+  --accent: var(--butter-500);
+  --danger: var(--brick-600);
+
+  --border-hairline: rgba(43, 38, 31, 0.06);
+  --border-subtle: var(--oat-400);
+  --border-strong: var(--oat-500);
+  --focus-ring: rgba(82, 99, 58, 0.35);
+
+  /* Typography scale */
+  --weight-display: 600;
+  --weight-display-strong: 800;
+  --weight-body: 400;
+  --weight-body-medium: 500;
+  --weight-body-strong: 600;
+
+  --text-hero: 44px;
+  --text-title: 26px;
+  --text-card-title: 24px;
+  --text-body-lg: 16px;
+  --text-body: 15px;
+  --text-body-sm: 14.5px;
+  --text-meta: 11.5px;
+  --text-label: 11px;
+
+  --leading-tight: 1.05;
+  --leading-heading: 1.1;
+  --leading-body: 1.55;
+  --tracking-hero: -0.02em;
+  --tracking-title: -0.01em;
+  --tracking-label: 0.12em;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 6px;
+  --space-3: 10px;
+  --space-4: 12px;
+  --space-5: 18px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 40px;
+  --space-9: 56px;
+
+  --gap-inline: var(--space-3);
+  --gap-stack: var(--space-4);
+  --gap-section: var(--space-8);
+  --pad-card: var(--space-6);
+  --pad-panel: var(--space-7);
+
+  /* Radius — nothing sharper than 12px */
+  --radius-sm: 12px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 22px;
+  --radius-pill: 999px;
+
+  /* Two-layer soft shadow, never a hard offset */
+  --shadow-card: 0 1px 2px rgba(43, 38, 31, 0.04),
+    0 10px 28px -8px rgba(43, 38, 31, 0.1);
+  --shadow-raised: 0 1px 2px rgba(43, 38, 31, 0.05),
+    0 18px 42px -12px rgba(43, 38, 31, 0.14);
+  --shadow-floating: 0 2px 4px rgba(43, 38, 31, 0.05),
+    0 16px 36px -14px rgba(43, 38, 31, 0.16);
+  --shadow-none: none;
+}

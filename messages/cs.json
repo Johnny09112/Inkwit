@@ -1,0 +1,128 @@
+{
+  "app": {
+    "name": "Inkwit"
+  },
+  "nav": {
+    "draw": "Kreslit",
+    "guess": "Hádat",
+    "mine": "Moje",
+    "leaderboards": "Žebříčky",
+    "profile": "Profil"
+  },
+  "common": {
+    "supply": "Zásoba {n}",
+    "close": "Zavřít",
+    "credit": "kredit +{n}"
+  },
+  "difficulty": {
+    "1": "Snadné · ★",
+    "2": "Střední · ★★",
+    "3": "Těžké · ★★★"
+  },
+  "draw": {
+    "canvasHint": "plátno · vektorové tahy",
+    "send": "Odeslat kresbu",
+    "sendShort": "Odeslat",
+    "sizePx": "{n} px",
+    "tools": {
+      "brush": "Štětec",
+      "eraser": "Guma",
+      "undo": "Zpět",
+      "move": "Posun",
+      "clear": "Smazat vše",
+      "preview": "Náhled bez nástrojů",
+      "palette": "Další barvy",
+      "size": "Velikost stopy",
+      "zoom": "Lupa"
+    },
+    "colors": {
+      "title": "Barvy",
+      "recent": "Naposledy použité",
+      "mine": "Moje paleta",
+      "edit": "Upravit paletu",
+      "add": "Přidat barvu",
+      "apply": "Použít",
+      "hex": "Hex kód barvy"
+    }
+  },
+  "submit": {
+    "step": "Krok 1 ze 2 · kontrola",
+    "chip": "Ještě moment",
+    "title": "Tohle vypadá hodně narychlo — poslat?",
+    "preview": "náhled kresby",
+    "note": "Nic se neblokuje. Jen kontrolujeme, že to není omyl — dokreslit se dá kdykoliv.",
+    "confirm": "Poslat i tak",
+    "back": "Vrátit se ke kresbě",
+    "doneStep": "Krok 2 · po odeslání",
+    "doneTitle": "Hotovo, kresba je na cestě",
+    "doneNote": "Dostaneš vědět, až ji někdo uhodne.",
+    "creditChip": "Kredit +{n}",
+    "drawNext": "Kreslit další",
+    "goGuess": "Jít hádat"
+  },
+  "guess": {
+    "title": "Hádej",
+    "finished": "hotová kresba",
+    "placeholder": "Co to je?",
+    "submit": "Hádat",
+    "wrong": "Mimo. {left, plural, one {Ještě jeden pokus.} few {Ještě # pokusy.} other {Ještě # pokusů.}}",
+    "attemptsLeft": "Ještě {left, plural, one {1 pokus} few {# pokusy} other {# pokusů}}",
+    "failed": "Tentokrát nic. Byl to pojem „{concept}“.",
+    "skip": "Přeskočit",
+    "report": "Nahlásit",
+    "play": "Přehrát"
+  },
+  "solved": {
+    "chip": "Uhodnuto · {stars}",
+    "thumbLimit": "1 / den",
+    "thumb": "Palec nahoru",
+    "playback": "kresba · přehrání tah po tahu",
+    "next": "Další kresba",
+    "play": "Přehrát",
+    "gif": "GIF",
+    "author": "Kreslíř: {name}",
+    "summary": "Uhodnuto na {attempt, select, first {první} second {druhý} other {třetí}} pokus. Kresbu uhodli {count, plural, one {1 člověk} few {# lidé} other {# lidí}}."
+  },
+  "empty": {
+    "title": "Zásoba je nízká",
+    "note": "Není co hádat. Za nakreslený pojem je teď dvojnásobný kredit — a někdo si o něj řekl.",
+    "requested": "Vyžádané pojmy",
+    "wants": "{name} chce „{concept}“",
+    "cta": "Kreslit za dvojnásobek"
+  },
+  "pick": {
+    "title": "Vyber si pojem",
+    "requested": "Vyžádáno: {name} chce „{concept}“",
+    "cta": "Kreslit vybraný pojem"
+  },
+  "mine": {
+    "title": "Moje kresby",
+    "filters": {
+      "all": "Vše {n}",
+      "solved": "Uhodnuté {n}",
+      "waiting": "Čekají {n}"
+    },
+    "guessed": "{count, plural, one {# uhodl} few {# uhodli} other {# uhodlo}}",
+    "thumbs": "{count, plural, one {# palec} few {# palce} other {# palců}}",
+    "waiting": "čeká na 1. uhodnutí"
+  },
+  "leaderboards": {
+    "title": "Žebříčky",
+    "tabs": {
+      "guesser": "Hádač",
+      "drawer": "Kreslíř",
+      "popularity": "Popularita"
+    },
+    "league": "Liga {league} · {players, plural, one {1 hráč} few {# hráči} other {# hráčů}} · končí za {days, plural, one {1 den} few {# dny} other {# dní}}",
+    "you": "Ty"
+  },
+  "profile": {
+    "title": "Profil",
+    "meta": "Level {level} · {drawings, plural, one {1 kresba} few {# kresby} other {# kreseb}} · {guesses, plural, one {1 uhodnutí} other {# uhodnutí}}",
+    "badges": "Odznaky · {earned} z {total}",
+    "language": "Jazyk hádání",
+    "notifications": "Notifikace",
+    "account": "Účet a soukromí",
+    "settings": "Nastavení"
+  }
+}
