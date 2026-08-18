@@ -17,3 +17,6 @@
 ## Patterns
 - [[nextjs-middleware-matcher-tecka]] — V Next.js middleware matcheru nefunguje escapovaná tečka \. uvnitř custom skupiny — path-to-regexp zbaští backslash a lookahead pak odmítne všechno; použij [.] · active · 2026-08-18
 
+## Code issues
+- [[kontrast-text-muted-na-pozadi]] — Neaktivní navigace, tabbar a štítek zásoby používají --text-muted na --bg = 4.04:1, což je pod AA; design-system.md přesně před tímhle varoval · active · 2026-08-18
+
