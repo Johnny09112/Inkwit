@@ -9,6 +9,11 @@
 ## Decisions
 - [[faze-0-uzavrena-skupina]] — Fáze 0 běží jako uzavřená skupina ~50 pozvaných; veřejné otevření je podmíněné automatickým klasifikátorem obsahu · active · 2026-08-18
 - [[hadani-nad-hotovym-obrazkem]] — Hádá se nad hotovým obrázkem; přehrání tah po tahu je volitelné tlačítko a odměna po uhodnutí, poměr se měří ve fázi 0 · active · 2026-08-18
+- [[koruna-za-slovo]] — Koruna „nejoblíbenější obrázek u slova" — jednorázové týdenní vyhodnocení za palce, dva prahy v game_config, trvalý datovaný záznam v profilu · active · 2026-08-18
+- [[paleta-oves-a-oliva-a-fonty]] — Vizuální základ = paleta „Oves a oliva" + Bricolage Grotesque / IBM Plex Sans / IBM Plex Mono; úvodní návrh v docs/design-system.md, ne fix · active · 2026-08-18
 - [[pamet-v-repu-ne-v-osobnim-vaultu]] — Projektová paměť žije v _claude/ uvnitř repa a verzuje se gitem, ne v osobním vaultu na H: · active · 2026-08-18
 - [[retence-bez-sdilene-serie]] — Sdílená série z Draw Something se nenahrazuje; retenci nese cizí akce nad tvojí kresbou, měří se ve fázi 0. Achievementy až potom, s omezeními. · active · 2026-08-18
+
+## Patterns
+- [[nextjs-middleware-matcher-tecka]] — V Next.js middleware matcheru nefunguje escapovaná tečka \. uvnitř custom skupiny — path-to-regexp zbaští backslash a lookahead pak odmítne všechno; použij [.] · active · 2026-08-18
 

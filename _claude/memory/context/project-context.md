@@ -13,20 +13,34 @@ updated: 2026-08-18
 
 ## Aktuální stav
 
-**Fáze: před fází 0.** Repo obsahuje jen dokumentaci, žádný kód, žádné migrace,
-žádný Supabase projekt. Rozsah fáze 0 se 2026-08-18 rozšířil o notifikace autorovi
-a minimální vyžádání kresby — obojí nese retenční hypotézu. Hotový je produktový návrh ve třech dokumentech
-(`docs/product.md`, `docs/data-model.md`, `docs/roadmap.md`) + `CLAUDE.md`
-s osmi neporušitelnými pravidly.
+**Fáze: před fází 0 — frontend skeleton existuje.** Repo obsahuje Next.js 15
+aplikaci (App Router, TS strict, next-intl CZ+EN, `middleware.ts`) s implementací
+všech 10 obrazovek z wireframů, zatím nad mock daty (`lib/mock.ts`). Žádné migrace,
+žádný Supabase projekt, žádný backend. Rozsah fáze 0 se 2026-08-18 rozšířil
+o notifikace autorovi a minimální vyžádání kresby — obojí nese retenční hypotézu.
+Produktový návrh ve třech dokumentech (`docs/product.md`, `docs/data-model.md`,
+`docs/roadmap.md`) + `CLAUDE.md` s osmi neporušitelnými pravidly.
 
 **2026-08-18:** zprovozněna dlouhodobá paměť (šablona VZOR nasazena do `_claude/`,
 hook `reindex.js` v `.claude/hooks/`), repo inicializováno jako git a napojeno na
 GitHub (`Johnny09112/Inkwit`). Opraveno zadání hádání (hotový obrázek místo přehrání)
 a uzavřen rozpor kolem pravidla 8.
 
+**2026-08-18 (později):** zapsán design systém (`docs/design-system.md`, paleta
+„Oves a oliva" + fonty, viz [[paleta-oves-a-oliva-a-fonty]]) a podle wireframů
+z design projektu „Inkwit vizuální směr" (claude.ai/design) implementován frontend:
+plátno s vektorovými tahy přes PointerEvents (uniformní štětec bez tlaku, časové
+značky, typ zařízení), submit flow s kontrolním krokem jen pro podezřelé kresby
+(`looksRushed` v `lib/strokes.ts`), hádání na tři pokusy, uhodnuto s přehráním,
+prázdný feed (surge), výběr pojmu, moje kresby, žebříčky, profil s přepínačem
+jazyka. Tři responzivní rozvržení plátna: mobil (karta pod plátnem), tablet
+768–1279 (svislá lišta vpravo), desktop ≥1280 (plovoucí ostrůvek + lišta dole).
+Build i typecheck čisté, flow ověřeno v prohlížeči v obou jazycích.
+
 ## Aktuální focus
 
-Nic se neimplementuje. Před startem fáze 0 čekají na rozhodnutí otevřené body níže.
+Frontend skeleton stojí nad mock daty. Další krok je backend: Supabase projekt,
+schéma podle `docs/data-model.md`, napojení místo `lib/mock.ts`.
 
 ## Otevřené body
 
@@ -58,7 +72,7 @@ Nic se neimplementuje. Před startem fáze 0 čekají na rozhodnutí otevřené 
 sérii z Draw Something. Je to jediná díra, kterou nejde zalepit později bez přepisu
 motivační vrstvy.
 
-### Před prvním kódem
+### Před backendem
 
 - Založit Supabase projekt (placená akce → vyžaduje potvrzení majitele).
 - Rozhodnout, jestli `game_config` vzniká už ve fázi 0 (pravidlo 6 říká, že

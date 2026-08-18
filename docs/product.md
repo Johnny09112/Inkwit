@@ -66,11 +66,21 @@ Draw Something drželo lidi **sdílenou sérií mezi dvěma hráči** — nevrac
 - **Žádná denní série za kreslení.** Je to znovuzavedení kvóty, kterou návrh záměrně zrušil (viz `docs/roadmap.md`), a tlak odčárat čmáranici před půlnocí — tedy motor proti vlastnímu detektoru snahy.
 - **Koruna „nejlepší obrázek u slova" jen jako klouzavé okno** (např. posledních 7 dní). Trvalá koruna je globální žebříček, kvůli kterému vznikly ligy, jen bez resetu. Camping neřeší, protože slovo se dostává ze tří nabídnutých, nevybírá se.
 
-U koruny zbývá rozhodnout tři věci:
+### Jak koruna funguje (dořešeno 2026-08-18)
 
-1. **Práh objemu.** Při malé komunitě dostane většina konceptů jednu až tři kresby za týden — koruna je pak účast, ne výhra, a devalvuje se obráceně, než potřebuješ. Udělovat až nad N kresbami v okně; N patří do `game_config`.
-2. **Kterou osou se udílí.** Hvězdičky a palce jsou oddělené schválně, protože jsou v konfliktu; jedna koruna je slepí zpátky. Hvězdičkami vyhraje nejotřelejší možná kresba. Palci narazíš na to, že **denní zásoba palců v systému se rovná počtu aktivních lidí** — drtivá většina kreseb má nula a koruna se rozhodne poměrem 1:0, což měří spíš distribuční štěstí než kvalitu. Buď palce s minimem hlasů, nebo korunu přiznat jako cenu za srozumitelnost.
-3. **Notifikovat jen zisk, nikdy ztrátu.** Slovo se nevybírá, takže korunu **nelze bránit** — zpráva „tvoje kresba už není nejlepší pes týdne" je špatná zpráva bez páky, po jaké lidé vypínají notifikace.
+**Vyhodnocuje se jednou, na konci pevného týdenního okna — ne průběžně.** Žádné živé pořadí, žádná „aktuálně vedeš". Jednou týdně se spočítá vítěz, ten dostane zprávu a **trvalý datovaný záznam v profilu** („Nejoblíbenější *kolotoč*, týden 34/2026"). Nikdo jiný nedostane nic.
+
+Tím se rozpouští problém, který klouzavé okno mělo: slovo se nevybírá, takže korunu **nešlo bránit** — a mechanika, kde můžeš jen pasivně ztrácet, frustruje. Když se vyhodnocuje jednorázově, není co ztratit; jsou jen týdenní vítězové. Datovaný záznam navíc dá odměně trvalost, aniž by zablokoval slot navždy.
+
+*(Pevné týdenní okno místo klouzavých 7 dní je vědomá odchylka: klouzavé okno vyžaduje průběžný přepočet, pevné jeden job týdně. U projektu, kde je nejdražší provozní obsluha, vyhrává levnější varianta se stejným efektem.)*
+
+**Uděluje se za palce, ne za hvězdičky — a jmenuje se podle toho.** „Nejoblíbenější", ne „nejlepší". Hvězdičky měří srozumitelnost a mají vlastní žebříček; kdyby korunu rozhodovaly ony, vyhrála by nejotřelejší možná kresba a duplikovalo by to existující tabulku. Hvězdičky slouží jen jako deterministický rozstřel při shodě palců.
+
+**Dva prahy, obojí v `game_config`:**
+- `crown_min_drawings` — kolik kreseb musí koncept v okně dostat, aby se koruna vůbec udílela. Výchozí návrh 5. Koruna ze dvou kandidátů je účast, ne výhra, a devalvuje se obráceně, než potřebuješ: bezcenná je právě když je komunita malá a motivaci potřebuješ nejvíc.
+- `crown_min_thumbs` — kolik palců musí mít vítěz. Výchozí návrh 3. Denní zásoba palců v systému se rovná počtu aktivních lidí, takže bez prahu by se koruna rozhodovala poměrem 1:0 a měřila spíš distribuční štěstí než kvalitu.
+
+**Když se prahy nesplní, koruna se ten týden neudělí — a nikde se to neoznamuje.** Hlásit „tento týden bez vítěze" je jen reklama na prázdnotu.
 
 ## Trust score
 
