@@ -41,9 +41,10 @@ neměřitelnou verzi znamená prošvihnout jediný účel fáze 0.
 **Účel:** aby existovalo kam ukládat a aby to bylo od začátku bezpečné.
 
 - `[x] A1` **Supabase projekt založen** (2026-08-18) — `Inkwit`, ref
-  `aqzrfftvsmkhkldovyfz`, organizace na **free plánu**, region `eu-west-1` (Irsko).
-  **K rozhodnutí: region.** Free plán dovoluje dva aktivní projekty a oba jsou
-  obsazené (`Customer_finder`, `Inkwit`). Detaily dopadů viz „Free plán" níž.
+  `iticpkeqirjfwkelhrvl`, region **`eu-central-1`** (Frankfurt), free plán.
+  První pokus vznikl omylem v `eu-west-1` a byl zahozen a založen znovu, dokud
+  byl prázdný. Free plán dovoluje dva aktivní projekty a oba jsou obsazené
+  (`Customer_finder`, `Inkwit`) — dopady viz „Free plán" níž.
 - `[ ] A2` **Schéma přes migrace.** Tabulky dle `data-model.md`: `concepts`,
   `concept_locales`, `profiles`, `drawings`, `drawing_strokes`, `guesses`,
   `reactions`, `reports`, `concept_requests`, `game_config`, `ledger`.
@@ -136,15 +137,15 @@ režim, relay režim.
 
 ## Rozhodnutí, která čekají na majitele
 
-1. **Region Supabase projektu.** Inkwit vznikl v `eu-west-1` (Irsko). Pro česky
-   cílený produkt je blíž `eu-central-1` (Frankfurt) — zhruba o 20 ms na round trip.
-   **Region se u existujícího projektu nemění**; přesun = nový projekt a migrace.
-   Teď je projekt prázdný, takže je to úkon na dvě minuty a zdarma. Za měsíc s daty
-   už ne. Rozhodnout dřív, než vznikne první migrace.
-2. **Tmavý režim** — nerozhodnuto, z palety se neodvodí 1:1. Do fáze 0 nepatří,
+1. **Tmavý režim** — nerozhodnuto, z palety se neodvodí 1:1. Do fáze 0 nepatří,
    ale ovlivní tokeny.
-3. **Kolik neuhodnutí do archivace** a jak škáluje s obtížností (otázka #3
+2. **Kolik neuhodnutí do archivace** a jak škáluje s obtížností (otázka #3
    v `roadmap.md`). Potřeba před D1.
+
+Vyřešeno 2026-08-18:
+
+3. ~~**Region Supabase projektu.**~~ Založeno znovu v `eu-central-1` (Frankfurt),
+   dokud byl projekt prázdný. Region se u existujícího projektu nemění.
 4. ~~**Kódování bodů tahu.**~~ **Rozhodnuto 2026-08-18** (majitel to nechal na mně):
    zaokrouhlení na 4 desetinná místa při záznamu — *hotovo* — a ploché pole
    `[x,y,t,…]` při ukládání, zavede se s C2. Měření a zdůvodnění

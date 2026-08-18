@@ -1,6 +1,6 @@
 ---
 name: supabase-free-plan-a-region
-description: Projekt Inkwit běží na free plánu v eu-west-1; free stačí na fázi 0, ale zálohy nejdou stáhnout a region se později nezmění
+description: Projekt Inkwit běží na free plánu v eu-central-1; free stačí na fázi 0, ale zálohy nejdou stáhnout a kvóta dvou aktivních projektů je vyčerpaná
 type: decision
 status: active
 created: 2026-08-18
@@ -10,7 +10,7 @@ updated: 2026-08-18
 # Supabase: free plán stačí, region je otevřený
 
 **Stav (ověřeno 2026-08-18 přes Management API):** projekt `Inkwit`,
-ref `aqzrfftvsmkhkldovyfz`, region `eu-west-1` (Irsko), stav ACTIVE_HEALTHY.
+ref `iticpkeqirjfwkelhrvl`, region **`eu-central-1`** (Frankfurt), ACTIVE_HEALTHY.
 Organizace `Johnny09112` je na **free plánu**.
 
 ## Free plán stačí na fázi 0 — ale tři věci je nutné znát
@@ -38,11 +38,13 @@ to je řádově **50–75 KB na kresbu**, protože se u každého bodu opakují 
 **Ploché pole `[x,y,t,x,y,t,…]` místo objektů zmenší obojí zhruba 3×.** Rozhodnout
 před psaním schématu (krok A2), zpětně to znamená migraci dat.
 
-## Region — rozhodnout dřív než vznikne první migrace
+## Region — vyřešeno 2026-08-18
 
-`eu-west-1` je Irsko. Pro česky cílený produkt je `eu-central-1` (Frankfurt) blíž,
-zhruba o 20 ms na round trip. **Region se u existujícího projektu nemění** — přesun
-znamená nový projekt a migraci dat.
+První projekt vznikl v `eu-west-1` (Irsko). Majitel ho **zahodil a založil znovu
+v `eu-central-1`** (Frankfurt), dokud byl prázdný — zhruba 20 ms na round trip blíž
+českým hráčům.
 
-Právně je to jedno, obojí je EU. Je to čistě latence. **Teď je projekt prázdný,
-takže přesun stojí dvě minuty a nic. Za měsíc s daty už ne.**
+**Poučení pro příště: region se u existujícího projektu nemění.** Přesun znamená nový
+projekt a migraci dat, takže se to musí chytit dřív, než vznikne první migrace. Právně
+je to jedno, obojí je EU; jde čistě o latenci. Starý ref `aqzrfftvsmkhkldovyfz` už
+neexistuje — kdyby na něj někde zůstal odkaz, je zastaralý.

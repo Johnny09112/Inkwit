@@ -77,11 +77,6 @@ ne existenční.
 
 ### Před backendem
 
-- **Region Supabase projektu** — vznikl v `eu-west-1` (Irsko), blíž je `eu-central-1`.
-  Měnit jde jen přesunem na nový projekt: teď je prázdný a je to zdarma, později ne.
-  Viz [[supabase-free-plan-a-region]].
-- **Kódování bodů tahu** — ploché pole `[x,y,t,…]` místo objektů je v jsonb ~3× menší
-  a řídí egress, který je na free plánu užší omezení než úložiště. Rozhodnout před schématem.
 - `game_config` vzniká už ve fázi 0 (pravidlo 6 — balanc nesmí být konstanta v kódu).
 - **Zálohy:** free plán je nedovolí stáhnout. Naplánovat `pg_dump` dřív, než v DB
   budou data z testu.

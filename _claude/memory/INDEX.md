@@ -15,7 +15,7 @@
 - [[pamet-v-repu-ne-v-osobnim-vaultu]] — Projektová paměť žije v _claude/ uvnitř repa a verzuje se gitem, ne v osobním vaultu na H: · active · 2026-08-18
 - [[pisma-self-host-a-ofl]] — Písma se self-hostují přes next/font/google (build-time), za běhu nulový request na Google; OFL licence a atribuce leží v licenses/ · active · 2026-08-18
 - [[retence-bez-sdilene-serie]] — Sdílená série z Draw Something se nenahrazuje; retenci nese cizí akce nad tvojí kresbou, měří se ve fázi 0. Achievementy až potom, s omezeními. · active · 2026-08-18
-- [[supabase-free-plan-a-region]] — Projekt Inkwit běží na free plánu v eu-west-1; free stačí na fázi 0, ale zálohy nejdou stáhnout a region se později nezmění · active · 2026-08-18
+- [[supabase-free-plan-a-region]] — Projekt Inkwit běží na free plánu v eu-central-1; free stačí na fázi 0, ale zálohy nejdou stáhnout a kvóta dvou aktivních projektů je vyčerpaná · active · 2026-08-18
 
 ## Patterns
 - [[nextjs-middleware-matcher-tecka]] — V Next.js middleware matcheru nefunguje escapovaná tečka \. uvnitř custom skupiny — path-to-regexp zbaští backslash a lookahead pak odmítne všechno; použij [.] · active · 2026-08-18
