@@ -5,6 +5,7 @@ import {
   BASE_WIDTH,
   deviceTypeFrom,
   renderStrokes,
+  roundCoord,
   type Stroke,
   type StrokePoint,
   type Tool,
@@ -78,9 +79,11 @@ export function DrawingCanvas({
 
   const pointFromEvent = (e: React.PointerEvent<HTMLCanvasElement>): StrokePoint => {
     const rect = e.currentTarget.getBoundingClientRect();
+    // Zaokrouhlení až tady, při záznamu — ztracenou přesnost už nikdy nepotřebujeme
+    // a plná plovoucí přesnost je na drátě 2,8× dražší (viz memory/decisions).
     return {
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
+      x: roundCoord((e.clientX - rect.left) / rect.width),
+      y: roundCoord((e.clientY - rect.top) / rect.height),
       t: Math.round(performance.now() - strokeStartTime.current),
     };
   };

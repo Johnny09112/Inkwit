@@ -62,12 +62,16 @@ drawing_strokes
   tool        pen | brush | eraser
   color       text
   width       real
-  points      jsonb    [{x, y, t, p}]  t = ms od začátku tahu, p = tlak 0..1
+  points      jsonb    ploché pole [x,y,t, x,y,t, …]  t = ms od začátku tahu
 ```
 
 **Nikdy neukládat kresbu jako PNG.** Vektory dávají přehrání, undo, libovolné rozlišení, řádově menší úložiště a hlavně signály pro detekci čmáranic (bez `t` v bodech nemáš rytmus kreslení). Bitmapa se generuje jen jako odvozený náhled do cache.
 
-Souřadnice normalizovat na 0..1 vůči plátnu, ne v pixelech — jinak se kresba z iPadu nezobrazí správně na mobilu.
+**Tlak pera se neukládá.** Dřívější návrh měl u bodu `p`, ale uniformní štětec bez tlaku je vědomé rozhodnutí kvůli férovosti napříč zařízeními (viz `product.md`). Sloupec, který se nikdy nesmí použít, do schématu nepatří.
+
+**Souřadnice normalizovat na 0..1** vůči plátnu, ne v pixelech — jinak se kresba z iPadu nezobrazí správně na mobilu.
+
+**Body jako ploché pole, souřadnice na 4 desetinná místa.** Zaokrouhlení se dělá už při záznamu bodu v klientovi; 1/10 000 plátna je i na 4K displeji ~0,2 px, takže vyšší přesnost nenese informaci. Změřeno na kresbě o 1 500 bodech: plná plovoucí přesnost je po gzipu **2,8× dražší** než zaokrouhlená. Ploché pole místo objektů přidá na drátě jen ~11 % (gzip opakované klíče stejně odstraní), ale **na disku ~1,7×** — jeden tah je kolem 2 kB, tedy přesně na prahu, od kterého teprve začne TOAST komprimovat, a pod ním se neukládá komprimovaně nic. Encode/decode helper patří do `lib/strokes.ts`, ať konvence nežije jen v hlavě.
 
 ## Hádání a hodnocení
 

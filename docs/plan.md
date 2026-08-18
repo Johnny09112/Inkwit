@@ -77,8 +77,9 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
 
 - `[ ] C1` **Nabídka tří konceptů ze serveru**, s předností vyžádaných (blok E).
 - `[ ] C2` **Uložení kresby a tahů.** Klient posílá vektory, **server nevěří
-  ničemu** — ani časům tahů. *Kritérium:* podvržený `duration_ms` z klienta
-  nemá vliv na uložená data.
+  ničemu** — ani časům tahů. Body jako **ploché pole** `[x,y,t,…]` + encode/decode
+  helper v `lib/strokes.ts` (zaokrouhlení na 4 des. místa už při záznamu je hotové).
+  *Kritérium:* podvržený `duration_ms` z klienta nemá vliv na uložená data.
 - `[ ] C3` **Odvozený náhled.** Bitmapa jen do cache, nikdy jako zdroj pravdy
   (pravidlo 2). Potřeba pro feed a „Moje kresby".
 - `[ ] C4` **Moje kresby z reálných dat.** Autorovi se zobrazuje kolik lidí
@@ -144,10 +145,10 @@ režim, relay režim.
    ale ovlivní tokeny.
 3. **Kolik neuhodnutí do archivace** a jak škáluje s obtížností (otázka #3
    v `roadmap.md`). Potřeba před D1.
-4. **Kódování bodů tahu.** `data-model.md` navrhuje `[{x,y,t}]`. Ploché pole
-   `[x,y,t,x,y,t,…]` je v jsonb zhruba **3× menší**, protože neopakuje klíče.
-   Netýká se to jen úložiště — každé hádání ta data stahuje, takže to řídí i egress,
-   který je na free plánu užší než úložiště. Rozhodnout před A2.
+4. ~~**Kódování bodů tahu.**~~ **Rozhodnuto 2026-08-18** (majitel to nechal na mně):
+   zaokrouhlení na 4 desetinná místa při záznamu — *hotovo* — a ploché pole
+   `[x,y,t,…]` při ukládání, zavede se s C2. Měření a zdůvodnění
+   v `_claude/memory/decisions/kodovani-bodu-tahu.md`.
 
 ## Free plán — co z něj plyne
 

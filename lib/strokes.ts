@@ -4,6 +4,20 @@
  * serverová validace přijde s backendem.
  */
 
+/**
+ * Přesnost souřadnic: 4 desetinná místa. Souřadnice jsou normalizované 0–1,
+ * takže 1/10 000 plátna je i na 4K displeji ~0,2 px — pod pixel. Vyšší přesnost
+ * nenese informaci, jen bajty: plná plovoucí přesnost je na drátě 2,8× dražší.
+ */
+export const COORD_DECIMALS = 4;
+
+const COORD_FACTOR = 10 ** COORD_DECIMALS;
+
+/** Zaokrouhlí normalizovanou souřadnici na COORD_DECIMALS míst. */
+export function roundCoord(v: number): number {
+  return Math.round(v * COORD_FACTOR) / COORD_FACTOR;
+}
+
 /** Bod tahu: souřadnice normalizované 0–1 vůči plátnu, čas v ms od začátku tahu. */
 export interface StrokePoint {
   x: number;
