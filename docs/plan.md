@@ -33,7 +33,7 @@ Lokální ověření běží na PGlite (`npm run test:db`) — Docker není pot�
 | **0** | Hotové UI nad mock daty | `[x]` | — |
 | **A** | Backend základ — projekt, schéma, RLS, konfigurace, auth | `[x]` | — |
 | **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[~]` | D |
-| **C** | Kreslení end-to-end | `[ ]` | D |
+| **C** | Kreslení end-to-end | `[x]` | D |
 | **D** | Hádání end-to-end | `[ ]` | F |
 | **E** | Retenční smyčka — vyžádání a notifikace | `[ ]` | — |
 | **F** | Provoz a měření | `[ ]` | G |
@@ -152,10 +152,30 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
   *Ověřeno naostro v prohlížeči:* přihlášení → nabídka ze slovníku → nakreslení
   hvězdy → odeslání → kresba v databázi (5 tahů, zařízení pen, doba 38 s
   změřená serverem, body jako [0.5,0.15,0, 0.52,0.195,2, …]).
-- `[ ] C3` **Odvozený náhled.** Bitmapa jen do cache, nikdy jako zdroj pravdy
-  (pravidlo 2). Potřeba pro feed a „Moje kresby".
-- `[ ] C4` **Moje kresby z reálných dat.** Autorovi se zobrazuje kolik lidí
-  uhodlo, **nikdy počet neuhodnutí**.
+- `[x] C3` **Náhled kresby — a vědomá odchylka od původního zadání.**
+  Plán počítal s bitmapou do cache. **Nedělá se, kreslí se z tahů v prohlížeči.**
+
+  Důvod: bitmapa má smysl, když je stahování tahů drahé. Po zaokrouhlení
+  souřadnic váží kresba ~11 kB po gzipu, takže mřížka dvaceti náhledů je
+  ~220 kB a jedno hádání ~11 kB. Ukládat, generovat a servírovat obrázky by
+  přidalo provozní vrstvu, kterou při téhle velikosti nic nevyžaduje — a
+  `docs/roadmap.md` říká, že škálovací práci dopředu nedělat.
+
+  **Kdy to přehodnotit:** až egress překročí ~2 GB měsíčně (40 % free plánu),
+  nebo až přijde export GIFu a sdílení (fáze 1), kde je rastr potřeba tak jako tak.
+
+  Komponenta `components/DrawingThumb.tsx` + RPC `strokes_for()`, který
+  vydá tahy pro celou mřížku jedním dotazem.
+- `[x] C4` **Moje kresby z reálných dat** — RPC `my_drawings()`.
+
+  **Opraveno porušení pravidla, které bylo ve schématu od začátku:** politika
+  `drawings_select_own` pouštěla autorovi celý řádek včetně `guess_count`.
+  Stačilo odečíst `solved_count` a autor měl počet neuhodnutí, který se mu
+  podle `docs/product.md` zobrazovat nemá. Přímé čtení tabulky je zavřené,
+  data chodí funkcí, která `guess_count` vůbec nevrací.
+
+  *Ověřeno:* 5 testů, včetně toho, že se `guess_count` v odpovědi nevyskytuje
+  a že tabulku kreseb autor nepřečte napřímo.
 
 ## Blok D — Hádání end-to-end
 

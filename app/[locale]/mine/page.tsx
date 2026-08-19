@@ -1,32 +1,74 @@
 "use client";
 
-import { useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { DrawingThumb } from "@/components/DrawingThumb";
 import { AppShell } from "@/components/shell/AppShell";
-import { MY_COUNTS, MY_DRAWINGS, conceptById } from "@/lib/mock";
-
-/**
- * Moje kresby (wireframe 7): autorovi se zobrazuje jen počet uhodnutí,
- * nikdy počet neuhodnutí. „Čeká na 1. uhodnutí" je notifikační háček.
- */
+import { Link } from "@/i18n/navigation";
+import { fetchMyDrawings, fetchStrokes, type MyDrawing } from "@/lib/game";
+import type { Stroke } from "@/lib/strokes";
 
 type Filter = "all" | "solved" | "waiting";
 
+/**
+ * Moje kresby (wireframe 7).
+ *
+ * Autorovi se ukazuje, kolik lidí kresbu uhodlo — **nikdy kolikrát ji lidé
+ * neuhodli** (`docs/product.md`). Server proto počet tipů vůbec neposílá,
+ * takže se to nedá dopočítat ani omylem.
+ */
 export default function MinePage() {
-  const locale = useLocale() as "cs" | "en";
   const t = useTranslations("mine");
-  const [filter, setFilter] = useState<Filter>("all");
 
-  const items = MY_DRAWINGS.filter((d) => {
-    if (filter === "solved") return d.solvedByCount > 0;
-    if (filter === "waiting") return d.solvedByCount === 0;
-    return true;
-  });
+  const [items, setItems] = useState<MyDrawing[] | null>(null);
+  const [strokes, setStrokes] = useState<Map<string, Stroke[]>>(new Map());
+  const [filter, setFilter] = useState<Filter>("all");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    fetchMyDrawings()
+      .then(async (rows) => {
+        if (!alive) return;
+        setItems(rows);
+        // Náhledy se kreslí z tahů, takže je potřeba dotáhnout — jedním
+        // dotazem pro celou mřížku, ne po jedné.
+        const byId = await fetchStrokes(rows.map((r) => r.drawingId));
+        if (alive) setStrokes(byId);
+      })
+      .catch(() => alive && setError(t("loadFailed")));
+    return () => {
+      alive = false;
+    };
+  }, [t]);
+
+  if (error) {
+    return (
+      <AppShell title={t("title")}>
+        <p className="auth-note auth-note-error">{error}</p>
+      </AppShell>
+    );
+  }
+
+  if (!items) {
+    return (
+      <AppShell title={t("title")}>
+        <p className="pick-loading">
+          <Loader2 size={18} className="spin" aria-hidden="true" /> {t("loading")}
+        </p>
+      </AppShell>
+    );
+  }
+
+  const solved = items.filter((d) => d.solvedCount > 0);
+  const waiting = items.filter((d) => d.solvedCount === 0);
+  const shown = filter === "solved" ? solved : filter === "waiting" ? waiting : items;
 
   const filters: { key: Filter; label: string }[] = [
-    { key: "all", label: t("filters.all", { n: MY_COUNTS.all }) },
-    { key: "solved", label: t("filters.solved", { n: MY_COUNTS.solved }) },
-    { key: "waiting", label: t("filters.waiting", { n: MY_COUNTS.waiting }) },
+    { key: "all", label: t("filters.all", { n: items.length }) },
+    { key: "solved", label: t("filters.solved", { n: solved.length }) },
+    { key: "waiting", label: t("filters.waiting", { n: waiting.length }) },
   ];
 
   return (
@@ -44,30 +86,31 @@ export default function MinePage() {
           </button>
         ))}
       </div>
-      <div className="mine-grid">
-        {items.map((d) => {
-          const concept = conceptById(d.conceptId);
-          const meta =
-            d.solvedByCount === 0
-              ? t("waiting")
-              : [
-                  t("guessed", { count: d.solvedByCount }),
-                  "★".repeat(d.stars),
-                  d.thumbs > 0 ? t("thumbs", { count: d.thumbs }) : null,
-                ]
-                  .filter(Boolean)
-                  .join(" · ");
-          return (
-            <div key={d.id} className="mine-item">
-              <div className="hatch" />
-              <div>
-                <div className="mine-item-name">{concept.name[locale]}</div>
-                <div className="mine-item-meta">{meta}</div>
+
+      {items.length === 0 ? (
+        <div className="mine-empty">
+          <p>{t("empty")}</p>
+          <Link href="/pick" className="btn btn-primary">
+            {t("emptyCta")}
+          </Link>
+        </div>
+      ) : (
+        <div className="mine-grid">
+          {shown.map((d) => (
+            <div key={d.drawingId} className="mine-item">
+              <DrawingThumb strokes={strokes.get(d.drawingId)} label={d.prompt} />
+              <div className="mine-item-name">{d.prompt}</div>
+              <div className="mine-item-meta">
+                {d.solvedCount > 0
+                  ? `${t("guessed", { count: d.solvedCount })}${
+                      d.thumbsCount > 0 ? ` · ${t("thumbs", { count: d.thumbsCount })}` : ""
+                    }`
+                  : t("waiting")}
               </div>
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </AppShell>
   );
 }

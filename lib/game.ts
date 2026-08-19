@@ -1,5 +1,10 @@
 import { createClient } from "@/lib/supabase/client";
-import { dominantDevice, strokesToPayload, type Stroke } from "@/lib/strokes";
+import {
+  dominantDevice,
+  strokeFromPayload,
+  strokesToPayload,
+  type Stroke,
+} from "@/lib/strokes";
 
 /**
  * Herní volání na server.
@@ -77,4 +82,65 @@ export async function submitDrawing(
     p_strokes: strokesToPayload(strokes),
   });
   if (error) throw error;
+}
+
+export interface MyDrawing {
+  drawingId: string;
+  prompt: string;
+  difficulty: 1 | 2 | 3;
+  status: string;
+  solvedCount: number;
+  thumbsCount: number;
+  stars: number;
+  createdAt: string;
+}
+
+/**
+ * Moje kresby.
+ *
+ * Vědomě sem nechodí počet tipů — z rozdílu proti počtu uhodnutí by autor
+ * odvodil, kolikrát ho lidé neuhodli, a to se mu podle `docs/product.md`
+ * nezobrazuje. Vynucuje to funkce na serveru, ne tenhle typ.
+ */
+export async function fetchMyDrawings(): Promise<MyDrawing[]> {
+  const { data, error } = await createClient().rpc("my_drawings");
+  if (error) throw error;
+  return (data ?? []).map((r: Record<string, unknown>) => ({
+    drawingId: r.drawing_id as string,
+    prompt: r.prompt as string,
+    difficulty: r.difficulty as 1 | 2 | 3,
+    status: r.status as string,
+    solvedCount: r.solved_count as number,
+    thumbsCount: r.thumbs_count as number,
+    stars: r.stars as number,
+    createdAt: r.created_at as string,
+  }));
+}
+
+/** Tahy pro víc kreseb najednou — na mřížku náhledů, ať to není dotaz na každou. */
+export async function fetchStrokes(
+  drawingIds: string[],
+): Promise<Map<string, Stroke[]>> {
+  const byDrawing = new Map<string, Stroke[]>();
+  if (drawingIds.length === 0) return byDrawing;
+
+  const { data, error } = await createClient().rpc("strokes_for", {
+    p_drawing_ids: drawingIds,
+  });
+  if (error) throw error;
+
+  for (const row of (data ?? []) as Record<string, unknown>[]) {
+    const id = row.drawing_id as string;
+    const list = byDrawing.get(id) ?? [];
+    list.push(
+      strokeFromPayload({
+        tool: row.tool as string,
+        color: row.color as string,
+        width: row.width as number,
+        points: row.points as number[],
+      }),
+    );
+    byDrawing.set(id, list);
+  }
+  return byDrawing;
 }

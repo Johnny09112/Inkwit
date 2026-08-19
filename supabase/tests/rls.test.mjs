@@ -132,8 +132,8 @@ async function main() {
   console.log("\nAlice nevidí, co vidět nesmí:\n");
   report((await asUser(ALICE, count(`public.profile_trust where user_id='${BOB}'`))) === "ERROR",
     "cizí trust score (pravidlo 7)");
-  report((await asUser(ALICE, count(`public.drawings where id='${DRAFT}'`))) === 0,
-    "cizí rozepsanou kresbu");
+  report((await asUser(ALICE, count(`public.drawings where id='${DRAFT}'`))) === "ERROR",
+    "cizí rozepsanou kresbu (tabulka je zavřená úplně)");
   report((await asUser(ALICE, count(`public.ledger where user_id='${BOB}'`))) === 0,
     "cizí ledger");
   report((await asUser(ALICE, count("public.concepts"))) === "ERROR",
@@ -142,7 +142,7 @@ async function main() {
     "zadání konceptu — jinak zná odpověď");
   report((await asUser(ALICE, count("public.concept_answers"))) === "ERROR",
     "přijímané odpovědi — jinak zná všechny odpovědi");
-  report((await asUser(ALICE, count(`public.drawings where id='${LIVE}'`))) === 0,
+  report((await asUser(ALICE, count(`public.drawings where id='${LIVE}'`))) === "ERROR",
     "concept_id ani u živé kresby — jinak spáruje dvě kresby téhož konceptu");
   report((await asUser(ALICE, count("public.game_config where key='trust_band_trusted_at'"))) === 0,
     "neveřejné prahy konfigurace (pravidlo 7)");
@@ -399,9 +399,14 @@ async function main() {
   const draftId = (await db.query(`select public.start_drawing('${conceptPes}') as id`)).rows[0].id;
   report(!!draftId, "start_drawing založí rozepsanou kresbu");
 
+  // Ověřovací čtení dělá server — hráč do tabulky kreseb nevidí (krok C4).
+  await db.exec("reset role");
   const draftStatus = (
     await db.query(`select status from public.drawings where id = '${draftId}'`)
   ).rows[0].status;
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
   report(draftStatus === "draft", "rozepsaná kresba má stav draft", draftStatus);
 
   // Klient posílá jen tahy — žádné duration_ms, stroke_count ani coverage.
@@ -411,6 +416,7 @@ async function main() {
   ]);
   await db.query(`select public.submit_drawing('${draftId}', 'pen', 3, $1::jsonb)`, [strokes]);
 
+  await db.exec("reset role");
   const saved = (
     await db.query(`select status, stroke_count, coverage, device_kind, undo_count,
                            duration_ms, published_at is not null as publikovano
@@ -468,6 +474,43 @@ async function main() {
   await submitFails(
     "tah s poškozenými body neprojde",
     JSON.stringify([{ tool: "brush", color: "#000", width: 5, points: [0.1, 0.2] }]),
+  );
+
+  console.log("\nMoje kresby neprozradí počet neuhodnutí (kritérium C4):\n");
+
+  await db.exec("begin");
+  await db.exec(`
+    update public.drawings set guess_count = 17, solved_count = 4, thumbs_count = 2
+    where id = '${LIVE}';
+    insert into public.guesses (drawing_id, user_id, locale, attempt_no, text_raw, is_correct)
+    values ('${LIVE}', '${ALICE}', 'cs', 2, 'chobotnice', true);
+    set local role authenticated;
+    select set_config('request.jwt.claim.sub', '${BOB}', true);
+  `);
+  const mine = (await db.query("select * from public.my_drawings()")).rows;
+  const cols = mine.length ? Object.keys(mine[0]) : [];
+  await db.exec("rollback");
+
+  report(mine.length >= 1, "autor vidí své kresby", `${mine.length}`);
+  report(
+    !cols.includes("guess_count"),
+    "guess_count se nevrací — jinak by autor odečtením zjistil počet neuhodnutí",
+    cols.join(", "),
+  );
+  report(
+    mine.some((r) => r.solved_count === 4),
+    "počet lidí, kteří uhodli, autor vidí",
+  );
+  report(
+    mine.some((r) => r.stars === 2),
+    "hvězdičky odpovídají nejlepšímu pokusu (uhodnuto na druhý → dvě)",
+    mine.map((r) => r.stars).join(","),
+  );
+
+  // Tabulku kreseb autor napřímo nečte — tím se pravidlo nedá obejít.
+  report(
+    (await asUser(BOB, count(`public.drawings where id='${LIVE}'`))) === "ERROR",
+    "autor nepřečte tabulku kreseb napřímo",
   );
 
   console.log("\nLedger je append-only, ale nebrání smazání účtu:\n");

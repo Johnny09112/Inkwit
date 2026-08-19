@@ -111,7 +111,11 @@
     },
     "guessed": "{count, plural, one {# uhodl} few {# uhodli} other {# uhodlo}}",
     "thumbs": "{count, plural, one {# palec} few {# palce} other {# palců}}",
-    "waiting": "čeká na 1. uhodnutí"
+    "waiting": "čeká na 1. uhodnutí",
+    "loading": "Načítám tvoje kresby…",
+    "loadFailed": "Kresby se nepodařilo načíst. Zkus to znovu.",
+    "empty": "Zatím jsi nic nenakreslil. První kresba je ta nejtěžší.",
+    "emptyCta": "Vybrat pojem"
   },
   "leaderboards": {
     "title": "Žebříčky",

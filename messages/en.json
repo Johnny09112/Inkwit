@@ -111,7 +111,11 @@
     },
     "guessed": "{count, plural, other {# guessed}}",
     "thumbs": "{count, plural, one {# thumb} other {# thumbs}}",
-    "waiting": "waiting for its 1st guess"
+    "waiting": "waiting for its 1st guess",
+    "loading": "Loading your drawings…",
+    "loadFailed": "Could not load your drawings. Try again.",
+    "empty": "You have not drawn anything yet. The first one is the hardest.",
+    "emptyCta": "Pick a word"
   },
   "leaderboards": {
     "title": "Leaderboards",
