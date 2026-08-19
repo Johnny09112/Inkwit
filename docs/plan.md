@@ -303,6 +303,28 @@ Vyřešeno 2026-08-18:
    `[x,y,t,…]` při ukládání, zavede se s C2. Měření a zdůvodnění
    v `_claude/memory/decisions/kodovani-bodu-tahu.md`.
 
+## Odesílání pošty — placený Supabase to NEVYŘEŠÍ
+
+Ověřeno v dokumentaci 2026-08-19. Vestavěný odesílatel Supabase:
+
+- **2 zprávy za hodinu**, na všech plánech stejně
+- **žádná záruka doručení ani dostupnosti**
+- výslovně určený jen pro „zkoušení, testování šablon a hračky", ne pro provoz
+
+**Placený plán mění jen jednu věc: dovolí upravit šablonu e-mailu.** Samotné
+odesílání zůstává stejné. Kdo chce spolehlivou poštu, potřebuje **vlastní SMTP**,
+a ten jde nastavit i na free plánu.
+
+Důsledky pro fázi 0:
+
+- Obnova hesla přes vestavěnou poštu funguje, ale při třech zapomenutých heslech
+  v jedné hodině třetí člověk čeká.
+- **Potvrzování e-mailu se zapnout nesmí**, dokud vlastní SMTP neběží — padesát
+  registrací při dvou zprávách za hodinu je pětadvacet hodin.
+
+Placený Supabase má pro tenhle projekt smysl z jiných důvodů: **stažitelné zálohy**
+a **konec automatického pozastavování projektu**. Ne kvůli poště.
+
 ## Free plán — co z něj plyne
 
 Organizace je na free plánu (ověřeno 2026-08-18). Pro fázi 0 to **stačí**, ale tři věci
