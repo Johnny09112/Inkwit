@@ -476,14 +476,137 @@ async function main() {
     JSON.stringify([{ tool: "brush", color: "#000", width: 5, points: [0.1, 0.2] }]),
   );
 
+  console.log("\nPorovnávání odpovědí (kritérium B4):\n");
+
+  const match = async (slug, text) =>
+    (
+      await db.query(
+        `select private.answer_matches(c.id, 'cs', $1) as ok
+         from public.concepts c where c.slug = $2`,
+        [text, slug],
+      )
+    ).rows[0].ok;
+
+  report(await match("pes", "pes"), "přesná shoda");
+  report(await match("pes", "  PES  "), "velikost písmen a mezery nerozhodují");
+  report(await match("pes", "pejsek"), "zdrobnělina z přijímaných tvarů");
+  report(await match("chobotnice", "chobotnice"), "dlouhé slovo přesně");
+  report(await match("chobotnice", "chobotnica"), "překlep v dlouhém slově projde");
+  report(await match("presypaci-hodiny", "presypaci hodiny"), "bez diakritiky projde");
+  report(await match("kolotoc", "kolotoč"), "s diakritikou projde taky");
+
+  // Tohle je ta past, kvůli které existují prahy podle délky.
+  report(!(await match("pes", "děs")), "„děs“ NEuhodne psa — krátká slova jen přesně");
+  report(!(await match("slon", "shon")), "„shon“ NEuhodne slona");
+  report(!(await match("syr", "výr")), "„výr“ NEuhodne sýr");
+  report(!(await match("dum", "dub")), "„dub“ NEuhodne dům");
+  report(!(await match("pes", "kočka")), "úplně jiné slovo neprojde");
+  report(!(await match("pes", "")), "prázdný tip neprojde");
+
+  console.log("\nHádání (kroky D1–D3):\n");
+
+  const bobDrawing = LIVE;
+
+  // D1 — komu se kresba nabídne
+  const aliceFeed = await rowsAs(ALICE, "select * from public.next_drawing()");
+  report(aliceFeed.length === 1, "hádač dostane kresbu", `${aliceFeed.length}`);
+  report(aliceFeed[0]?.author_name === "Bob", "vidí, kdo ji nakreslil");
+  report(
+    Array.isArray(aliceFeed[0]?.strokes) && aliceFeed[0].strokes.length === 1,
+    "kresba přijde i s tahy, aby šla vykreslit",
+  );
+  const bobFeed = await rowsAs(BOB, "select * from public.next_drawing()");
+  report(bobFeed.length === 0, "autor svou vlastní kresbu k hádání nedostane");
+
+  // D2 — tipy
+  async function guess(user, text, drawing = bobDrawing) {
+    const r = await db.query(
+      `select * from public.submit_guess('${drawing}', $1)`,
+      [text],
+    );
+    return r.rows[0];
+  }
+
+  await db.exec("begin");
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+  const g1 = await guess(ALICE, "kočka");
+  report(g1.correct === false && g1.attempt_no === 1, "špatný tip se započítá jako pokus");
+  report(g1.attempts_left === 2, "zbývají dva pokusy", String(g1.attempts_left));
+  report(g1.solution === null, "odpověď se po prvním tipu neprozradí");
+
+  const g2 = await guess(ALICE, "chobotnice");
+  report(g2.correct === true, "správný tip je uznaný");
+  report(g2.solution === "chobotnice", "po uhodnutí se odpověď ukáže");
+  report(g2.stars === 2, "hvězdičky podle pokusu (napodruhé → dvě)", String(g2.stars));
+
+  // Očekávaná výjimka by jinak zablokovala celou transakci.
+  await db.exec("savepoint g4");
+  let fourth = false;
+  try {
+    await guess(ALICE, "cokoliv");
+  } catch {
+    fourth = true;
+  }
+  await db.exec("rollback to savepoint g4");
+  report(fourth, "po uhodnutí už další tip neprojde");
+
+  await db.exec("reset role");
+  const counts = (
+    await db.query(`select guess_count, solved_count from public.drawings where id = '${bobDrawing}'`)
+  ).rows[0];
+  report(counts.guess_count === 2 && counts.solved_count === 1,
+    "počty na kresbě udržel trigger", `${counts.guess_count}/${counts.solved_count}`);
+  await db.exec("rollback");
+
+  // D2b — nápověda u nejtěžších pojmů
+  await db.exec("begin");
+  await db.exec(`
+    insert into public.drawings (id, author_id, concept_id, source_locale, status, published_at)
+    select '99999999-9999-9999-9999-999999999999', '${BOB}', id, 'cs', 'live', now()
+    from public.concepts where slug = 'nostalgie';
+    set local role authenticated;
+    select set_config('request.jwt.claim.sub', '${ALICE}', true);
+  `);
+  const hard = await guess(ALICE, "nic", "99999999-9999-9999-9999-999999999999");
+  // „nostalgie" má devět písmen: první ukázané + osm teček.
+  report(hard.hint === "N········", "u těžkého pojmu přijde po chybě nápověda", String(hard.hint));
+  await db.exec("rollback");
+
+  await db.exec("begin");
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+  const easy = await guess(ALICE, "nic");
+  report(easy.hint === null, "u snadného pojmu nápověda nepřijde — bylo by to luštění");
+  await db.exec("rollback");
+
+  // D3 — palec
+  await db.exec("begin");
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+  const t1 = (await db.query(`select public.give_thumb('${bobDrawing}') as ok`)).rows[0].ok;
+  const t2 = (await db.query(`select public.give_thumb('${bobDrawing}') as ok`)).rows[0].ok;
+  report(t1 === true, "palec projde");
+  report(t2 === false, "druhý palec téhož dne se odmítne bez chyby");
+  await db.exec("reset role");
+  const thumbs = (
+    await db.query(`select thumbs_count from public.drawings where id = '${bobDrawing}'`)
+  ).rows[0].thumbs_count;
+  report(thumbs === 1, "počet palců udržel trigger", String(thumbs));
+  await db.exec("rollback");
+
   console.log("\nMoje kresby neprozradí počet neuhodnutí (kritérium C4):\n");
 
   await db.exec("begin");
   await db.exec(`
-    update public.drawings set guess_count = 17, solved_count = 4, thumbs_count = 2
-    where id = '${LIVE}';
     insert into public.guesses (drawing_id, user_id, locale, attempt_no, text_raw, is_correct)
     values ('${LIVE}', '${ALICE}', 'cs', 2, 'chobotnice', true);
+    -- Až po vložení tipu — počty teď udržuje trigger a přepsal by je.
+    update public.drawings set guess_count = 17, solved_count = 4, thumbs_count = 2
+    where id = '${LIVE}';
     set local role authenticated;
     select set_config('request.jwt.claim.sub', '${BOB}', true);
   `);

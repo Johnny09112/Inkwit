@@ -32,9 +32,9 @@ Lokální ověření běží na PGlite (`npm run test:db`) — Docker není pot�
 |---|---|---|---|
 | **0** | Hotové UI nad mock daty | `[x]` | — |
 | **A** | Backend základ — projekt, schéma, RLS, konfigurace, auth | `[x]` | — |
-| **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[~]` | D |
+| **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[x]` | — |
 | **C** | Kreslení end-to-end | `[x]` | D |
-| **D** | Hádání end-to-end | `[ ]` | F |
+| **D** | Hádání end-to-end | `[~]` | F |
 | **E** | Retenční smyčka — vyžádání a notifikace | `[ ]` | — |
 | **F** | Provoz a měření | `[ ]` | G |
 | **G** | Nasazení a pozvánky | `[ ]` | — |
@@ -98,7 +98,7 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
   VĚDOMĚ není; spoléhá se na normalizaci a fuzzy shodu. *Zbývá kritérium:*
   na vzorku zkusit, co lidé reálně napíšou.
 - `[~] B3` **Přijímané tvary EN** — 268 tvarů v návrhu.
-- `[ ] B4` **Porovnávací funkce.** Normalizace diakritiky → lowercase → trim →
+- `[x] B4` **Porovnávací funkce** — hotová, bez rozšíření Postgresu. Normalizace diakritiky → lowercase → trim →
   shoda → fuzzy pro překlepy.
 
   **Prahy fuzzy shody podle délky — podloženo daty, ne odhadem.** Kontrola sady
@@ -179,19 +179,24 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
 
 ## Blok D — Hádání end-to-end
 
-- `[ ] D1` **Distribuce.** Které kresby dostane hádač. Ve fázi 0 stačí jednoduché
-  a férové (nejstarší neuhodnuté první), bez trust score.
-- `[ ] D2` **Serverová validace odpovědi.** Tři pokusy, jedno sezení na kresbu.
-  *Kritérium:* čtvrtý pokus přes API neprojde.
-- `[ ] D2b` **Nápověda u nejtěžších pojmů.** Po prvním špatném tipu se vrátí
+- `[x] D1` **Distribuce** — RPC `next_drawing()`. Nejstarší neuhodnuté první,
+  vlastní kresbu si nehádáš, přes hranici tenanta nikdy. Vrací i tahy, aby se
+  kresba dala rovnou vykreslit.
+- `[x] D2` **Serverová validace odpovědi** — RPC `submit_guess()`.
+  Tři pokusy, jedno sezení na kresbu, počty udržuje trigger.
+  **Chyba nalezená testem:** po uhodnutí šlo hádat dál a nafukovat počet tipů
+  u cizí kresby — uhodnutím teď sezení končí.
+  Odpověď se prozradí až po uhodnutí nebo vyčerpání pokusů.
+- `[x] D2b` **Nápověda u nejtěžších pojmů.** Po prvním špatném tipu se vrátí
   první písmeno a délka odpovědi. **Počítá se ze zadání, nepíše ručně** — jinak
   tisíc pojmů znamená tisíc nápověd. Prahy jsou v `game_config`
   (`hint_after_attempt`, `hint_min_difficulty`), sloupec `guesses.hint_shown`
   a konfigurace už existují.
   *Kritérium:* nápověda se nedá získat dřív než po špatném tipu — server ji
   posílá až v odpovědi na něj, nikdy dopředu.
-- `[ ] D3` **Hvězdičky a palec.** Palec 1×/den **serverově** (pravidlo: vzácný
-  hlas). *Kritérium:* druhý palec téhož dne přes API neprojde.
+- `[x] D3` **Hvězdičky a palec** — RPC `give_thumb()`, hvězdičky podle pokusu
+  (napoprvé tři, napotřetí jedna). Druhý palec téhož dne se odmítne bez chyby,
+  limit drží unikátní index.
 - `[ ] D4` **Přehrání tahů z uložených vektorů.** Tlačítko, ne výchozí zobrazení.
 
 ## Blok E — Retenční smyčka
