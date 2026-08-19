@@ -276,7 +276,7 @@ export default function GuessPage() {
                 jako hlavní tlačítko řádku a po klepnutí zůstane medově plný. */}
             <button
               type="button"
-              className={`thumb-btn${thumbGiven ? " is-given" : ""}`}
+              className={thumbGiven ? "is-given" : undefined}
               aria-pressed={thumbGiven}
               disabled={thumbGiven || thumbUsed || phase === "guessing"}
               onClick={async () => {

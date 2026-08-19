@@ -917,6 +917,7 @@ a {
    se nedalo poznat, co dělá. */
 .guess-meta-actions button {
   color: inherit;
+  white-space: nowrap;
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -966,24 +967,6 @@ a {
   display: flex;
   gap: 8px;
   align-items: center;
-}
-
-.thumb-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-pill);
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-primary);
-}
-
-.thumb-btn[aria-pressed="true"] {
-  background: var(--surface-success);
-  border-color: var(--surface-success);
-  color: var(--olive-700);
 }
 
 .solved-card-art {
@@ -2153,10 +2136,13 @@ textarea,
   justify-content: center;
 }
 
-/* Palec je odměna pro kreslíře, ne servisní akce — vypadá jako hlavní
-   tlačítko řádku a po klepnutí zůstane medově plný. */
-.thumb-btn.is-given,
-.thumb-btn.is-given:disabled {
+/* Palec vypadá jako ostatní tlačítka řádku a odliší se až po klepnutí —
+   medová výplň je odměna, ne trvalé zvýraznění.
+
+   POZOR na název třídy: `.thumb-btn` už v tomhle souboru existovala z wireframů
+   jako 36×36 čtvereček. Přebila výplň pilulky a text se zalomil na dva řádky. */
+.guess-meta-actions .is-given,
+.guess-meta-actions .is-given:disabled {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-ink);
