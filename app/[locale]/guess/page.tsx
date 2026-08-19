@@ -2,6 +2,7 @@
 
 import {
   Flag,
+  Hand,
   Inbox,
   Loader2,
   Pencil,
@@ -17,8 +18,13 @@ import { Button } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import {
   fetchNextDrawing,
+  fetchOffer,
+  fetchProfile,
   giveThumb,
+  reportDrawing,
+  requestConcept,
   submitGuess,
+  type ConceptOffer,
   type FeedDrawing,
   type GuessResult,
 } from "@/lib/game";
@@ -52,6 +58,21 @@ export default function GuessPage() {
   const [thumbGiven, setThumbGiven] = useState(false);
   const [thumbUsed, setThumbUsed] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [reported, setReported] = useState(false);
+  // Skupina A/B pro test přehrání. Do načtení tlačítko neukazujeme —
+  // problikávat by ho testeru popletlo.
+  const [showPlayback, setShowPlayback] = useState<boolean | null>(null);
+  // Když dojde zásoba, nabídneme pojmy k vyžádání. Klient je vypsat neumí,
+  // protože zadání je tajemství — skládá je server.
+  const [wanted, setWanted] = useState<ConceptOffer[]>([]);
+  const [askedFor, setAskedFor] = useState<string[]>([]);
+  const [askLimit, setAskLimit] = useState(false);
+
+  useEffect(() => {
+    fetchProfile()
+      .then((p) => setShowPlayback(p?.abPlayback ?? true))
+      .catch(() => setShowPlayback(true));
+  }, []);
 
   const load = useCallback(async () => {
     setDrawing(undefined);
@@ -62,8 +83,11 @@ export default function GuessPage() {
     setWrong(false);
     setPlaying(false);
     setThumbGiven(false);
+    setReported(false);
     try {
-      setDrawing(await fetchNextDrawing());
+      const next = await fetchNextDrawing();
+      setDrawing(next);
+      if (!next) setWanted(await fetchOffer());
     } catch {
       setError(t("loadFailed"));
     }
@@ -138,6 +162,31 @@ export default function GuessPage() {
           <Link href="/pick" className="btn btn-primary btn-lg">
             <Pencil size={18} /> {tEmpty("cta")}
           </Link>
+
+          {wanted.length > 0 && (
+            <div className="requested-list">
+              <span className="lbl">{tEmpty("askTitle")}</span>
+              {wanted.map((c) => (
+                <div key={c.conceptId} className="requested-item">
+                  <Hand size={15} />
+                  <span style={{ flex: 1 }}>{c.prompt}</span>
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-sm"
+                    disabled={askedFor.includes(c.conceptId) || askLimit}
+                    onClick={async () => {
+                      const ok = await requestConcept(c.conceptId);
+                      if (ok) setAskedFor((a) => [...a, c.conceptId]);
+                      else setAskLimit(true);
+                    }}
+                  >
+                    {askedFor.includes(c.conceptId) ? tEmpty("asked") : tEmpty("ask")}
+                  </button>
+                </div>
+              ))}
+              {askLimit && <p className="guess-feedback">{tEmpty("askLimit")}</p>}
+            </div>
+          )}
         </div>
       </AppShell>
     );
@@ -199,15 +248,18 @@ export default function GuessPage() {
           )}
 
           <div className="guess-meta-actions">
-            {/* Přehrání je odměna po uhodnutí, ne výchozí zobrazení. */}
-            <button
-              type="button"
-              aria-label={t("play")}
-              disabled={playing}
-              onClick={() => setPlaying(true)}
-            >
-              <Play size={18} />
-            </button>
+            {/* Přehrání je odměna po uhodnutí, ne výchozí zobrazení.
+                Vidí ho jen jedna ze dvou skupin — měří se, jestli pomáhá. */}
+            {showPlayback && (
+              <button
+                type="button"
+                aria-label={t("play")}
+                disabled={playing}
+                onClick={() => setPlaying(true)}
+              >
+                <Play size={18} />
+              </button>
+            )}
 
             <button
               type="button"
@@ -223,12 +275,21 @@ export default function GuessPage() {
               <ThumbsUp size={18} />
             </button>
 
-            <button type="button" aria-label={t("report")}>
+            <button
+              type="button"
+              aria-label={t("report")}
+              disabled={reported}
+              onClick={async () => {
+                await reportDrawing(drawing.drawingId, "nevhodný obsah");
+                setReported(true);
+              }}
+            >
               <Flag size={18} />
             </button>
           </div>
 
           {thumbUsed && <p className="guess-feedback">{tSolved("thumbUsed")}</p>}
+          {reported && <p className="guess-feedback">{t("reported")}</p>}
 
           {phase !== "guessing" && (
             <Button size="lg" onClick={() => void load()}>

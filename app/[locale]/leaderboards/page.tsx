@@ -1,62 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { Loader2, Trophy } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Users } from "lucide-react";
+import { useEffect, useState } from "react";
 import { AppShell } from "@/components/shell/AppShell";
-import { LEADERBOARDS, LEAGUE } from "@/lib/mock";
+import { fetchLeaderboard, type LeaderboardRow } from "@/lib/game";
 
 /**
- * Žebříčky (wireframe 8): tři oddělené metriky (hvězdičky a palce jsou
- * v konfliktu), ligy po ~30 hráčích místo jednoho globálního žebříčku.
+ * Žebříček (wireframe 8).
+ *
+ * Fáze 0 má **jeden** denní žebříček, ne tři. Oddělené metriky, ligy a odznaky
+ * jsou meta-vrstva nad chováním, které se teprve ověřuje (`docs/roadmap.md`).
+ * Strop 30 hráčů odpovídá zamýšlené velikosti ligy.
  */
-
-type Tab = "guesser" | "drawer" | "popularity";
-
 export default function LeaderboardsPage() {
   const t = useTranslations("leaderboards");
-  const [tab, setTab] = useState<Tab>("guesser");
+  const [rows, setRows] = useState<LeaderboardRow[] | null>(null);
+  const [error, setError] = useState(false);
 
-  const tabs: Tab[] = ["guesser", "drawer", "popularity"];
-  const rows = LEADERBOARDS[tab];
+  useEffect(() => {
+    fetchLeaderboard()
+      .then(setRows)
+      .catch(() => setError(true));
+  }, []);
 
   return (
     <AppShell title={t("title")}>
-      <div className="lb-tabs" role="tablist">
-        {tabs.map((key) => (
-          <button
-            key={key}
-            type="button"
-            role="tab"
-            className="lb-tab"
-            aria-pressed={tab === key}
-            aria-selected={tab === key}
-            onClick={() => setTab(key)}
-          >
-            {t(`tabs.${key}`)}
-          </button>
-        ))}
-      </div>
       <div className="lb-league">
-        <Users size={15} />
-        <span className="t-label-sm">
-          {t("league", {
-            league: LEAGUE.league,
-            players: LEAGUE.players,
-            days: LEAGUE.endsInDays,
-          })}
-        </span>
+        <Trophy size={15} />
+        <span className="t-label-sm">{t("today")}</span>
       </div>
-      <div className="lb-table">
-        {rows.map((row) => (
-          <div key={row.rank} className={`lb-row${row.isYou ? " is-you" : ""}`}>
-            <span className="lb-rank">{row.rank}</span>
-            <span className="lb-avatar" />
-            <span className="lb-name">{row.isYou ? t("you") : row.name}</span>
-            <span className="lb-score">{row.score}</span>
-          </div>
-        ))}
-      </div>
+
+      {error && <p className="auth-note auth-note-error">{t("loadFailed")}</p>}
+
+      {!rows && !error && (
+        <p className="pick-loading">
+          <Loader2 size={18} className="spin" aria-hidden="true" /> {t("loading")}
+        </p>
+      )}
+
+      {rows && rows.length === 0 && <p className="t-secondary">{t("empty")}</p>}
+
+      {rows && rows.length > 0 && (
+        <div className="lb-table">
+          {rows.map((r) => (
+            <div key={r.rank} className={`lb-row${r.isYou ? " is-you" : ""}`}>
+              <span className="lb-rank">{r.rank}</span>
+              <span className="lb-avatar" />
+              <span className="lb-name">{r.isYou ? t("you") : r.displayName}</span>
+              <span className="lb-score">{r.score}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </AppShell>
   );
 }

@@ -215,3 +215,92 @@ export async function giveThumb(drawingId: string): Promise<boolean> {
   if (error) throw error;
   return data as boolean;
 }
+
+export interface Notification {
+  id: string;
+  kind: "guessed" | "thumbed" | "request_filled" | "request_served";
+  actorName: string | null;
+  prompt: string | null;
+  readAt: string | null;
+  createdAt: string;
+}
+
+/** Upozornění. Cizí akce nad tvojí kresbou nese hlavní retenční hypotézu. */
+export async function fetchNotifications(): Promise<Notification[]> {
+  const { data, error } = await createClient().rpc("my_notifications");
+  if (error) throw error;
+  return (data ?? []).map((r: Record<string, unknown>) => ({
+    id: r.id as string,
+    kind: r.kind as Notification["kind"],
+    actorName: (r.actor_name as string | null) ?? null,
+    prompt: (r.prompt as string | null) ?? null,
+    readAt: (r.read_at as string | null) ?? null,
+    createdAt: r.created_at as string,
+  }));
+}
+
+export async function markNotificationsRead(): Promise<void> {
+  await createClient()
+    .from("notifications")
+    .update({ read_at: new Date().toISOString() })
+    .is("read_at", null);
+}
+
+export interface Profile {
+  displayName: string;
+  locale: string;
+  abPlayback: boolean;
+  drawings: number;
+  guesses: number;
+  unread: number;
+}
+
+export async function fetchProfile(): Promise<Profile | null> {
+  const { data, error } = await createClient().rpc("my_profile");
+  if (error) throw error;
+  const r = (data ?? [])[0] as Record<string, unknown> | undefined;
+  if (!r) return null;
+  return {
+    displayName: r.display_name as string,
+    locale: r.locale as string,
+    abPlayback: r.ab_playback as boolean,
+    drawings: r.drawings as number,
+    guesses: r.guesses as number,
+    unread: r.unread as number,
+  };
+}
+
+export interface LeaderboardRow {
+  rank: number;
+  displayName: string;
+  score: number;
+  isYou: boolean;
+}
+
+export async function fetchLeaderboard(): Promise<LeaderboardRow[]> {
+  const { data, error } = await createClient().rpc("daily_leaderboard");
+  if (error) throw error;
+  return (data ?? []).map((r: Record<string, unknown>) => ({
+    rank: r.rank as number,
+    displayName: r.display_name as string,
+    score: r.score as number,
+    isYou: r.is_you as boolean,
+  }));
+}
+
+/** Vyžádá pojem. Vrací false, když je vyčerpaný denní limit. */
+export async function requestConcept(conceptId: string): Promise<boolean> {
+  const { data, error } = await createClient().rpc("request_concept", {
+    p_concept_id: conceptId,
+  });
+  if (error) throw error;
+  return data as boolean;
+}
+
+export async function reportDrawing(drawingId: string, reason: string): Promise<void> {
+  const { error } = await createClient().rpc("report_drawing", {
+    p_drawing_id: drawingId,
+    p_reason: reason,
+  });
+  if (error) throw error;
+}

@@ -79,7 +79,8 @@
     "loadFailed": "Kresbu se nepodařilo načíst. Zkus to znovu.",
     "sendFailed": "Tip se nepodařilo odeslat. Zkus to znovu.",
     "next": "Další kresba",
-    "wrongWithHint": "Mimo. Začíná na {hint}. {left, plural, one {Ještě jeden pokus.} few {Ještě # pokusy.} other {Ještě # pokusů.}}"
+    "wrongWithHint": "Mimo. Začíná na {hint}. {left, plural, one {Ještě jeden pokus.} few {Ještě # pokusy.} other {Ještě # pokusů.}}",
+    "reported": "Nahlášeno. Majitel se na to podívá."
   },
   "solved": {
     "chip": "Uhodnuto · {stars}",
@@ -99,7 +100,11 @@
     "note": "Není co hádat. Za nakreslený pojem je teď dvojnásobný kredit — a někdo si o něj řekl.",
     "requested": "Vyžádané pojmy",
     "wants": "{name} chce „{concept}“",
-    "cta": "Kreslit za dvojnásobek"
+    "cta": "Kreslit za dvojnásobek",
+    "askTitle": "Nebo si o kresbu řekni",
+    "ask": "Chci vidět",
+    "asked": "Vyžádáno",
+    "askLimit": "Dnešní žádosti jsi vyčerpal. Zítra máš další."
   },
   "pick": {
     "title": "Vyber si pojem",
@@ -132,7 +137,11 @@
       "popularity": "Popularita"
     },
     "league": "Liga {league} · {players, plural, one {1 hráč} few {# hráči} other {# hráčů}} · končí za {days, plural, one {1 den} few {# dny} other {# dní}}",
-    "you": "Ty"
+    "you": "Ty",
+    "today": "Dnešní hádači",
+    "loading": "Načítám žebříček…",
+    "loadFailed": "Žebříček se nepodařilo načíst.",
+    "empty": "Dnes ještě nikdo nehádal. Buď první."
   },
   "profile": {
     "title": "Profil",
@@ -142,7 +151,8 @@
     "notifications": "Notifikace",
     "account": "Účet a soukromí",
     "settings": "Nastavení",
-    "signOut": "Odhlásit se"
+    "signOut": "Odhlásit se",
+    "counts": "{drawings, plural, one {1 kresba} few {# kresby} other {# kreseb}} · {guesses, plural, one {1 tip} few {# tipy} other {# tipů}}"
   },
   "auth": {
     "eyebrow": "Zavřený test",
@@ -182,5 +192,15 @@
       "signupsClosed": "Zakládání účtů je právě zavřené.",
       "nameTaken": "Tohle jméno mezitím někdo obsadil. Zvol jiné — kód pozvánky ti zůstal."
     }
+  },
+  "notifications": {
+    "loading": "Načítám…",
+    "empty": "Zatím nic nového. Až někdo uhodne tvoji kresbu, dozvíš se to tady.",
+    "someone": "Někdo",
+    "yourDrawing": "tvoji kresbu",
+    "guessed": "{name} uhodl tvůj pojem „{concept}“.",
+    "thumbed": "{name} dal tvojí kresbě palec.",
+    "requestFilled": "{name} nakreslil „{concept}“, na který jsi čekal.",
+    "requestServed": "Splnil jsi přání: {name} čekal na „{concept}“."
   }
 }

@@ -6,6 +6,7 @@ import {
   IBM_Plex_Mono,
   IBM_Plex_Sans,
 } from "next/font/google";
+import { ServiceWorker } from "@/components/ServiceWorker";
 import { routing } from "@/i18n/routing";
 import "@/styles/globals.css";
 
@@ -65,6 +66,7 @@ export default async function LocaleLayout({
     >
       <body>
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <ServiceWorker />
       </body>
     </html>
   );

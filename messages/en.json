@@ -79,7 +79,8 @@
     "loadFailed": "Could not load a drawing. Try again.",
     "sendFailed": "Could not send your guess. Try again.",
     "next": "Next drawing",
-    "wrongWithHint": "Not it. Starts with {hint}. {left, plural, one {One attempt left.} other {# attempts left.}}"
+    "wrongWithHint": "Not it. Starts with {hint}. {left, plural, one {One attempt left.} other {# attempts left.}}",
+    "reported": "Reported. The owner will take a look."
   },
   "solved": {
     "chip": "Solved · {stars}",
@@ -99,7 +100,11 @@
     "note": "Nothing to guess right now. Drawing a concept earns double credit — and someone asked for one.",
     "requested": "Requested concepts",
     "wants": "{name} wants “{concept}”",
-    "cta": "Draw for double credit"
+    "cta": "Draw for double credit",
+    "askTitle": "Or ask for one",
+    "ask": "I want this",
+    "asked": "Requested",
+    "askLimit": "You used up today.s requests. You get more tomorrow."
   },
   "pick": {
     "title": "Pick a concept",
@@ -132,7 +137,11 @@
       "popularity": "Popularity"
     },
     "league": "League {league} · {players, plural, one {1 player} other {# players}} · ends in {days, plural, one {1 day} other {# days}}",
-    "you": "You"
+    "you": "You",
+    "today": "Today.s guessers",
+    "loading": "Loading the board…",
+    "loadFailed": "Could not load the board.",
+    "empty": "Nobody has guessed today. Be first."
   },
   "profile": {
     "title": "Profile",
@@ -142,7 +151,8 @@
     "notifications": "Notifications",
     "account": "Account & privacy",
     "settings": "Settings",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "counts": "{drawings, plural, one {1 drawing} other {# drawings}} · {guesses, plural, one {1 guess} other {# guesses}}"
   },
   "auth": {
     "eyebrow": "Closed test",
@@ -182,5 +192,15 @@
       "signupsClosed": "Account creation is closed right now.",
       "nameTaken": "Someone took that name in the meantime. Pick another — your invite code is still valid."
     }
+  },
+  "notifications": {
+    "loading": "Loading…",
+    "empty": "Nothing new yet. When someone guesses your drawing, you will see it here.",
+    "someone": "Someone",
+    "yourDrawing": "your drawing",
+    "guessed": "{name} guessed your word “{concept}”.",
+    "thumbed": "{name} gave your drawing a thumb.",
+    "requestFilled": "{name} drew “{concept}” — the one you asked for.",
+    "requestServed": "You made someone.s day: {name} was waiting for “{concept}”."
   }
 }

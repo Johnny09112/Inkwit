@@ -1,117 +1,114 @@
 "use client";
 
-import { useState } from "react";
-import { SignOutRow } from "@/components/auth/SignOutRow";
+import { Bell, Hand, Languages, Loader2, ThumbsUp, Trophy } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import {
-  Award,
-  Bell,
-  ChevronRight,
-  Eye,
-  Flame,
-  Languages,
-  Settings,
-  Shield,
-  ThumbsUp,
-} from "lucide-react";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { useEffect, useState } from "react";
+import { SignOutRow } from "@/components/auth/SignOutRow";
 import { AppShell } from "@/components/shell/AppShell";
-import { Card } from "@/components/ui";
-import { PROFILE } from "@/lib/mock";
+import { usePathname, useRouter } from "@/i18n/navigation";
+import {
+  fetchNotifications,
+  fetchProfile,
+  markNotificationsRead,
+  type Notification,
+  type Profile,
+} from "@/lib/game";
 
 /**
- * Profil (wireframe 9): jazyk hádání je tady, ne v hlavičce.
- * Trust score se nezobrazuje nikde a v žádné podobě (pravidlo 7).
+ * Profil (wireframe 9) a schránka upozornění.
+ *
+ * Upozornění tu nejsou jako doplněk — **nesou hlavní retenční hypotézu fáze 0**
+ * (`_claude/memory/decisions/retence-bez-sdilene-serie.md`). „Tvoji chobotnici
+ * uhodli 4 lidé" je ta rychlá emoční odměna, kterou `docs/product.md` označuje
+ * za povinnou.
  */
-
-const EARNED_BADGES = [Award, Flame, Eye, ThumbsUp];
-
 export default function ProfilePage() {
   const t = useTranslations("profile");
+  const tNotif = useTranslations("notifications");
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-  const [notifications, setNotifications] = useState(true);
 
-  const emptyCount = PROFILE.badgesTotal - PROFILE.badgesEarned - 4;
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [items, setItems] = useState<Notification[] | null>(null);
 
-  const switchLocale = () => {
-    router.replace(pathname, { locale: locale === "cs" ? "en" : "cs" });
-  };
+  useEffect(() => {
+    fetchProfile().then(setProfile).catch(() => setProfile(null));
+    fetchNotifications()
+      .then((n) => {
+        setItems(n);
+        if (n.some((x) => !x.readAt)) void markNotificationsRead();
+      })
+      .catch(() => setItems([]));
+  }, []);
+
+  function line(n: Notification): string {
+    const who = n.actorName ?? tNotif("someone");
+    const what = n.prompt ?? tNotif("yourDrawing");
+    switch (n.kind) {
+      case "guessed":
+        return tNotif("guessed", { name: who, concept: what });
+      case "thumbed":
+        return tNotif("thumbed", { name: who });
+      case "request_filled":
+        return tNotif("requestFilled", { name: who, concept: what });
+      case "request_served":
+        return tNotif("requestServed", { name: who, concept: what });
+    }
+  }
+
+  const icon = (kind: Notification["kind"]) =>
+    kind === "thumbed" ? <ThumbsUp size={16} /> : kind === "guessed" ? <Trophy size={16} /> : <Hand size={16} />;
 
   return (
-    <AppShell
-      title={t("title")}
-      headerAction={
-        <Link
-          href="/profile"
-          aria-label={t("settings")}
-          className="icon-btn icon-btn-plain"
-          style={{ width: 34, height: 34 }}
-        >
-          <Settings size={20} />
-        </Link>
-      }
-    >
-      <Card elevated={false} className="profile-card">
-        <span className="profile-avatar" />
-        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <span className="profile-name">{PROFILE.name}</span>
-          <span className="t-label-sm" style={{ color: "var(--text-muted)" }}>
-            {t("meta", {
-              level: PROFILE.level,
-              drawings: PROFILE.drawings,
-              guesses: PROFILE.guesses,
-            })}
-          </span>
-        </div>
-      </Card>
-
-      <div style={{ paddingTop: 14 }}>
-        <span className="t-label-sm" style={{ color: "var(--text-muted)" }}>
-          {t("badges", {
-            earned: PROFILE.badgesEarned,
-            total: PROFILE.badgesTotal,
-          })}
-        </span>
-      </div>
-      <div className="badges-grid">
-        {EARNED_BADGES.map((Icon, i) => (
-          <div key={`earned-${i}`} className="badge-tile">
-            <Icon size={22} />
+    <AppShell title={t("title")}>
+      <div className="card profile-card">
+        <div className="profile-avatar" />
+        <div>
+          <div className="profile-name">{profile?.displayName ?? "…"}</div>
+          <div className="t-label" style={{ textTransform: "none" }}>
+            {profile
+              ? t("counts", { drawings: profile.drawings, guesses: profile.guesses })
+              : ""}
           </div>
-        ))}
-        {Array.from({ length: Math.max(4, emptyCount) }, (_, i) => (
-          <div key={`empty-${i}`} className="badge-tile is-empty" />
-        ))}
+        </div>
       </div>
+
+      <section className="notif-section">
+        <span className="lbl">
+          <Bell size={12} style={{ verticalAlign: "-1px" }} /> {t("notifications")}
+        </span>
+
+        {!items && (
+          <p className="pick-loading">
+            <Loader2 size={16} className="spin" aria-hidden="true" /> {tNotif("loading")}
+          </p>
+        )}
+
+        {items && items.length === 0 && <p className="t-secondary">{tNotif("empty")}</p>}
+
+        {items && items.length > 0 && (
+          <ul className="notif-list">
+            {items.map((n) => (
+              <li key={n.id} className={`notif${n.readAt ? "" : " is-new"}`}>
+                <span className="notif-icon">{icon(n.kind)}</span>
+                <span>{line(n)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <div className="settings-list">
-        <button type="button" className="settings-row" onClick={switchLocale}>
+        <button
+          type="button"
+          className="settings-row"
+          onClick={() => router.replace(pathname, { locale: locale === "cs" ? "en" : "cs" })}
+        >
           <Languages size={18} />
           <span className="settings-row-label">{t("language")}</span>
           <span className="settings-row-value">{locale.toUpperCase()}</span>
-          <ChevronRight size={16} />
         </button>
-        <div className="settings-row">
-          <Bell size={18} />
-          <span className="settings-row-label">{t("notifications")}</span>
-          <button
-            type="button"
-            className="toggle"
-            role="switch"
-            aria-checked={notifications}
-            aria-label={t("notifications")}
-            onClick={() => setNotifications((n) => !n)}
-          >
-            <span className="toggle-knob" />
-          </button>
-        </div>
-        <div className="settings-row">
-          <Shield size={18} />
-          <span className="settings-row-label">{t("account")}</span>
-          <ChevronRight size={16} />
-        </div>
         <SignOutRow />
       </div>
     </AppShell>

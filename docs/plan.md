@@ -35,8 +35,8 @@ Lokální ověření běží na PGlite (`npm run test:db`) — Docker není pot�
 | **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[x]` | — |
 | **C** | Kreslení end-to-end | `[x]` | D |
 | **D** | Hádání end-to-end | `[x]` | F |
-| **E** | Retenční smyčka — vyžádání a notifikace | `[~]` | — |
-| **F** | Provoz a měření | `[~]` | G |
+| **E** | Retenční smyčka — vyžádání a notifikace | `[x]` | — |
+| **F** | Provoz a měření | `[x]` | G |
 | **G** | Nasazení a pozvánky | `[ ]` | — |
 
 **Proč tohle pořadí.** A blokuje všechno, protože bez schématu se nedá uložit nic.
@@ -241,13 +241,33 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
   **Zásoba se nevzorkuje do tabulky.** Jde dopočítat zpětně z časů tipů, takže
   žádný cron ani úklid navíc.
 - `[x] F4` **A/B skupiny pro přehrání** — `profiles.ab_playback`, přiřazeno
-  náhodně při vzniku účtu a neměnné. *Zbývá:* skrýt tlačítko skupině bez přehrání.
+  náhodně při vzniku účtu a neměnné. Tlačítko vidí jen jedna skupina.
 
 ## Blok G — Nasazení a pozvánky
 
-- `[ ] G1` **PWA** — service worker, offline shell, instalace.
-- `[ ] G2` **Deploy na Vercel** + napojení na Supabase.
-- `[ ] G3` **Pozvánkový tok** pro ~50 lidí.
+- `[x] G1` **PWA** — manifest, ikona, service worker, offline stránka.
+  Service worker je **vědomě konzervativní**: cachují se jen neměnné buildové
+  soubory, všechno ostatní jde ze sítě. Agresivní cache by u hry postavené na
+  čerstvých datech znamenala, že hráč uvidí kresbu, kterou už někdo uhodl,
+  nebo starý stav pokusů. Ze Supabase se necachuje nic.
+- `[!] G2` **Deploy na Vercel** — čeká na majitele, potřebuje jeho účet.
+
+  Postup:
+  1. Naimportovat repo `Johnny09112/Inkwit` do Vercelu.
+  2. Nastavit proměnné prostředí z `.env.example` (URL a publishable klíč —
+     hodnoty jsou v lokálním `.env.local`). **Servisní klíč tam nepatří.**
+  3. Po prvním nasazení přepsat `site_url` a `additional_redirect_urls`
+     v `supabase/config.toml` na ostrou doménu a pustit
+     `npx supabase config push`. Jinak by odkazy z e-mailů vedly na localhost.
+  4. Ověřit, že jde appka nainstalovat na telefon (PWA potřebuje HTTPS,
+     na Vercelu je automaticky).
+- `[~] G3` **Pozvánky** — 50 kódů vygenerováno a předáno majiteli
+  (`pozvanky-faze-0.txt`, mimo git). Rozeslání je na majiteli.
+
+  Přehled o využití:
+  ```sql
+  select code, note, used_count, max_uses from public.invites order by note;
+  ```
 
 ---
 
