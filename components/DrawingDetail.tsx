@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { Play, Trash2, TriangleAlert, X } from "lucide-react";
 import { Button } from "@/components/ui";
+import { Stars } from "@/components/Stars";
 import { StrokePlayback } from "@/components/StrokePlayback";
 import type { MyDrawing } from "@/lib/game";
 import type { Stroke } from "@/lib/strokes";
@@ -84,7 +85,17 @@ export function DrawingDetail({
           </div>
           <div>
             <dt>{t("stars")}</dt>
-            <dd>{drawing.stars > 0 ? "★".repeat(drawing.stars) : t("noStars")}</dd>
+            <dd>
+              {drawing.stars > 0 ? (
+                <Stars
+                  count={drawing.stars}
+                  size={18}
+                  label={t("starsOf", { n: drawing.stars })}
+                />
+              ) : (
+                t("noStars")
+              )}
+            </dd>
           </div>
           <div>
             <dt>{t("drawnAt")}</dt>

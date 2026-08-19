@@ -110,7 +110,8 @@
     "author": "Artist: {name}",
     "summary": "Solved on the {attempt, select, first {first} second {second} other {third}} try. {count, plural, one {1 person} other {# people}} guessed this drawing.",
     "thumbUsed": "You already used your thumb today. You get a new one tomorrow.",
-    "stars": "{n, plural, one {# star} other {# stars}}"
+    "stars": "{n, plural, one {# star} other {# stars}}",
+    "thumbGiven": "Thumbed"
   },
   "empty": {
     "title": "Supply is low",
@@ -156,7 +157,8 @@
     "deleteFailed": "Could not delete. Try again.",
     "cancel": "Keep it",
     "statSolved": "Solved by",
-    "statThumbs": "Thumbs"
+    "statThumbs": "Thumbs",
+    "starsOf": "{n} of 3 stars"
   },
   "leaderboards": {
     "title": "Leaderboards",
@@ -249,5 +251,22 @@
     "failed": "Could not change the password. Try again.",
     "expired": "This link no longer works. Links are single-use and expire — ask for a new one.",
     "backToLogin": "Back to sign in"
+  },
+  "report": {
+    "title": "Report drawing",
+    "lede": "What is wrong with it? It helps with the review.",
+    "reasons": {
+      "scribble": "Scribble — impossible to guess",
+      "mismatch": "Does not match the concept",
+      "text": "Has written text in it",
+      "offensive": "Rude or offensive",
+      "other": "Something else"
+    },
+    "noteLabel": "Tell us what it is",
+    "notePlaceholder": "A sentence is enough.",
+    "send": "Send report",
+    "cancel": "Cancel",
+    "done": "Thanks, report sent. The owner will take a look.",
+    "failed": "Could not send the report. Try again."
   }
 }

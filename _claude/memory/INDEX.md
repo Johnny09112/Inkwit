@@ -10,6 +10,7 @@
 - [[gesta-a-vyrez-platna]] — Jeden prst kreslí, dva přibližují a posouvají; přiblížení je jen zobrazení, body zůstávají v poměrných souřadnicích 0–1, matematika výřezu je v lib/canvasView.ts a má vlastní testy · active · 2026-08-19
 - [[knihovna-kreseb-a-mazani]] — Rozepsané kresby se z knihovny skrývají, ale řádek zůstává kvůli metrics_funnel; mazání vlastní kresby je měkké (status removed), detail nesmí ukázat počet pokusů · active · 2026-08-19
 - [[logo-a-ikony-z-navrhu]] — Logotyp „ink[w]it" je React komponenta s kresleným w a podtržením, ikony se rastrují ze tří SVG přes sharp; z návrhu se převzalo vše kromě názvů tokenů · active · 2026-08-19
+- [[nahlaseni-s-duvodem]] — Nahlášení kresby má dialog s kódem důvodu (scribble, mismatch, text, offensive, other + text); do teď se posílal natvrdo pořád stejný řetězec, takže hlášení byla k moderaci k ničemu · active · 2026-08-19
 - [[paleta-barev-a-vyber-vlastni]] — Vlastní paleta se ukládá do localStorage (23 barev + tlačítko přidat), nová barva se míchá v kruhu HSV, hex je v něm místo v panelu; na umístění se ptáme až když je paleta plná · active · 2026-08-19
 - [[predvolby-zarizeni-v-localstorage]] — Kreslicí ruka (strana lišty nástrojů) žije v localStorage, ne ve sloupci profiles — vlastnost zařízení, ne účtu; migrace kvůli vzhledu se nevyplatí · active · 2026-08-19
 - [[faze-0-uzavrena-skupina]] — Fáze 0 běží jako uzavřená skupina ~50 pozvaných; veřejné otevření je podmíněné automatickým klasifikátorem obsahu · active · 2026-08-18
@@ -25,6 +26,7 @@
 
 ## Patterns
 - [[ctvercove-tlacitko-ve-flex-radku]] — aspect-ratio nevyrobí čtvercové tlačítko vedle roztaženého ve flex řádku — šířka se vyřeší dřív, než align-items stretch roztáhne výšku · active · 2026-08-19
+- [[hvezdicky-a-graficke-hodnoty]] — Hvězdičky se kreslí včetně prázdných a jejich obrys musí být dost tmavý; medová výplň má proti ovesnému pozadí jen 1,61 : 1, takže tvar nese obrys, ne barva · active · 2026-08-19
 - [[ios-dlouhy-stisk-vybira-text]] — Dlouhý stisk v iOS Safari označí text a otevře nabídku Kopírovat i nad plátnem a tlačítky; řeší to user-select a -webkit-touch-callout, ne PWA · active · 2026-08-19
 - [[next-cache-rozbita-buildem]] — npm run build za běhu dev serveru přepíše .next a dev pak hlásí "Cannot find module ./vendor-chunks/*.js" — vypadá to jako chyba v kódu, ale je to jen cache · active · 2026-08-19
 - [[service-worker-serviruje-stary-kod]] — Ve vývoji drží service worker z PWA staré balíčky a stránka pak ukazuje kód, který v souborech dávno není — vypadá to jako by se změna neprojevila · active · 2026-08-19

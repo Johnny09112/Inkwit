@@ -110,7 +110,8 @@
     "author": "Kreslíř: {name}",
     "summary": "Uhodnuto na {attempt, select, first {první} second {druhý} other {třetí}} pokus. Kresbu uhodli {count, plural, one {1 člověk} few {# lidé} other {# lidí}}.",
     "thumbUsed": "Palec už dnes padl jinam. Zítra máš zase jeden.",
-    "stars": "{n, plural, one {# hvězdička} few {# hvězdičky} other {# hvězdiček}}"
+    "stars": "{n, plural, one {# hvězdička} few {# hvězdičky} other {# hvězdiček}}",
+    "thumbGiven": "Palec dán"
   },
   "empty": {
     "title": "Zásoba je nízká",
@@ -156,7 +157,8 @@
     "deleteFailed": "Smazat se nepodařilo. Zkus to znovu.",
     "cancel": "Nechat",
     "statSolved": "Uhodlo",
-    "statThumbs": "Palce"
+    "statThumbs": "Palce",
+    "starsOf": "{n} ze 3 hvězdiček"
   },
   "leaderboards": {
     "title": "Žebříčky",
@@ -249,5 +251,22 @@
     "failed": "Heslo se nepodařilo změnit. Zkus to znovu.",
     "expired": "Tenhle odkaz už neplatí. Odkazy jsou jednorázové a po chvíli vyprší — řekni si o nový.",
     "backToLogin": "Zpět na přihlášení"
+  },
+  "report": {
+    "title": "Nahlásit kresbu",
+    "lede": "Co je s ní špatně? Pomůže to při posuzování.",
+    "reasons": {
+      "scribble": "Čmáranice — nedá se hádat",
+      "mismatch": "Neodpovídá pojmu",
+      "text": "Je v ní napsaný text",
+      "offensive": "Sprostá nebo urážlivá",
+      "other": "Jiné"
+    },
+    "noteLabel": "Napiš, o co jde",
+    "notePlaceholder": "Krátce, stačí věta.",
+    "send": "Odeslat hlášení",
+    "cancel": "Zrušit",
+    "done": "Díky, hlášení odesláno. Majitel se na to podívá.",
+    "failed": "Hlášení se nepodařilo odeslat. Zkus to znovu."
   }
 }

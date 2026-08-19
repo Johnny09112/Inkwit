@@ -37,6 +37,9 @@
   --text-secondary: var(--ink-700);
   --text-muted: var(--ink-500);
   --text-on-action: var(--oat-100);
+  /* Text a obrysy na medovém akcentu — na světlém žlutém musí být inkoust,
+     ovesná by na něm zmizela. */
+  --accent-ink: var(--ink-900);
 
   --action-primary: var(--olive-600);
   --action-primary-hover: var(--olive-700);

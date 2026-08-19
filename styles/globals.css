@@ -1453,6 +1453,12 @@ a {
 .modal {
   width: 100%;
   max-width: 560px;
+  /* Stejný důvod jako u panelu barev: s otevřenou klávesnicí na iOS by tlačítka
+     na spodku okna skončila pod ní a nedalo by se k nim dorolovat. Dialog
+     nahlášení má navíc pole pro text, takže se klávesnice otevře vždycky. */
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--surface-canvas);
   border-radius: 24px;
   padding: var(--pad-panel);
@@ -2053,3 +2059,145 @@ textarea,
 /* ---------- Paleta ---------- */
 
 
+
+/* ---------- Uhodnuto ---------- */
+
+.solved-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.solved-word {
+  font-size: var(--text-hero);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-hero);
+}
+
+/* Autor je údaj, ne titulek — vlastní řádek a menší písmo. */
+.solved-author {
+  font-size: var(--text-body-sm);
+  color: var(--text-secondary);
+}
+
+.stars {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* Prázdné hvězdičky se kreslí taky — jinak není poznat, z kolika to je.
+   Obrys musí být dost tmavý, aby byl vidět: `--border-strong` na ovesném
+   pozadí dává 1,7 : 1, což je pro nositele informace málo. */
+.star {
+  color: var(--text-muted);
+  fill: none;
+  flex: none;
+}
+
+.star.is-filled {
+  color: var(--accent-ink);
+  fill: var(--accent);
+}
+
+/* Decentní potvrzení, že tip sedl: pojem přijede, hvězdičky naskočí po sobě
+   a kolem kresby jednou probleskne olivový prstenec. Žádné konfety. */
+@keyframes solved-word-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes solved-star-in {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-25deg); }
+  70%  { opacity: 1; transform: scale(1.15) rotate(4deg); }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes solved-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(82, 99, 58, 0.45); }
+  100% { box-shadow: 0 0 0 14px rgba(82, 99, 58, 0); }
+}
+
+.solved-word {
+  animation: solved-word-in 380ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+.solved-side .star {
+  animation: solved-star-in 420ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+.solved-side .star:nth-child(1) { animation-delay: 120ms; }
+.solved-side .star:nth-child(2) { animation-delay: 220ms; }
+.solved-side .star:nth-child(3) { animation-delay: 320ms; }
+
+.guess-art.is-solved {
+  animation: solved-ring 700ms ease-out 1;
+  border-color: var(--action-primary);
+}
+
+/* Kdo si vypnul animace v systému, ten je vypnuté chce mít. */
+@media (prefers-reduced-motion: reduce) {
+  .solved-word,
+  .solved-side .star,
+  .guess-art.is-solved {
+    animation: none;
+  }
+}
+
+/* ---------- Palec a nahlášení ---------- */
+
+.guess-meta-actions {
+  align-self: center;
+  justify-content: center;
+}
+
+/* Palec je odměna pro kreslíře, ne servisní akce — vypadá jako hlavní
+   tlačítko řádku a po klepnutí zůstane medově plný. */
+.thumb-btn.is-given,
+.thumb-btn.is-given:disabled {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  opacity: 1;
+}
+
+.report-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.report-reason {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+  cursor: pointer;
+}
+
+.report-reason.is-active {
+  border-color: var(--action-primary);
+  background: var(--surface-success);
+}
+
+.report-reason input {
+  accent-color: var(--action-primary);
+  flex: none;
+  margin: 0;
+}
+
+.report-note {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.report-note textarea {
+  resize: vertical;
+  font-family: var(--font-body), sans-serif;
+}

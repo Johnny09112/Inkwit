@@ -873,6 +873,27 @@ async function main() {
   ).rows[0].ok;
   report(rep1 === true, "nahlášení projde");
 
+  // Důvod je poprvé text od uživatele („jiné" v dialogu), takže potřebuje strop.
+  // Hlásí BOB, ne ALICE — dvojice kresba+člověk je unikátní a Alicino hlášení
+  // už existuje, takže by se druhý pokus zahodil a test by prošel naprázdno.
+  await db.exec("savepoint duvod");
+  await db.exec(`select set_config('request.jwt.claim.sub', '${BOB}', true);`);
+  const dlouhy = (
+    await db.query(`select public.report_drawing('${LIVE}', $1) as ok`, ["y".repeat(5000)])
+  ).rows[0].ok;
+  await db.exec("reset role");
+  const orezany = (
+    await db.query(
+      `select reason from public.reports where drawing_id = '${LIVE}' and reporter_id = '${BOB}'`,
+    )
+  ).rows[0].reason;
+  await db.exec("rollback to savepoint duvod");
+  report(
+    dlouhy === true && orezany.length === 300,
+    "dlouhý důvod se ořízne na 300 znaků, ne odmítne",
+    `vráceno ${dlouhy}, uloženo ${orezany.length} znaků`,
+  );
+
   const lb = (await db.query("select * from public.daily_leaderboard()")).rows;
   report(Array.isArray(lb), "denní žebříček se načte");
 

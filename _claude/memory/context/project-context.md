@@ -77,6 +77,18 @@ rozhraní se vědomě nestavělo.
   za 1,2 s). Animace se proto nerozběhne a plátno zůstane prázdné — není to
   chyba kódu. Přehrání se musí zkoušet v běžném prohlížeči.
 
+### Přidáno 2026-08-19 (obrazovka po uhodnutí)
+
+- **Uhodnutí se pozná animací** — pojem přijede, hvězdičky naskočí po sobě,
+  kolem kresby probleskne olivový prstenec. Respektuje `prefers-reduced-motion`.
+- **Hvězdičky graficky** (`components/Stars.tsx`), včetně prázdných. Pozor na
+  barvy — viz `patterns/hvezdicky-a-graficke-hodnoty.md`.
+- Pojem, hvězdičky i řádek akcí **na střed**, autor na vlastní menší řádek.
+- **Palec** je teď hlavní tlačítko řádku a po klepnutí zůstane medově plný.
+- **Nahlášení má dialog s důvodem.** Do teď posílalo natvrdo „nevhodný obsah"
+  a jen tiše zešedlo. Viz `decisions/nahlaseni-s-duvodem.md`.
+- `.modal` dostal strop výšky a rolování — stejná past jako u panelu barev.
+
 ### Přidáno 2026-08-19 (logo a ikony)
 
 - **Logotyp z návrhu** místo textového „Inkwit" — `components/InkwitLogo.tsx`,

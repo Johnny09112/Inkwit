@@ -13,6 +13,8 @@ import {
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { AppShell } from "@/components/shell/AppShell";
+import { ReportDialog } from "@/components/ReportDialog";
+import { Stars } from "@/components/Stars";
 import { StrokePlayback } from "@/components/StrokePlayback";
 import { Button } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
@@ -45,6 +47,7 @@ type Phase = "guessing" | "solved" | "failed";
 export default function GuessPage() {
   const t = useTranslations("guess");
   const tSolved = useTranslations("solved");
+  const tReport = useTranslations("report");
   const tEmpty = useTranslations("empty");
 
   const [drawing, setDrawing] = useState<FeedDrawing | null | undefined>(undefined);
@@ -59,6 +62,8 @@ export default function GuessPage() {
   const [thumbUsed, setThumbUsed] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [reported, setReported] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportError, setReportError] = useState(false);
   // Skupina A/B pro test přehrání. Do načtení tlačítko neukazujeme —
   // problikávat by ho testeru popletlo.
   const [showPlayback, setShowPlayback] = useState<boolean | null>(null);
@@ -84,6 +89,8 @@ export default function GuessPage() {
     setPlaying(false);
     setThumbGiven(false);
     setReported(false);
+    setReportOpen(false);
+    setReportError(false);
     try {
       const next = await fetchNextDrawing();
       setDrawing(next);
@@ -197,7 +204,7 @@ export default function GuessPage() {
   return (
     <AppShell title={t("title")}>
       <div className="guess-screen">
-        <div className="guess-art">
+        <div className={`guess-art${phase === "solved" ? " is-solved" : ""}`}>
           <StrokePlayback
             strokes={drawing.strokes}
             playing={playing}
@@ -238,10 +245,15 @@ export default function GuessPage() {
           {feedback && <p className="guess-feedback">{feedback}</p>}
 
           {phase === "solved" && result && (
-            <div className="solved-side">
-              <h2 className="t-display">{result.solution}</h2>
-              <p className="t-secondary">
-                {tSolved("stars", { n: result.stars })} ·{" "}
+            /* `key` na pojmu: u další uhodnuté kresby se komponenta vymění
+               a animace se spustí znovu. Bez toho by proběhla jen jednou. */
+            <div className="solved-side" key={result.solution}>
+              <h2 className="t-display solved-word">{result.solution}</h2>
+              <Stars
+                count={result.stars}
+                label={tSolved("stars", { n: result.stars })}
+              />
+              <p className="solved-author">
                 {tSolved("author", { name: drawing.authorName })}
               </p>
             </div>
@@ -260,8 +272,11 @@ export default function GuessPage() {
               </button>
             )}
 
+            {/* Palec je odměna pro kreslíře, ne servisní akce — proto vypadá
+                jako hlavní tlačítko řádku a po klepnutí zůstane medově plný. */}
             <button
               type="button"
+              className={`thumb-btn${thumbGiven ? " is-given" : ""}`}
               aria-pressed={thumbGiven}
               disabled={thumbGiven || thumbUsed || phase === "guessing"}
               onClick={async () => {
@@ -270,23 +285,22 @@ export default function GuessPage() {
                 else setThumbUsed(true);
               }}
             >
-              <ThumbsUp size={18} aria-hidden="true" /> {tSolved("thumb")}
+              <ThumbsUp size={18} aria-hidden="true" />{" "}
+              {thumbGiven ? tSolved("thumbGiven") : tSolved("thumb")}
             </button>
 
-            <button
-              type="button"
-              disabled={reported}
-              onClick={async () => {
-                await reportDrawing(drawing.drawingId, "nevhodný obsah");
-                setReported(true);
-              }}
-            >
+            <button type="button" disabled={reported} onClick={() => setReportOpen(true)}>
               <Flag size={18} aria-hidden="true" /> {t("report")}
             </button>
           </div>
 
           {thumbUsed && <p className="guess-feedback">{tSolved("thumbUsed")}</p>}
-          {reported && <p className="guess-feedback">{t("reported")}</p>}
+          {reported && <p className="guess-feedback">{tReport("done")}</p>}
+          {reportError && (
+            <p className="auth-note auth-note-error" role="alert">
+              {tReport("failed")}
+            </p>
+          )}
 
           {phase !== "guessing" && (
             <Button size="lg" onClick={() => void load()}>
@@ -301,6 +315,23 @@ export default function GuessPage() {
           )}
         </div>
       </div>
+
+      {reportOpen && (
+        <ReportDialog
+          onClose={() => setReportOpen(false)}
+          onSubmit={async (reason) => {
+            try {
+              await reportDrawing(drawing.drawingId, reason);
+              setReported(true);
+              setReportError(false);
+            } catch {
+              setReportError(true);
+            } finally {
+              setReportOpen(false);
+            }
+          }}
+        />
+      )}
     </AppShell>
   );
 }
