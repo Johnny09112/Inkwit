@@ -74,7 +74,12 @@
     "failed": "Not this time. It was “{concept}”.",
     "skip": "Skip",
     "report": "Report",
-    "play": "Play"
+    "play": "Play",
+    "loading": "Finding a drawing…",
+    "loadFailed": "Could not load a drawing. Try again.",
+    "sendFailed": "Could not send your guess. Try again.",
+    "next": "Next drawing",
+    "wrongWithHint": "Not it. Starts with {hint}. {left, plural, one {One attempt left.} other {# attempts left.}}"
   },
   "solved": {
     "chip": "Solved · {stars}",
@@ -85,7 +90,9 @@
     "play": "Play",
     "gif": "GIF",
     "author": "Artist: {name}",
-    "summary": "Solved on the {attempt, select, first {first} second {second} other {third}} try. {count, plural, one {1 person} other {# people}} guessed this drawing."
+    "summary": "Solved on the {attempt, select, first {first} second {second} other {third}} try. {count, plural, one {1 person} other {# people}} guessed this drawing.",
+    "thumbUsed": "You already used your thumb today. You get a new one tomorrow.",
+    "stars": "{n, plural, one {# star} other {# stars}}"
   },
   "empty": {
     "title": "Supply is low",

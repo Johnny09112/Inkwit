@@ -144,3 +144,74 @@ export async function fetchStrokes(
   }
   return byDrawing;
 }
+
+export interface FeedDrawing {
+  drawingId: string;
+  authorName: string;
+  solvedCount: number;
+  thumbsCount: number;
+  strokes: Stroke[];
+}
+
+/** Další kresba k hádání. Vrací null, když zásoba došla. */
+export async function fetchNextDrawing(): Promise<FeedDrawing | null> {
+  const { data, error } = await createClient().rpc("next_drawing");
+  if (error) throw error;
+  const row = (data ?? [])[0] as Record<string, unknown> | undefined;
+  if (!row) return null;
+  return {
+    drawingId: row.drawing_id as string,
+    authorName: row.author_name as string,
+    solvedCount: row.solved_count as number,
+    thumbsCount: row.thumbs_count as number,
+    strokes: (row.strokes as Record<string, unknown>[]).map((s) =>
+      strokeFromPayload({
+        tool: s.tool as string,
+        color: s.color as string,
+        width: s.width as number,
+        points: s.points as number[],
+      }),
+    ),
+  };
+}
+
+export interface GuessResult {
+  correct: boolean;
+  attemptNo: number;
+  attemptsLeft: number;
+  /** První písmeno a délka odpovědi. Jen u nejtěžších pojmů a až po chybě. */
+  hint: string | null;
+  /** Správná odpověď. Přijde až po uhodnutí nebo vyčerpání pokusů. */
+  solution: string | null;
+  stars: number;
+}
+
+/** Odešle tip. Vyhodnocuje ho server — klient odpověď nezná. */
+export async function submitGuess(
+  drawingId: string,
+  text: string,
+): Promise<GuessResult> {
+  const { data, error } = await createClient().rpc("submit_guess", {
+    p_drawing_id: drawingId,
+    p_text: text,
+  });
+  if (error) throw error;
+  const r = (data ?? [])[0] as Record<string, unknown>;
+  return {
+    correct: r.correct as boolean,
+    attemptNo: r.attempt_no as number,
+    attemptsLeft: r.attempts_left as number,
+    hint: (r.hint as string | null) ?? null,
+    solution: (r.solution as string | null) ?? null,
+    stars: r.stars as number,
+  };
+}
+
+/** Palec. Vrací false, když už dnes jeden padl — je to vzácný hlas, ne lajk. */
+export async function giveThumb(drawingId: string): Promise<boolean> {
+  const { data, error } = await createClient().rpc("give_thumb", {
+    p_drawing_id: drawingId,
+  });
+  if (error) throw error;
+  return data as boolean;
+}

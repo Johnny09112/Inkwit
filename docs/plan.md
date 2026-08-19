@@ -34,7 +34,7 @@ Lokální ověření běží na PGlite (`npm run test:db`) — Docker není pot�
 | **A** | Backend základ — projekt, schéma, RLS, konfigurace, auth | `[x]` | — |
 | **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[x]` | — |
 | **C** | Kreslení end-to-end | `[x]` | D |
-| **D** | Hádání end-to-end | `[~]` | F |
+| **D** | Hádání end-to-end | `[x]` | F |
 | **E** | Retenční smyčka — vyžádání a notifikace | `[ ]` | — |
 | **F** | Provoz a měření | `[ ]` | G |
 | **G** | Nasazení a pozvánky | `[ ]` | — |
@@ -197,7 +197,16 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
 - `[x] D3` **Hvězdičky a palec** — RPC `give_thumb()`, hvězdičky podle pokusu
   (napoprvé tři, napotřetí jedna). Druhý palec téhož dne se odmítne bez chyby,
   limit drží unikátní index.
-- `[ ] D4` **Přehrání tahů z uložených vektorů.** Tlačítko, ne výchozí zobrazení.
+- `[x] D4` **Přehrání tahů** — `components/StrokePlayback.tsx`. Tlačítko, ne
+  výchozí zobrazení. Rytmus se bere z časových značek u bodů, takže kde autor
+  váhal, váhá i přehrání; mezery mezi tahy se doplňují pevnou pauzou, protože
+  meziTahové časy se do plochého pole neukládají.
+
+  **Hádání zapojeno do aplikace.** Obrazovka jede na `next_drawing()`,
+  `submit_guess()` a `give_thumb()`. Prázdná zásoba je stav hry, ne chyba.
+  *Ověřeno naostro se dvěma účty:* jeden nakreslil „hodiny", druhý tipl
+  „kolotoč" (mimo), pak „hodiny" (uhodnuto na druhý pokus → dvě hvězdičky).
+  V databázi oba tipy i s původním textem, počty udržel trigger.
 
 ## Blok E — Retenční smyčka
 

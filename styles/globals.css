@@ -1635,3 +1635,25 @@ a {
   padding: var(--space-8) var(--space-4);
   color: var(--text-secondary);
 }
+
+.playback-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.guess-art {
+  position: relative;
+  background: var(--surface-canvas);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.guess-art .playback-bar {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+}

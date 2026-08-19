@@ -74,7 +74,12 @@
     "failed": "Tentokrát nic. Byl to pojem „{concept}“.",
     "skip": "Přeskočit",
     "report": "Nahlásit",
-    "play": "Přehrát"
+    "play": "Přehrát",
+    "loading": "Hledám kresbu…",
+    "loadFailed": "Kresbu se nepodařilo načíst. Zkus to znovu.",
+    "sendFailed": "Tip se nepodařilo odeslat. Zkus to znovu.",
+    "next": "Další kresba",
+    "wrongWithHint": "Mimo. Začíná na {hint}. {left, plural, one {Ještě jeden pokus.} few {Ještě # pokusy.} other {Ještě # pokusů.}}"
   },
   "solved": {
     "chip": "Uhodnuto · {stars}",
@@ -85,7 +90,9 @@
     "play": "Přehrát",
     "gif": "GIF",
     "author": "Kreslíř: {name}",
-    "summary": "Uhodnuto na {attempt, select, first {první} second {druhý} other {třetí}} pokus. Kresbu uhodli {count, plural, one {1 člověk} few {# lidé} other {# lidí}}."
+    "summary": "Uhodnuto na {attempt, select, first {první} second {druhý} other {třetí}} pokus. Kresbu uhodli {count, plural, one {1 člověk} few {# lidé} other {# lidí}}.",
+    "thumbUsed": "Palec už dnes padl jinam. Zítra máš zase jeden.",
+    "stars": "{n, plural, one {# hvězdička} few {# hvězdičky} other {# hvězdiček}}"
   },
   "empty": {
     "title": "Zásoba je nízká",
