@@ -28,12 +28,10 @@
       "brush": "Štětec",
       "eraser": "Guma",
       "undo": "Zpět",
-      "move": "Posun",
       "clear": "Smazat vše",
       "preview": "Náhled bez nástrojů",
       "palette": "Další barvy",
       "size": "Velikost stopy",
-      "zoom": "Lupa",
       "clearConfirm": "Opravdu smazat?"
     },
     "colors": {

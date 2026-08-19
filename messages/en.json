@@ -28,12 +28,10 @@
       "brush": "Brush",
       "eraser": "Eraser",
       "undo": "Undo",
-      "move": "Pan",
       "clear": "Clear all",
       "preview": "Preview without tools",
       "palette": "More colors",
       "size": "Stroke size",
-      "zoom": "Zoom",
       "clearConfirm": "Clear everything?"
     },
     "colors": {

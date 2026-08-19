@@ -4,7 +4,7 @@ import { ChevronRight, Hand, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/shell/AppShell";
-import { Button } from "@/components/ui";
+import { Badge, Button } from "@/components/ui";
 import { useRouter } from "@/i18n/navigation";
 import { fetchOffer, startDrawing, type ConceptOffer } from "@/lib/game";
 
@@ -90,9 +90,13 @@ export default function PickPage() {
           >
             <span className="pick-card-meta">
               <span className="pick-card-name">{concept.prompt}</span>
-              <span className="t-label-sm" style={{ color: "var(--text-muted)" }}>
-                {tDifficulty(String(concept.difficulty))} ·{" "}
-                {tCommon("credit", { n: concept.difficulty })}
+              {/* Stejný zlatý štítek jako nad plátnem — obtížnost má vypadat
+                  na obou obrazovkách stejně, ať ji člověk pozná bez čtení. */}
+              <span className="pick-card-tags">
+                <Badge tone="accent">{tDifficulty(String(concept.difficulty))}</Badge>
+                <span className="t-label-sm">
+                  {tCommon("credit", { n: concept.difficulty })}
+                </span>
               </span>
             </span>
             <ChevronRight size={22} />

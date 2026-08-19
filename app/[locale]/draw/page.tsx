@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 import {
   Brush,
   Eraser,
-  Eye,
-  Move,
+  Maximize2,
+  Minimize2,
   Palette,
   Send,
   Trash2,
@@ -56,7 +56,6 @@ export default function DrawPage({
   // Historie pro undo — snapshoty polí tahů (smazání všeho je taky krok zpět)
   const [history, setHistory] = useState<Stroke[][]>([]);
   const [tool, setTool] = useState<Tool>("brush");
-  const [panMode, setPanMode] = useState(false);
   const [color, setColor] = useState(RECENT_COLORS[0]);
   const [size, setSize] = useState(14);
   const [recent, setRecent] = useState<string[]>([...RECENT_COLORS]);
@@ -119,14 +118,10 @@ export default function DrawPage({
   const pickColor = (c: string) => {
     setColor(c);
     setTool("brush");
-    setPanMode(false);
     setRecent((r) => [c, ...r.filter((x) => x !== c)].slice(0, 8));
   };
 
-  const selectTool = (next: Tool) => {
-    setTool(next);
-    setPanMode(false);
-  };
+  const selectTool = (next: Tool) => setTool(next);
 
   /** Odeslání na server. Doba kreslení a pokrytí plátna se počítají tam. */
   async function send() {
@@ -161,18 +156,18 @@ export default function DrawPage({
     <>
       <button
         type="button"
-        className={`icon-btn${tool === "brush" && !panMode ? " is-active" : ""}`}
+        className={`icon-btn${tool === "brush" ? " is-active" : ""}`}
         aria-label={t("tools.brush")}
-        aria-pressed={tool === "brush" && !panMode}
+        aria-pressed={tool === "brush"}
         onClick={() => selectTool("brush")}
       >
         <Brush size={iconSize} />
       </button>
       <button
         type="button"
-        className={`icon-btn${tool === "eraser" && !panMode ? " is-active" : ""}`}
+        className={`icon-btn${tool === "eraser" ? " is-active" : ""}`}
         aria-label={t("tools.eraser")}
-        aria-pressed={tool === "eraser" && !panMode}
+        aria-pressed={tool === "eraser"}
         onClick={() => selectTool("eraser")}
       >
         <Eraser size={iconSize} />
@@ -185,15 +180,6 @@ export default function DrawPage({
         onClick={undo}
       >
         <Undo2 size={iconSize} />
-      </button>
-      <button
-        type="button"
-        className={`icon-btn${panMode ? " is-active" : ""}`}
-        aria-label={t("tools.move")}
-        aria-pressed={panMode}
-        onClick={() => setPanMode((p) => !p)}
-      >
-        <Move size={iconSize} />
       </button>
     </>
   );
@@ -283,12 +269,37 @@ export default function DrawPage({
         tool={tool}
         color={color}
         size={size}
-        inputDisabled={panMode || mode !== "draw"}
+        inputDisabled={mode !== "draw"}
         onStrokeEnd={addStroke}
       />
       {strokes.length === 0 && (
         <div className="draw-canvas-hint t-label">{t("canvasHint")}</div>
       )}
+
+      {/* Mobil: co se týká celé kresby, plave nad ní — a neubírá výšku liště.
+          Náhled schová kartu nástrojů, takže tohle je jediná cesta zpátky. */}
+      <div className="only-mobile">
+        <div className="canvas-tools">
+          <button
+            type="button"
+            className="canvas-tool"
+            aria-label={t("tools.undo")}
+            disabled={history.length === 0}
+            onClick={undo}
+          >
+            <Undo2 size={18} />
+          </button>
+          <button
+            type="button"
+            className={`canvas-tool${previewMode ? " is-active" : ""}`}
+            aria-label={t("tools.preview")}
+            aria-pressed={previewMode}
+            onClick={() => setPreviewMode((p) => !p)}
+          >
+            {previewMode ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+          </button>
+        </div>
+      </div>
 
       {/* Desktop: plovoucí ostrůvek s pojmem + lišta dole (wireframe 1 desktop) */}
       <div className="only-desktop">
@@ -415,7 +426,11 @@ export default function DrawPage({
 
       {canvas}
 
-      {/* Mobil: karta nástrojů + odeslání (skrytá v náhledu) */}
+      {/* Mobil: karta nástrojů + odeslání (skrytá v náhledu).
+          Dva řádky místo tří — velikost stopy sedí mezi gumou a štětcem,
+          protože všechny tři určují, jak vypadá tah. Co se týká celé kresby
+          (zpět, náhled), plave v rohu plátna; co ji uzavírá (smazat, odeslat),
+          je v patce. Ušetřená výška jde plátnu. */}
       <div className="only-mobile">
         {!previewMode && (
           <div className="draw-toolcard">
@@ -424,33 +439,38 @@ export default function DrawPage({
               <div className="swatch-row-colors">{swatches(recent)}</div>
             </div>
             <div className="draw-toolcard-divider" />
-            <div className="tool-row">
-              {toolButtons(20)}
-              <span className="spacer" />
-              {trashSeparator}
-              {trashButton(20)}
-            </div>
-            <div className="size-row">
-              <span className="size-dot-min" />
-              {sizeSlider}
-              <span className="size-dot-max" />
+            <div className="stroke-row">
+              <button
+                type="button"
+                className={`icon-btn${tool === "eraser" ? " is-active" : ""}`}
+                aria-label={t("tools.eraser")}
+                aria-pressed={tool === "eraser"}
+                onClick={() => selectTool("eraser")}
+              >
+                <Eraser size={20} />
+              </button>
+              <div className="size-row">
+                <span className="size-dot-min" />
+                {sizeSlider}
+                <span className="size-dot-max" />
+              </div>
+              <button
+                type="button"
+                className={`icon-btn${tool === "brush" ? " is-active" : ""}`}
+                aria-label={t("tools.brush")}
+                aria-pressed={tool === "brush"}
+                onClick={() => selectTool("brush")}
+              >
+                <Brush size={20} />
+              </button>
             </div>
           </div>
         )}
         <div className="draw-footer">
+          {trashButton(20)}
           <Button size="lg" onClick={startSubmit}>
             {t("send")}
           </Button>
-          <button
-            type="button"
-            className={`icon-btn${previewMode ? " is-active" : ""}`}
-            style={{ width: 48, height: 48 }}
-            aria-label={t("tools.preview")}
-            aria-pressed={previewMode}
-            onClick={() => setPreviewMode((p) => !p)}
-          >
-            <Eye size={20} />
-          </button>
         </div>
       </div>
 

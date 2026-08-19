@@ -77,6 +77,22 @@ rozhraní se vědomě nestavělo.
   za 1,2 s). Animace se proto nerozběhne a plátno zůstane prázdné — není to
   chyba kódu. Přehrání se musí zkoušet v běžném prohlížeči.
 
+### Přidáno 2026-08-19 (mobilní plátno)
+
+- **Šipkové tlačítko `panMode` odstraněno** — jen vypínalo kreslení, žádný posun
+  ani zoom v kódu nebyl. Pozůstatek wireframu. S ním i klíče `tools.move`
+  a `tools.zoom` z překladů.
+- **Lišta nástrojů má dva řádky místo tří:** barvy, pak guma — posuvník — štětec.
+  Karta měří 123 px, plátno 515 px při 375×812.
+- **Zpět a náhled plavou v rohu plátna** (36 px ikony), náhled má
+  `Maximize2`/`Minimize2` místo oka. Náhled přidá plátnu 147 px.
+- **Patka:** Smazat jako čtverec 54 × 54 vlevo, Odeslat vyplní zbytek.
+  Sdílená proměnná `--footer-control` — `aspect-ratio` ve flex řádku nefunguje,
+  šířka se vyřeší dřív, než se výška roztáhne.
+- **Štítek obtížnosti na střed** — `.badge` má `align-self: flex-start`, což
+  přebíjelo `align-items: center` na kontejneru. A stejný zlatý štítek je teď
+  i na výběru pojmu, kde byla obtížnost jen textem.
+
 ### Přidáno 2026-08-19 (knihovna kreseb)
 
 - **Prázdné dlaždice v „Moje" byly rozepsané kresby.** `my_drawings()` je teď

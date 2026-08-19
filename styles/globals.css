@@ -416,6 +416,10 @@ a {
   min-width: 0;
 }
 
+.draw-concept .badge {
+  align-self: center;
+}
+
 .draw-concept-name {
   font-family: var(--font-display), sans-serif;
   font-weight: var(--weight-display);
@@ -573,6 +577,8 @@ a {
 }
 
 .draw-footer {
+  /* Jedna výška pro obě tlačítka — nemůžou se rozejít. */
+  --footer-control: 54px;
   padding: 0 12px 14px;
   display: flex;
   gap: 10px;
@@ -581,6 +587,19 @@ a {
 
 .draw-footer .btn {
   flex: 1;
+  order: 2;
+  height: var(--footer-control);
+  padding-block: 0;
+}
+
+/* Smazat je čtverec ve stejné výšce jako Odeslat. `aspect-ratio` tu nestačí:
+   ve flex řádku se šířka vyřeší dřív, než se výška roztáhne, a tlačítko
+   zůstane úzké. Proto obojí ze stejné proměnné. */
+.draw-footer .icon-btn {
+  order: 1;
+  flex: none;
+  width: var(--footer-control);
+  height: var(--footer-control);
 }
 
 /* Plovoucí prvky — desktop a tablet */
@@ -1842,4 +1861,64 @@ a {
     flex-direction: row;
     justify-content: flex-end;
   }
+}
+
+/* ---------- Plátno: řádek stopy a plovoucí nástroje (mobil) ---------- */
+
+/* Guma — velikost — štětec. Všechny tři určují, jak vypadá tah, takže patří
+   do jednoho řádku; posuvník si vezme, co zbude. */
+.stroke-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stroke-row .size-row {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Zpět a náhled se týkají celé kresby, ne štětce — proto plavou nad plátnem
+   a neubírají výšku liště nástrojů. */
+.canvas-tools {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+
+.canvas-tool {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  color: var(--text-secondary);
+}
+
+.canvas-tool:disabled {
+  opacity: 0.4;
+}
+
+.canvas-tool.is-active {
+  background: var(--action-primary);
+  border-color: var(--action-primary);
+  color: var(--text-on-action);
+}
+
+/* Obtížnost na kartě pojmu — štítek a kredit vedle sebe. */
+.pick-card-tags {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pick-card-tags .t-label-sm {
+  color: var(--text-secondary);
 }
