@@ -99,18 +99,23 @@ export async function submitDrawing(
   drawingId: string,
   strokes: readonly Stroke[],
   undoCount: number,
+  /** Poměr plátna, na kterém kresba vznikla — bez něj se u ostatních roztáhne. */
+  aspect: number,
 ): Promise<void> {
   const { error } = await createClient().rpc("submit_drawing", {
     p_drawing_id: drawingId,
     p_device_kind: dominantDevice(strokes),
     p_undo_count: undoCount,
     p_strokes: strokesToPayload(strokes),
+    p_aspect: aspect,
   });
   if (error) throw new SubmitError(refusalFrom(error.message ?? ""), error.message ?? "");
 }
 
 export interface MyDrawing {
   drawingId: string;
+  /** Poměr plátna, na kterém kresba vznikla. */
+  aspect: number;
   prompt: string;
   difficulty: 1 | 2 | 3;
   status: string;
@@ -138,6 +143,7 @@ export async function fetchMyDrawings(): Promise<MyDrawing[]> {
     solvedCount: r.solved_count as number,
     thumbsCount: r.thumbs_count as number,
     stars: r.stars as number,
+    aspect: (r.aspect as number) ?? 0.68,
     createdAt: r.created_at as string,
   }));
 }
@@ -190,6 +196,8 @@ export interface FeedDrawing {
   authorName: string;
   solvedCount: number;
   thumbsCount: number;
+  /** Poměr plátna, na kterém kresba vznikla. */
+  aspect: number;
   strokes: Stroke[];
 }
 
@@ -204,6 +212,7 @@ export async function fetchNextDrawing(): Promise<FeedDrawing | null> {
     authorName: row.author_name as string,
     solvedCount: row.solved_count as number,
     thumbsCount: row.thumbs_count as number,
+    aspect: (row.aspect as number) ?? 0.68,
     strokes: (row.strokes as Record<string, unknown>[]).map((s) =>
       strokeFromPayload({
         tool: s.tool as string,

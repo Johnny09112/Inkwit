@@ -65,6 +65,9 @@ export default function DrawPage({
   const [undoCount, setUndoCount] = useState(0);
   const [confirmClear, setConfirmClear] = useState(false);
   const [leaveAsk, setLeaveAsk] = useState(false);
+  // Tvar kreslicí plochy. Plátno ho hlásí, odesílá se s kresbou a bez něj by
+  // se kresba u ostatních roztáhla na tvar jejich obrazovky.
+  const [aspect, setAspect] = useState(0.68);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
 
@@ -129,7 +132,7 @@ export default function DrawPage({
     setSending(true);
     setSendError(null);
     try {
-      await submitDrawing(drawingId, strokes, undoCount);
+      await submitDrawing(drawingId, strokes, undoCount, aspect);
       setMode("done");
     } catch (err) {
       // Trvalé odmítnutí (kresba přes strop) se musí říct jinak než výpadek sítě —
@@ -274,6 +277,7 @@ export default function DrawPage({
         size={size}
         inputDisabled={mode !== "draw"}
         onStrokeEnd={addStroke}
+        onAspectChange={setAspect}
       />
       {strokes.length === 0 && (
         <div className="draw-canvas-hint t-label">{t("canvasHint")}</div>
@@ -490,6 +494,7 @@ export default function DrawPage({
         <SubmitFlow
           step={mode}
           strokes={strokes}
+          aspect={aspect}
           credit={draft?.difficulty ?? 1}
           busy={sending}
           error={sendError}

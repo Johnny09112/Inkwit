@@ -21,10 +21,13 @@ export function StrokePlayback({
   strokes,
   playing,
   onEnd,
+  aspect,
 }: {
   strokes: readonly Stroke[];
   playing: boolean;
   onEnd?: () => void;
+  /** Tvar kresby. Bez něj se roztáhne na tvar plochy, do které se kreslí. */
+  aspect?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [progress, setProgress] = useState(1);
@@ -47,7 +50,7 @@ export function StrokePlayback({
     canvas.height = Math.max(1, Math.round(rect.height * dpr));
 
     if (!playing) {
-      renderStrokes(ctx, strokes, canvas.width, canvas.height);
+      renderStrokes(ctx, strokes, canvas.width, canvas.height, { aspect });
       setProgress(1);
       return;
     }
@@ -77,7 +80,7 @@ export function StrokePlayback({
         cursor += dur + GAP_MS;
       }
 
-      renderStrokes(ctx, shown, canvas.width, canvas.height);
+      renderStrokes(ctx, shown, canvas.width, canvas.height, { aspect });
 
       if (elapsed < total) {
         raf = requestAnimationFrame(frame);
@@ -89,7 +92,7 @@ export function StrokePlayback({
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playing, strokes]);
+  }, [playing, strokes, aspect]);
 
   return (
     <>

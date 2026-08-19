@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import {
   BASE_WIDTH,
   deviceTypeFrom,
+  fitBox,
   renderStrokes,
   roundCoord,
   type Stroke,
@@ -39,6 +40,11 @@ interface DrawingCanvasProps {
   /** Náhled a potvrzovací krok: kreslení vypnuté. */
   inputDisabled?: boolean;
   onStrokeEnd: (stroke: Stroke) => void;
+  /**
+   * Poměr kreslicí plochy. Rodič ho potřebuje k odeslání — bez něj se kresba
+   * u ostatních roztáhne. Hlásí se, kdykoli se změní (do prvního tahu).
+   */
+  onAspectChange?: (aspect: number) => void;
 }
 
 export function DrawingCanvas({
@@ -48,12 +54,30 @@ export function DrawingCanvas({
   size,
   inputDisabled = false,
   onStrokeEnd,
+  onAspectChange,
 }: DrawingCanvasProps) {
   const t = useTranslations("draw");
   const format = useFormatter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const activeStroke = useRef<Stroke | null>(null);
   const strokeStartTime = useRef(0);
+
+  /**
+   * Tvar kreslicí plochy. Dokud je plátno prázdné, sleduje rozměr prvku —
+   * kdo si před kreslením rozbalí plátno, dostane celou plochu. **Prvním tahem
+   * se zamkne**, takže pozdější rozbalení kresbu nedeformuje: mění se velikost
+   * výřezu, ne jeho tvar.
+   */
+  const [aspect, setAspect] = useState<number | null>(null);
+  const aspectRef = useRef<number | null>(null);
+  aspectRef.current = aspect;
+
+  // Sledovač rozměrů se navěšuje jen jednou, takže si aktuální tahy i obsluhu
+  // musí brát z refu — v uzávěru by mu zůstaly ty z prvního renderu.
+  const strokesRef = useRef(strokes);
+  strokesRef.current = strokes;
+  const onAspectRef = useRef(onAspectChange);
+  onAspectRef.current = onAspectChange;
 
   const [view, setView] = useState<View>(IDENTITY);
   // Gesta běží mimo React — zápis stavu na každý pohyb prstu by překresloval
@@ -83,9 +107,17 @@ export function DrawingCanvas({
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(dpr * scale, 0, 0, dpr * scale, dpr * tx, dpr * ty);
 
+    // Kreslicí plocha se odliší od okolí. Dokud se tvar shoduje s prvkem, je
+    // to celé plátno a nic vidět není; po rozbalení je poznat, kam se kreslí.
+    const box = fitBox(cssWidth, cssHeight, aspectRef.current ?? undefined);
+    const styl = getComputedStyle(canvas);
+    ctx.fillStyle = styl.getPropertyValue("--surface-canvas").trim() || "#FFFCF5";
+    ctx.fillRect(box.x, box.y, box.width, box.height);
+
     const live = activeStroke.current;
     renderStrokes(ctx, live ? [...strokes, live] : strokes, cssWidth, cssHeight, {
       clear: false,
+      aspect: aspectRef.current ?? undefined,
     });
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }, [strokes]);
@@ -102,6 +134,16 @@ export function DrawingCanvas({
       const dpr = window.devicePixelRatio || 1;
       canvas.width = Math.max(1, Math.round(rect.width * dpr));
       canvas.height = Math.max(1, Math.round(rect.height * dpr));
+
+      // Dokud je plátno prázdné, tvar sleduje prvek. Prvním tahem se zamkne.
+      if (strokesRef.current.length === 0 && rect.width > 0 && rect.height > 0) {
+        const novy = rect.width / rect.height;
+        if (aspectRef.current !== novy) {
+          aspectRef.current = novy;
+          setAspect(novy);
+          onAspectRef.current?.(novy);
+        }
+      }
       // Po změně rozměrů může být dosavadní posun mimo — třeba po otočení
       // telefonu na šířku.
       setView((v) => {
@@ -121,17 +163,26 @@ export function DrawingCanvas({
 
   useEffect(() => {
     redraw();
-  }, [redraw, view]);
+  }, [redraw, view, aspect]);
 
   const localPoint = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
-  /** Bod pod prstem v poměrných souřadnicích plátna, přes inverzi výřezu. */
+  /**
+   * Bod pod prstem v poměrných souřadnicích KRESBY — přes inverzi výřezu
+   * a pak vůči vepsanému obdélníku, ne vůči celému prvku. Mimo kresbu se
+   * souřadnice ořízne, aby se nedalo kreslit do prázdného okraje.
+   */
   const pointFromEvent = (e: React.PointerEvent<HTMLCanvasElement>): StrokePoint => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const p = toCanvasPoint(viewRef.current, localPoint(e), rect.width, rect.height);
+    const vPrvku = toCanvasPoint(viewRef.current, localPoint(e), 1, 1);
+    const box = fitBox(rect.width, rect.height, aspectRef.current ?? undefined);
+    const p = {
+      x: Math.min(1, Math.max(0, (vPrvku.x - box.x) / box.width)),
+      y: Math.min(1, Math.max(0, (vPrvku.y - box.y) / box.height)),
+    };
     // Zaokrouhlení až tady, při záznamu — ztracenou přesnost už nikdy nepotřebujeme
     // a plná plovoucí přesnost je na drátě 2,8× dražší (viz memory/decisions).
     return {
@@ -182,7 +233,13 @@ export function DrawingCanvas({
       // Velikost vztažená k referenční šířce, aby tahy seděly na všech displejích.
       // Dělí se i přiblížením: štětec má pod prstem pořád stejnou tloušťku,
       // takže přiblížení je cesta ke kreslení detailů.
-      size: (size * BASE_WIDTH) / (e.currentTarget.getBoundingClientRect().width * viewRef.current.scale),
+      // Vztaženo k šířce KRESBY, ne prvku — tak to počítá i vykreslování.
+      size: (size * BASE_WIDTH) /
+        (fitBox(
+          e.currentTarget.getBoundingClientRect().width,
+          e.currentTarget.getBoundingClientRect().height,
+          aspectRef.current ?? undefined,
+        ).width * viewRef.current.scale),
       device: deviceTypeFrom(e.pointerType),
       startedAt: Date.now(),
       points: [pointFromEvent(e)],

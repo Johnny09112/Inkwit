@@ -77,6 +77,16 @@ rozhraní se vědomě nestavělo.
   za 1,2 s). Animace se proto nerozběhne a plátno zůstane prázdné — není to
   chyba kódu. Přehrání se musí zkoušet v běžném prohlížeči.
 
+### Opraveno 2026-08-20 (kresba měnila tvar)
+
+- **Kresba se roztahovala podle plochy, do které se vykreslila** — body se
+  mapovaly na každou osu zvlášť. V hádání byla o 29 % širší než při kreslení,
+  ve čtvercovém náhledu dvakrát. Netýkalo se to jen rozbalení plátna.
+- **Kresba si teď nese poměr** (`drawings.aspect`) a všude se do něj vepisuje
+  přes `fitBox()`. Tvar se zamyká prvním tahem.
+- Dosavadní kresby mají odhad **0,68** — poměr zpětně dopočítat nejde.
+  Viz `bugs/kresba-se-roztahovala-podle-plochy.md`.
+
 ### Přidáno 2026-08-19 (obrazovka po uhodnutí)
 
 - **Uhodnutí se pozná animací** — pojem přijede, hvězdičky naskočí po sobě,

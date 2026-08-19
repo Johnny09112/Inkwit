@@ -108,7 +108,11 @@ export default function MinePage() {
               aria-label={t("detailTitle")}
               onClick={() => setOpenId(d.drawingId)}
             >
-              <DrawingThumb strokes={strokes.get(d.drawingId)} label={d.prompt} />
+              <DrawingThumb
+                strokes={strokes.get(d.drawingId)}
+                aspect={d.aspect}
+                label={d.prompt}
+              />
               <div className="mine-item-name">{d.prompt}</div>
               <div className="mine-item-meta">
                 {d.solvedCount > 0

@@ -15,6 +15,8 @@ import { renderStrokes, type Stroke } from "@/lib/strokes";
 interface SubmitFlowProps {
   step: "confirm" | "done";
   strokes: readonly Stroke[];
+  /** Tvar kresby — náhled v okně by ji jinak roztáhl. */
+  aspect?: number;
   credit: number;
   /** Odesílá se právě teď — tlačítko musí zůstat neaktivní. */
   busy?: boolean;
@@ -26,7 +28,7 @@ interface SubmitFlowProps {
   onGoGuess: () => void;
 }
 
-function StrokePreview({ strokes }: { strokes: readonly Stroke[] }) {
+function StrokePreview({ strokes, aspect }: { strokes: readonly Stroke[]; aspect?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -37,7 +39,7 @@ function StrokePreview({ strokes }: { strokes: readonly Stroke[] }) {
     const dpr = window.devicePixelRatio || 1;
     canvas.width = Math.max(1, Math.round(rect.width * dpr));
     canvas.height = Math.max(1, Math.round(rect.height * dpr));
-    renderStrokes(ctx, strokes, canvas.width, canvas.height);
+    renderStrokes(ctx, strokes, canvas.width, canvas.height, { aspect });
   }, [strokes]);
 
   return (
@@ -51,6 +53,7 @@ function StrokePreview({ strokes }: { strokes: readonly Stroke[] }) {
 export function SubmitFlow({
   step,
   strokes,
+  aspect,
   credit,
   busy = false,
   error = null,
@@ -69,7 +72,7 @@ export function SubmitFlow({
             <Badge tone="accent">{t("chip")}</Badge>
             <h2 className="modal-title">{t("title")}</h2>
             <div className="hatch" style={{ position: "relative", overflow: "hidden" }}>
-              <StrokePreview strokes={strokes} />
+              <StrokePreview strokes={strokes} aspect={aspect} />
               {strokes.length === 0 && (
                 <span className="t-label">{t("preview")}</span>
               )}

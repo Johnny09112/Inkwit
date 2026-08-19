@@ -207,6 +207,7 @@ export default function GuessPage() {
         <div className={`guess-art${phase === "solved" ? " is-solved" : ""}`}>
           <StrokePlayback
             strokes={drawing.strokes}
+            aspect={drawing.aspect}
             playing={playing}
             onEnd={() => setPlaying(false)}
           />

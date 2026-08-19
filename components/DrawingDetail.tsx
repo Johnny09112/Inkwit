@@ -69,6 +69,7 @@ export function DrawingDetail({
         <div className="detail-art">
           <StrokePlayback
             strokes={strokes ?? []}
+            aspect={drawing.aspect}
             playing={playing}
             onEnd={() => setPlaying(false)}
           />

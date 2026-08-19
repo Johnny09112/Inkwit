@@ -51,6 +51,24 @@ export function deviceTypeFrom(pointerType: string): DeviceType {
   return "unknown";
 }
 
+/**
+ * Vepíše obdélník daného tvaru do plochy a vystředí ho — jako `object-fit:
+ * contain`. Když tvar nedodá volající, vrátí celou plochu.
+ */
+export function fitBox(
+  width: number,
+  height: number,
+  aspect?: number,
+): { x: number; y: number; width: number; height: number } {
+  if (!aspect || !Number.isFinite(aspect) || aspect <= 0) {
+    return { x: 0, y: 0, width, height };
+  }
+  const podleSirky = width / aspect <= height;
+  const w = podleSirky ? width : height * aspect;
+  const h = podleSirky ? width / aspect : height;
+  return { x: (width - w) / 2, y: (height - h) / 2, width: w, height: h };
+}
+
 /** Překreslí všechny tahy. Uniformní štětec — bez tlaku pera (férovost). */
 export function renderStrokes(
   ctx: CanvasRenderingContext2D,
@@ -61,10 +79,24 @@ export function renderStrokes(
    * Plátno si při přiblížení čistí samo — `clearRect` se totiž řídí aktuální
    * transformací, takže by při posunutém výřezu smazalo jen jeho část.
    */
-  options?: { clear?: boolean },
+  options?: {
+    clear?: boolean;
+    /**
+     * Poměr šířka/výška plátna, na kterém kresba vznikla. Kresba se do plochy
+     * **vepíše** v tomhle tvaru a vystředí — jinak by se roztáhla, protože
+     * souřadnice jsou poměrné ke každé ose zvlášť.
+     *
+     * Bez něj se použije tvar plochy, tedy dosavadní chování „vyplň vše".
+     */
+    aspect?: number;
+  },
 ): void {
   if (options?.clear !== false) ctx.clearRect(0, 0, width, height);
-  const scale = width / BASE_WIDTH;
+
+  const box = fitBox(width, height, options?.aspect);
+  // Tloušťka tahu se řídí šířkou kresby, ne plochy — jinak by tah v úzkém
+  // výřezu zesílil, i když kresba zůstala stejná.
+  const scale = box.width / BASE_WIDTH;
 
   for (const stroke of strokes) {
     if (stroke.points.length === 0) continue;
@@ -76,13 +108,15 @@ export function renderStrokes(
     ctx.lineJoin = "round";
     ctx.beginPath();
     const [first, ...rest] = stroke.points;
-    ctx.moveTo(first.x * width, first.y * height);
+    const px = (p: StrokePoint) => box.x + p.x * box.width;
+    const py = (p: StrokePoint) => box.y + p.y * box.height;
+    ctx.moveTo(px(first), py(first));
     if (rest.length === 0) {
       // Tečka — čára nulové délky se s lineCap: round vykreslí jako kruh
-      ctx.lineTo(first.x * width + 0.01, first.y * height);
+      ctx.lineTo(px(first) + 0.01, py(first));
     }
     for (const p of rest) {
-      ctx.lineTo(p.x * width, p.y * height);
+      ctx.lineTo(px(p), py(p));
     }
     ctx.stroke();
   }

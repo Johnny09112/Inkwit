@@ -414,7 +414,7 @@ async function main() {
     { tool: "brush", color: "#2B261F", width: 14, points: [0.2, 0.2, 0, 0.6, 0.5, 10] },
     { tool: "brush", color: "#B5462F", width: 8, points: [0.3, 0.3, 0, 0.4, 0.4, 20] },
   ]);
-  await db.query(`select public.submit_drawing('${draftId}', 'pen', 3, $1::jsonb)`, [strokes]);
+  await db.query(`select public.submit_drawing('${draftId}', 'pen', 3, $1::jsonb, 0.75)`, [strokes]);
 
   await db.exec("reset role");
   const saved = (
@@ -423,6 +423,12 @@ async function main() {
                     from public.drawings where id = '${draftId}'`)
   ).rows[0];
   report(saved.status === "live", "po odeslání je kresba živá", saved.status);
+
+  // Bez poměru se kresba u ostatních roztáhne na tvar jejich obrazovky.
+  const tvar = (
+    await db.query(`select aspect from public.drawings where id = '${draftId}'`)
+  ).rows[0].aspect;
+  report(Math.abs(tvar - 0.75) < 1e-6, "poměr plátna se uložil", String(tvar));
 
   // Strop bodů se počítal třikrát menší, než říká konfigurace: `v_points` už
   // jsou body, ale výraz je znovu násobil třemi. Na 120Hz tabletu se dala
@@ -445,7 +451,7 @@ async function main() {
       await db.exec("savepoint strop");
       try {
         const id = (await db.query(`select public.start_drawing('${conceptPes}') id`)).rows[0].id;
-        await db.query(`select public.submit_drawing('${id}', 'touch', 0, $1::jsonb)`, [
+        await db.query(`select public.submit_drawing('${id}', 'touch', 0, $1::jsonb, 0.68)`, [
           tahSBody(bodu),
         ]);
         return "ok";
@@ -509,7 +515,7 @@ async function main() {
         `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
       );
       const id = (await db.query(`select public.start_drawing('${conceptKocka}') as id`)).rows[0].id;
-      await db.query(`select public.submit_drawing('${id}', 'mouse', 0, $1::jsonb)`, [strokesJson]);
+      await db.query(`select public.submit_drawing('${id}', 'mouse', 0, $1::jsonb, 0.68)`, [strokesJson]);
     } catch {
       threw = true;
     }
@@ -818,7 +824,7 @@ async function main() {
     `set local role authenticated; select set_config('request.jwt.claim.sub', '${BOB}', true);`,
   );
   await db.query(
-    `select public.submit_drawing('${rd}', 'mouse', 0, '[{"tool":"brush","color":"#000","width":5,"points":[0.1,0.1,0,0.4,0.4,50]}]'::jsonb)`,
+    `select public.submit_drawing('${rd}', 'mouse', 0, '[{"tool":"brush","color":"#000","width":5,"points":[0.1,0.1,0,0.4,0.4,50]}]'::jsonb, 0.68)`,
   );
   await db.exec("reset role");
 
@@ -872,6 +878,14 @@ async function main() {
     await db.query(`select public.report_drawing('${LIVE}', 'test') as ok`)
   ).rows[0].ok;
   report(rep1 === true, "nahlášení projde");
+
+  // Poměr musí dojít i k hádajícímu, jinak ho vykreslí do tvaru své obrazovky.
+  const feed = (await db.query("select * from public.next_drawing()")).rows[0];
+  report(
+    feed && typeof feed.aspect === "number" && feed.aspect > 0,
+    "hádající dostane poměr kresby",
+    feed ? String(feed.aspect) : "prázdný feed",
+  );
 
   // Důvod je poprvé text od uživatele („jiné" v dialogu), takže potřebuje strop.
   // Hlásí BOB, ne ALICE — dvojice kresba+člověk je unikátní a Alicino hlášení

@@ -13,9 +13,12 @@ import { renderStrokes, type Stroke } from "@/lib/strokes";
 export function DrawingThumb({
   strokes,
   label,
+  aspect,
 }: {
   strokes: readonly Stroke[] | undefined;
   label: string;
+  /** Tvar kresby — náhled je čtvercový, takže bez něj by se roztáhla. */
+  aspect?: number;
 }) {
   const ref = useRef<HTMLCanvasElement>(null);
 
@@ -27,8 +30,8 @@ export function DrawingThumb({
     const dpr = window.devicePixelRatio || 1;
     canvas.width = Math.max(1, Math.round(rect.width * dpr));
     canvas.height = Math.max(1, Math.round(rect.height * dpr));
-    renderStrokes(ctx, strokes, canvas.width, canvas.height);
-  }, [strokes]);
+    renderStrokes(ctx, strokes, canvas.width, canvas.height, { aspect });
+  }, [strokes, aspect]);
 
   if (!strokes) return <div className="hatch thumb" aria-hidden="true" />;
 
