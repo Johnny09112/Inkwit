@@ -57,3 +57,18 @@ default deny u tajných tabulek (`concepts`, `concept_locales`, `concept_answers
 
 `security_definer_view` u `feed_drawings` je taky záměr — pohled musí obejít RLS
 nad `drawings`, jinak nevrátí nikdy nic. Hlídá to test na seznam sloupců, ne komentář.
+
+## Které nálezy advisoru jsou trvalý záměr
+
+Po krocích C1/C2 hlásí advisor tyhle věci a **žádná se neopravuje**:
+
+| Nález | Proč je to v pořádku |
+|---|---|
+| `rls_enabled_no_policy` u `concepts`, `concept_locales`, `concept_answers`, `profile_trust`, `invites`, `invite_redemptions` | Default deny je u tajných tabulek účel, ne opomenutí |
+| `security_definer_view` u `feed_drawings` | Musí obejít RLS nad `drawings`, jinak nevrátí nic. Hlídá to test na seznam sloupců |
+| `authenticated … execute` u `offer_concepts`, `start_drawing`, `submit_drawing` | **Tohle JE API hry.** Klient je volat musí — jsou to jediné dveře k datům, ke kterým nemá přímý přístup |
+| `anon … execute` u `display_name_available` | Volá se při registraci, kdy uživatel ještě přihlášený není |
+
+Rozdíl proti `private.*` funkcím: ty jsou stavební kameny politik a klient je volat
+nemá. Tyhle jsou naopak rozhraní. **Kritérium: volá to prohlížeč záměrně?**
+Ano → `public`. Ne → `private`.

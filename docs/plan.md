@@ -91,7 +91,7 @@ sahat na zakládání účtů, což je nejcitlivější místo schématu.
 **Účel:** bez přijímaných tvarů je hra v češtině nehratelná. Není to
 programování, je to kurátorská práce — a je jí víc, než se zdá.
 
-- `[~] B1` **Sada konceptů — návrh hotový, čeká na projetí majitelem.**
+- `[x] B1` **Sada konceptů — odsouhlaseno a nasazeno** (120 konceptů v databázi).
   120 pojmů v `supabase/seed/concepts.json`: 58 snadných, 40 středních, 22 těžkých,
   v šesti kategoriích. Jen jednojazyčné: `zámek`, `trapas`, `štěstí`.
 - `[~] B2` **Přijímané tvary CZ** — 437 tvarů v návrhu. Plné skloňování tam
@@ -130,11 +130,23 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
   **Jméno v profilu je unikátní** a volí si ho uživatel při registraci. Kontrola
   volnosti běží během psaní, unikátnost vynucuje databáze. Obsazené jméno
   pozvánku nespotřebuje — ověřeno testem i naostro.
-- `[ ] C1` **Nabídka tří konceptů ze serveru**, s předností vyžádaných (blok E).
-- `[ ] C2` **Uložení kresby a tahů.** Klient posílá vektory, **server nevěří
-  ničemu** — ani časům tahů. Body jako **ploché pole** `[x,y,t,…]` + encode/decode
-  helper v `lib/strokes.ts` (zaokrouhlení na 4 des. místa už při záznamu je hotové).
-  *Kritérium:* podvržený `duration_ms` z klienta nemá vliv na uložená data.
+- `[x] C1` **Nabídka tří konceptů ze serveru** — RPC `offer_concepts()`.
+  Jeden koncept od každé obtížnosti, vyžádané mají přednost a je u nich vidět,
+  kdo čeká. Uvnitř tenanta jen `is_school_safe` (pravidlo 1). Nenabízí, co už
+  člověk kreslil; když dojdou, radši zopakuje než vrátí prázdno.
+  *Ověřeno:* 5 testů.
+- `[x] C2` **Uložení kresby a tahů** — RPC `start_drawing()` + `submit_drawing()`.
+  **Dva kroky schválně:** dobu kreslení tak měří server mezi založením a odesláním,
+  ne klient. Vedlejší efekt je přesně to, co chce krok F3 — událost „začal kreslit"
+  oddělená od „odeslal", tedy měřitelný drop-off.
+  Server počítá i počet tahů a pokrytí plátna z bounding boxu. Klientu zůstávají
+  jen tahy, typ zařízení a počet undo (metadata, u kterých se ničemu nevěří).
+  Stropy tahů a bodů jsou v `game_config`.
+  *Ověřeno:* 11 testů, včetně toho, že přímý zápis do `drawings` je klientu
+  odepřený — takže `duration_ms` nemá jak podvrhnout.
+
+  **Zbývá:** zapojit do aplikace (obrazovky Výběr pojmu a Plátno pořád jedou
+  na `lib/mock.ts`) a encode/decode helper plochého pole v `lib/strokes.ts`.
 - `[ ] C3` **Odvozený náhled.** Bitmapa jen do cache, nikdy jako zdroj pravdy
   (pravidlo 2). Potřeba pro feed a „Moje kresby".
 - `[ ] C4` **Moje kresby z reálných dat.** Autorovi se zobrazuje kolik lidí

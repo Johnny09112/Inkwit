@@ -122,14 +122,35 @@ if (problems.length) {
 }
 
 const q = (s) => "'" + s.replace(/'/g, "''") + "'";
-const out = ["-- Generováno z supabase/seed/concepts.json — needituj ručně.", "begin;", ""];
+const arr = (a) => "array[" + a.map(q).join(", ") + "]::text[]";
+
+const out = [
+  "-- Generováno z supabase/seed/concepts.json příkazem",
+  "--   node supabase/seed/check-concepts.mjs --sql > supabase/migrations/<ts>_seed_concepts.sql",
+  "-- Needituj ručně. Klíčem je slug, takže opakované nasazení je bezpečné.",
+  "",
+];
+
 for (const c of concepts) {
   out.push(
-    `insert into public.concepts (id, difficulty, category, is_cross_language, is_school_safe)`,
-    `values (gen_random_uuid(), ${c.difficulty}, ${q(c.category)}, ${c.crossLanguage}, ${c.schoolSafe})`,
-    `on conflict do nothing;`,
-    ``,
+    `insert into public.concepts (slug, difficulty, category, is_cross_language, is_school_safe)`,
+    `values (${q(c.id)}, ${c.difficulty}, ${q(c.category)}, ${c.crossLanguage}, ${c.schoolSafe})`,
+    `on conflict (slug) do update set difficulty = excluded.difficulty,`,
+    `  category = excluded.category, is_cross_language = excluded.is_cross_language,`,
+    `  is_school_safe = excluded.is_school_safe;`,
   );
+  for (const loc of LOCALES) {
+    const l = c[loc];
+    out.push(
+      `insert into public.concept_locales (concept_id, locale, prompt)`,
+      `select id, ${q(loc)}, ${q(l.prompt)} from public.concepts where slug = ${q(c.id)}`,
+      `on conflict (concept_id, locale) do update set prompt = excluded.prompt;`,
+      `insert into public.concept_answers (concept_id, locale, accepted)`,
+      `select id, ${q(loc)}, ${arr(l.accepted)} from public.concepts where slug = ${q(c.id)}`,
+      `on conflict (concept_id, locale) do update set accepted = excluded.accepted;`,
+    );
+  }
+  out.push("");
 }
-out.push("commit;");
+
 console.log(out.join("\n"));

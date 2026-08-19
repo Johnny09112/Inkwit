@@ -61,7 +61,7 @@ insert into public.tenants (id, kind, name, owner_id, join_code)
   values ('${SCHOOL}', 'school', 'ZŠ Testov', '${BOB}', 'ABC123');
 update public.profiles set tenant_id = '${SCHOOL}' where id = '${PUPIL}';
 
-insert into public.concepts (id, difficulty, category) values ('${CONCEPT}', 1, 'zvíře');
+insert into public.concepts (id, slug, difficulty, category) values ('${CONCEPT}', 'testovaci-pojem', 1, 'zvire');
 insert into public.concept_locales values ('${CONCEPT}', 'cs', 'chobotnice', null);
 insert into public.concept_answers values ('${CONCEPT}', 'cs', array['chobotnice','chobotnici']);
 
@@ -344,6 +344,131 @@ async function main() {
   report(avail.rows[0].a === false && avail.rows[0].b === true,
     "kontrola volného jména odpovídá správně");
   await db.exec("rollback");
+
+  console.log("\nNabídka tří konceptů (kritérium C1):\n");
+
+  /** Spustí dotaz jako uživatel a vrátí řádky. */
+  async function rowsAs(userId, sql) {
+    await db.exec("begin");
+    try {
+      await db.exec(
+        `set local role authenticated; select set_config('request.jwt.claim.sub', '${userId}', true);`,
+      );
+      return (await db.query(sql)).rows;
+    } finally {
+      await db.exec("rollback");
+    }
+  }
+
+  const offer = await rowsAs(ALICE, "select * from public.offer_concepts()");
+  report(offer.length === 3, "nabídne přesně tři koncepty", `dostal ${offer.length}`);
+  report(
+    JSON.stringify(offer.map((r) => r.difficulty)) === "[1,2,3]",
+    "od každé obtížnosti jeden — volba je ventil pro toho, kdo neumí kreslit",
+    offer.map((r) => r.difficulty).join(","),
+  );
+  report(offer.every((r) => r.prompt && r.prompt.length > 0), "každý koncept má zadání v jazyce hráče");
+
+  // Vyžádaný koncept má přednost — jinak je vyžádání přání do prázdna.
+  await db.exec("begin");
+  await db.exec(`
+    insert into public.concept_requests (concept_id, requester_id, locale, expires_at)
+    select id, '${BOB}', 'cs', now() + interval '7 days'
+    from public.concepts where slug = 'kolotoc';
+    set local role authenticated;
+    select set_config('request.jwt.claim.sub', '${ALICE}', true);
+  `);
+  const withReq = (await db.query("select * from public.offer_concepts()")).rows;
+  await db.exec("rollback");
+  const requested = withReq.find((r) => r.requested_by !== null);
+  report(!!requested, "vyžádaný koncept se dostane do nabídky přednostně");
+  report(requested?.requested_by === "Bob", "u vyžádaného je vidět, kdo čeká", String(requested?.requested_by));
+
+  console.log("\nUložení kresby (kritérium C2):\n");
+
+  // Id konceptu si zjišťujeme jako server. Jako hráč to nejde — a je to
+  // správně, tabulka konceptů je pro klienta zavřená.
+  const conceptPes = (await db.query(`select id from public.concepts where slug = 'pes'`)).rows[0].id;
+  const conceptKocka = (await db.query(`select id from public.concepts where slug = 'kocka'`)).rows[0].id;
+
+  await db.exec("begin");
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+
+  const draftId = (await db.query(`select public.start_drawing('${conceptPes}') as id`)).rows[0].id;
+  report(!!draftId, "start_drawing založí rozepsanou kresbu");
+
+  const draftStatus = (
+    await db.query(`select status from public.drawings where id = '${draftId}'`)
+  ).rows[0].status;
+  report(draftStatus === "draft", "rozepsaná kresba má stav draft", draftStatus);
+
+  // Klient posílá jen tahy — žádné duration_ms, stroke_count ani coverage.
+  const strokes = JSON.stringify([
+    { tool: "brush", color: "#2B261F", width: 14, points: [0.2, 0.2, 0, 0.6, 0.5, 10] },
+    { tool: "brush", color: "#B5462F", width: 8, points: [0.3, 0.3, 0, 0.4, 0.4, 20] },
+  ]);
+  await db.query(`select public.submit_drawing('${draftId}', 'pen', 3, $1::jsonb)`, [strokes]);
+
+  const saved = (
+    await db.query(`select status, stroke_count, coverage, device_kind, undo_count,
+                           duration_ms, published_at is not null as publikovano
+                    from public.drawings where id = '${draftId}'`)
+  ).rows[0];
+  report(saved.status === "live", "po odeslání je kresba živá", saved.status);
+  report(saved.stroke_count === 2, "počet tahů spočítal server", String(saved.stroke_count));
+  report(
+    Math.abs(saved.coverage - 0.12) < 0.001,
+    "pokrytí plátna spočítal server z bounding boxu",
+    String(saved.coverage),
+  );
+  report(saved.device_kind === "pen", "typ zařízení uložen");
+  report(saved.duration_ms !== null && saved.duration_ms >= 0, "dobu kreslení změřil server");
+
+  const savedStrokes = (
+    await db.query(`select count(*)::int n from public.drawing_strokes where drawing_id = '${draftId}'`)
+  ).rows[0].n;
+  report(savedStrokes === 2, "tahy se uložily", String(savedStrokes));
+  await db.exec("rollback");
+
+  // Kritérium C2 doslova: klient nemá jak podvrhnout duration_ms, protože
+  // do tabulky vůbec nesmí zapsat.
+  await db.exec("begin");
+  let directInsert = false;
+  try {
+    await db.exec(
+      `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+    );
+    await db.exec(`insert into public.drawings (author_id, concept_id, source_locale, duration_ms)
+                   select '${ALICE}', id, 'cs', 999999 from public.concepts where slug = 'pes'`);
+  } catch {
+    directInsert = true;
+  }
+  await db.exec("rollback");
+  report(directInsert, "klient nezapíše kresbu napřímo, takže nepodvrhne ani dobu kreslení");
+
+  async function submitFails(name, strokesJson) {
+    await db.exec("begin");
+    let threw = false;
+    try {
+      await db.exec(
+        `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+      );
+      const id = (await db.query(`select public.start_drawing('${conceptKocka}') as id`)).rows[0].id;
+      await db.query(`select public.submit_drawing('${id}', 'mouse', 0, $1::jsonb)`, [strokesJson]);
+    } catch {
+      threw = true;
+    }
+    await db.exec("rollback");
+    report(threw, name);
+  }
+
+  await submitFails("kresba bez tahů neprojde", "[]");
+  await submitFails(
+    "tah s poškozenými body neprojde",
+    JSON.stringify([{ tool: "brush", color: "#000", width: 5, points: [0.1, 0.2] }]),
+  );
 
   console.log("\nLedger je append-only, ale nebrání smazání účtu:\n");
 
