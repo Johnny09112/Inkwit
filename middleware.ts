@@ -6,8 +6,16 @@ import { routing } from "./i18n/routing";
 
 const handleI18n = createMiddleware(routing);
 
-/** Cesty dostupné bez přihlášení. Všechno ostatní je herní obrazovka. */
-const PUBLIC_PATHS = ["/login", "/reset"];
+/**
+ * Cesty dostupné bez přihlášení. Všechno ostatní je herní obrazovka.
+ *
+ * `/playground` je vývojová obrazovka kreslicích komponent — v produkci ji
+ * stránka sama odmítne jako neexistující, tady se nepřidává vůbec.
+ */
+const PUBLIC_PATHS =
+  process.env.NODE_ENV === "development"
+    ? ["/login", "/reset", "/playground"]
+    : ["/login", "/reset"];
 
 /**
  * Odkud se přihlášený vyhazuje zpět do hry. `/reset` tu ZÁMĚRNĚ není —

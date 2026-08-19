@@ -769,6 +769,13 @@ a {
   bottom: 12px;
   z-index: 50;
   padding: 16px;
+  /* Strop a rolování jsou nutnost, ne kosmetika: s otevřeným kruhem je panel
+     přes 470 px vysoký a jakmile na iOS vyjede klávesnice (klepnutí do hexu),
+     tlačítko Uložit skončí pod ní. Bez rolování se k němu nedá dostat vůbec.
+     `dvh` proto, že `vh` na iOS klávesnici neregistruje. */
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   border-radius: var(--radius-xl);
   background: var(--surface-card);
   border: 1px solid var(--border-hairline);
@@ -794,7 +801,13 @@ a {
 
 .color-grid {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  /* `minmax(0, 1fr)`, ne `1fr`: výchozí minimální šířka stopy je `auto`, tedy
+     minimum obsahu. Se čtvercovými dlaždicemi uvnitř to stopy roztáhne a celá
+     mřížka vyjede vpravo mimo obrazovku. */
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  /* Bez `start` se dlaždice roztáhne na výšku řádku a `aspect-ratio` už nemá
+     odkud vzít výšku — vyjdou obdélníky. Takhle si výšku spočítá ze šířky. */
+  align-items: start;
   gap: 8px;
 }
 
@@ -1990,8 +2003,8 @@ textarea,
 }
 
 .wheel-preview {
-  width: 26px;
-  height: 26px;
+  width: 44px;
+  height: 44px;
   flex: none;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(43, 38, 31, 0.15);
@@ -2054,29 +2067,4 @@ textarea,
 
 /* ---------- Paleta ---------- */
 
-/* Křížek pro odebrání sedí v rohu barvy, takže potřebuje vlastní rámec. */
-.color-slot {
-  position: relative;
-  display: block;
-  aspect-ratio: 1;
-}
 
-.color-slot .swatch {
-  width: 100%;
-  height: 100%;
-}
-
-.color-remove {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  width: 18px;
-  height: 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-pill);
-  background: var(--danger);
-  color: var(--text-on-action);
-  box-shadow: 0 1px 3px rgba(43, 38, 31, 0.3);
-}

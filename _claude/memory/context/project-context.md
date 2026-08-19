@@ -77,6 +77,20 @@ rozhraní se vědomě nestavělo.
   za 1,2 s). Animace se proto nerozběhne a plátno zůstane prázdné — není to
   chyba kódu. Přehrání se musí zkoušet v běžném prohlížeči.
 
+### Opraveno 2026-08-19 (paleta, druhé kolo)
+
+- **Paleta vyjela mimo obrazovku** na iPhonu — obal dlaždic s `aspect-ratio`
+  roztáhl stopy mřížky. Obal pryč, stopy `minmax(0, 1fr)`, `align-items: start`.
+  Ověřeno na šířkách 320 až 1024.
+- **Na iPadu nešlo uložit barvu** — panel neměl strop výšky ani rolování, takže
+  tlačítko Uložit skončilo pod klávesnicí iOS bez cesty k němu.
+  Teď `max-height: calc(100dvh - 24px)` a `overflow-y: auto`.
+- **Ozubené kolečko odstraněno** i s režimem úprav. Barvu teď nejde odebrat,
+  jen nahradit u plné palety.
+- Ukázka vybrané barvy zvětšena z 26 na 44 px.
+- **Vznikla `/playground`** — vývojová obrazovka kreslicích komponent bez
+  přihlášení. Viz `patterns/vyvojova-obrazovka-playground.md`.
+
 ### Přidáno 2026-08-19 (paleta barev)
 
 - **Vlastní paleta se ukládá** (localStorage, 23 barev + tlačítko přidat = 8 × 3).

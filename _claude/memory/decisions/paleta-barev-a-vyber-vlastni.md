@@ -34,8 +34,10 @@ jako šipkové tlačítko na plátně.
 4. **Na umístění se ptáme, teprve když je paleta plná.** Majitel navrhoval
    vybrat místo pokaždé; to by přidalo krok i tam, kde je volno. Volné místo se
    obsadí samo, plná paleta si vyžádá výběr barvy k nahrazení.
-5. **Kolečko oživeno jako režim úprav** — v něm má každá barva křížek.
-   Poslední barva se odebrat nedá; prázdná paleta by se stejně vrátila na výchozí.
+5. **Ozubené kolečko odstraněno** (2026-08-19, druhé kolo). Nejdřív z něj byl
+   režim úprav s křížky, ale majitel ho po zkoušce nechtěl vůbec. **Důsledek:
+   barvu nejde odebrat, jen nahradit** — a nahrazovat se dá teprve u plné palety.
+   Až se ukáže, že to lidem vadí, vrátí se mazání jinou cestou.
 
 ## Kruh se kreslí jednou, jas je černý překryv
 
@@ -59,3 +61,20 @@ přišel o rozdělanou barvu.
 
 „Naposledy použité" se pořád neukládá — je to stav stránky a po načtení se vrátí
 na výchozí osmičku z `lib/mock.ts`. Majitel to nežádal.
+
+## Druhé kolo po zkoušce na telefonu (2026-08-19)
+
+Tři chyby, které se ukázaly až na skutečném zařízení:
+
+1. **Paleta vyjela mimo obrazovku.** Obal `.color-slot` s `aspect-ratio`, který
+   držel křížek pro mazání, roztáhl stopy mřížky — výchozí `1fr` má minimální
+   šířku `auto`, tedy minimum obsahu. Obal s křížky zmizel, stopy jsou
+   `minmax(0, 1fr)` a mřížka dostala `align-items: start`, jinak se dlaždice
+   roztáhne na výšku řádku a `aspect-ratio` nemá odkud vzít výšku.
+   *Ověřeno na šířkách 320 až 1024: všude čtvercové a bez přesahu.*
+2. **Na iPadu nešlo uložit.** Panel je s otevřeným kruhem přes 470 px vysoký,
+   měl `max-height: none` a `overflow: visible`. Jakmile na iOS vyjela klávesnice
+   (klepnutí do hexu), tlačítko Uložit skončilo pod ní **a nedalo se k němu
+   dorolovat**. Teď má panel `max-height: calc(100dvh - 24px)` a `overflow-y: auto`.
+   `dvh`, protože `vh` na iOS klávesnici neregistruje.
+3. **Ukázka vybrané barvy byla moc malá** — 26 px, teď 44 px.

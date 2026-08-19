@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { ChevronDown, Plus, Settings2, X } from "lucide-react";
+import { ChevronDown, Plus, X } from "lucide-react";
 import { ColorWheel } from "@/components/draw/ColorWheel";
 import { PALETTE_MAX, usePalette } from "@/lib/prefs";
 
@@ -27,7 +27,6 @@ interface ColorSheetProps {
 type Mode =
   | { kind: "pick" }
   | { kind: "wheel" }
-  | { kind: "edit" }
   | { kind: "place"; color: string };
 
 export function ColorSheet({ recent, activeColor, onPick, onClose }: ColorSheetProps) {
@@ -65,14 +64,6 @@ export function ColorSheet({ recent, activeColor, onPick, onClose }: ColorSheetP
     onClose();
   };
 
-  const removeAt = (index: number) => {
-    const next = palette.filter((_, i) => i !== index);
-    // Prázdná paleta by se při dalším načtení stejně vrátila na výchozí,
-    // takže se poslední barva nedá odebrat.
-    if (next.length === 0) return;
-    savePalette(next);
-  };
-
   const swatch = (color: string, key: string) => (
     <button
       key={key}
@@ -104,7 +95,6 @@ export function ColorSheet({ recent, activeColor, onPick, onClose }: ColorSheetP
   }
 
   const placing = mode.kind === "place" ? mode.color : null;
-  const editing = mode.kind === "edit";
 
   return (
     <>
@@ -131,20 +121,7 @@ export function ColorSheet({ recent, activeColor, onPick, onClose }: ColorSheetP
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <div className="color-sheet-head">
-            <span className="t-label-sm">{t("mine")}</span>
-            <button
-              type="button"
-              className={`icon-btn icon-btn-plain${editing ? " is-active" : ""}`}
-              style={{ width: 30, height: 30 }}
-              aria-label={editing ? t("editDone") : t("edit")}
-              aria-pressed={editing}
-              disabled={placing !== null}
-              onClick={() => setMode(editing ? { kind: "pick" } : { kind: "edit" })}
-            >
-              <Settings2 size={15} />
-            </button>
-          </div>
+          <span className="t-label-sm">{t("mine")}</span>
 
           {placing && (
             <p className="wheel-note">
@@ -154,44 +131,29 @@ export function ColorSheet({ recent, activeColor, onPick, onClose }: ColorSheetP
           )}
 
           <div className="color-grid">
-            {palette.map((c, i) => (
-              <span key={`slot-${i}-${c}`} className="color-slot">
-                {placing ? (
-                  <button
-                    type="button"
-                    className="swatch"
-                    style={{ background: c }}
-                    aria-label={t("placeHere", { color: c })}
-                    onClick={() => placeAt(i, placing)}
-                  />
-                ) : (
-                  swatch(c, `palette-${c}`)
-                )}
-                {editing && palette.length > 1 && (
-                  <button
-                    type="button"
-                    className="color-remove"
-                    aria-label={t("remove", { color: c })}
-                    onClick={() => removeAt(i)}
-                  >
-                    <X size={11} />
-                  </button>
-                )}
-              </span>
-            ))}
-
-            {!editing && (
-              <button
-                type="button"
-                className="swatch swatch-add"
-                aria-label={placing ? t("cancel") : t("add")}
-                onClick={() =>
-                  placing ? setMode({ kind: "pick" }) : setMode({ kind: "wheel" })
-                }
-              >
-                {placing ? <X size={14} /> : <Plus size={14} />}
-              </button>
+            {palette.map((c, i) =>
+              placing ? (
+                <button
+                  key={`slot-${i}`}
+                  type="button"
+                  className="swatch"
+                  style={{ background: c }}
+                  aria-label={t("placeHere", { color: c })}
+                  onClick={() => placeAt(i, placing)}
+                />
+              ) : (
+                swatch(c, `palette-${i}-${c}`)
+              ),
             )}
+
+            <button
+              type="button"
+              className="swatch swatch-add"
+              aria-label={placing ? t("cancel") : t("add")}
+              onClick={() => setMode(placing ? { kind: "pick" } : { kind: "wheel" })}
+            >
+              {placing ? <X size={14} /> : <Plus size={14} />}
+            </button>
           </div>
         </div>
       </div>
