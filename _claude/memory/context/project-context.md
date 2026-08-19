@@ -67,12 +67,28 @@ rozhraní se vědomě nestavělo.
 
 ### Známé nedodělky
 
-- **Kontrast neaktivní navigace** — `--text-muted` na `--bg` dává 4.04 místo 4.5.
-  Viz `code-issues/kontrast-text-muted-na-pozadi.md`. Jednořádková oprava.
-- **Tři drobnosti ve vzhledu** z prohlídky: mazání kresby sedí hned pod barvami
-  (mis-tapy na dotyku), lišta nástrojů je natvrdo vpravo (leváci kreslí přes ruku),
-  tlačítko přehrání je drobná ikonka bez popisku.
 - **Nahlášené kresby** se řeší ručně ze studia, obrazovka pro to není.
+- **V databázi zůstala testovací rozepsaná kresba** `0e017896-e357-4b53-bb6f-46168fb29521`
+  (účet Johnny09112, 2026-08-19 16:46). Vznikla při ověřování vzhledu, smazat ji
+  z Supabase studia — jinak se v `metrics_funnel` tváří jako drop-off „začal
+  kreslit, neodeslal". Starší draft `84d0f630-…` z dřívějšího testování tam byl
+  už předtím, ten má stejný problém.
+
+### Vyřešeno 2026-08-19 (vzhled)
+
+- **Kontrast** — `--text-muted` na `--bg-app` opraven na `--text-secondary`,
+  změřeno 4.04 → **8.19**. Míst bylo víc než jen navigace: přibyly `/pick`,
+  `/mine`, `/leaderboards` a přes `.t-label` i formuláře na `/login` a `/reset`.
+  Detaily a postup opakovaného měření v `_archive/kontrast-text-muted-na-pozadi.md`.
+- **Mazání kresby** — tlačítko palety se přesunulo na začátek řádku barev, trash
+  dostal oddělovač a **dvoukrokové potvrzení** (druhé klepnutí, otázka se po 4 s
+  sama zavře).
+- **Leváci** — přepínač „Pravá / Levá" v profilu, strana svislé lišty na tabletu
+  jde za ním. Viz `decisions/predvolby-zarizeni-v-localstorage.md`.
+- **Tlačítko přehrání** — má popisek místo holé ikonky; stejně tak palec
+  a nahlášení vedle něj. **Neověřeno v prohlížeči:** účet, pod kterým se testovalo,
+  je v A/B skupině bez přehrání (`ab_playback = false`), takže se to tlačítko
+  nezobrazilo. Sousední dvě ve stejném řádku vykreslená byla.
 
 ### Otevřené rozpory v zadání (nespěchá)
 

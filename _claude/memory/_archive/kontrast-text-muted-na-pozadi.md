@@ -2,9 +2,9 @@
 name: kontrast-text-muted-na-pozadi
 description: Neaktivní navigace, tabbar a štítek zásoby používají --text-muted na --bg = 4.04:1, což je pod AA; design-system.md přesně před tímhle varoval
 type: code-issue
-status: active
+status: resolved
 created: 2026-08-18
-updated: 2026-08-18
+updated: 2026-08-19
 related: [paleta-oves-a-oliva-a-fonty]
 ---
 
@@ -38,3 +38,28 @@ což ale zasáhne i místa, kde sedí na `--surface` a prochází.
 
 **Ověřeno, že jinde problém není:** stejný audit na `/cs/draw` nehlásí nic —
 tam štítky sedí na `--surface` nebo v plovoucích kartách.
+
+---
+
+## Vyřešeno 2026-08-19
+
+Opraveno záměnou `--text-muted` → `--text-secondary` v selektorech, které sedí
+na `--bg-app`. Změřeno v prohlížeči po opravě: **4.04 → 8.19**.
+
+**Míst bylo víc, než tenhle záznam uváděl** — původní audit projel jen `/cs`.
+Doauditované obrazovky přidaly: `.pick-requested` (`/pick`), `.filter-chip`
+a `.mine-item-meta` (`/mine`), `.lb-league` (`/leaderboards`) a přes `.t-label`
+i všechny popisky formulářů na `/login` a `/reset`.
+
+`.t-label` se opravil na úrovni třídy, ne u jednotlivých použití — je to obecný
+helper, který může přistát na jakémkoli pozadí, a `--text-muted` v něm byla
+past pro každé další použití.
+
+**Co problém NEMÁ:** `--text-muted` na `--surface-canvas` a `--surface-card`
+prochází (4.63 : 1), takže `.input::placeholder`, `.auth-code-prefix`,
+`.playback-time`, `.lb-rank` a `.settings-row-value` zůstaly beze změny.
+
+**Jak se to ověřuje znovu:** skript v prohlížeči, který projde `body *`, vezme
+`getComputedStyle().color` proti prvnímu neprůhlednému pozadí předka a porovná
+s prahem 4.5 (3.0 pro velký text). Pouštěl se na `/guess`, `/mine`, `/pick`,
+`/leaderboards` a `/profile` — všechny hlásí nula.

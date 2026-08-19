@@ -33,7 +33,8 @@
       "preview": "Náhled bez nástrojů",
       "palette": "Další barvy",
       "size": "Velikost stopy",
-      "zoom": "Lupa"
+      "zoom": "Lupa",
+      "clearConfirm": "Opravdu smazat?"
     },
     "colors": {
       "title": "Barvy",
@@ -152,7 +153,10 @@
     "account": "Účet a soukromí",
     "settings": "Nastavení",
     "signOut": "Odhlásit se",
-    "counts": "{drawings, plural, one {1 kresba} few {# kresby} other {# kreseb}} · {guesses, plural, one {1 tip} few {# tipy} other {# tipů}}"
+    "counts": "{drawings, plural, one {1 kresba} few {# kresby} other {# kreseb}} · {guesses, plural, one {1 tip} few {# tipy} other {# tipů}}",
+    "handedness": "Ruka",
+    "handRight": "Pravá",
+    "handLeft": "Levá"
   },
   "auth": {
     "eyebrow": "Zavřený test",

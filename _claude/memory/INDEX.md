@@ -7,6 +7,7 @@
 - [[project-context]] — Živý stav projektu inkwit — fáze, milníky, aktuální focus · active · 2026-08-19
 
 ## Decisions
+- [[predvolby-zarizeni-v-localstorage]] — Kreslicí ruka (strana lišty nástrojů) žije v localStorage, ne ve sloupci profiles — vlastnost zařízení, ne účtu; migrace kvůli vzhledu se nevyplatí · active · 2026-08-19
 - [[faze-0-uzavrena-skupina]] — Fáze 0 běží jako uzavřená skupina ~50 pozvaných; veřejné otevření je podmíněné automatickým klasifikátorem obsahu · active · 2026-08-18
 - [[hadani-nad-hotovym-obrazkem]] — Hádá se nad hotovým obrázkem; přehrání tah po tahu je volitelné tlačítko a odměna po uhodnutí, poměr se měří ve fázi 0 · active · 2026-08-18
 - [[kodovani-bodu-tahu]] — Souřadnice se zaokrouhlují na 4 desetinná místa už při záznamu, body se ukládají jako ploché pole [x,y,t,…]; zaokrouhlení je 2,8× úspora, ploché pole jen 1,1× na drátě · active · 2026-08-18
@@ -27,7 +28,4 @@
 ## Bugs
 - [[revoke-na-sloupec-nefunguje]] — revoke update (sloupec) nedělá nic, když má role právo na celou tabulku — uživatel si mohl přepsat tenant_id a obejít izolaci školního tenantu · resolved · 2026-08-19
 - [[ledger-pravidlo-blokovalo-mazani-uctu]] — Pravidlo "do instead nothing" chránící append-only ledger rozbilo kaskádu z cizího klíče — účet nešel smazat vůbec, ani na žádost podle GDPR · resolved · 2026-08-18
-
-## Code issues
-- [[kontrast-text-muted-na-pozadi]] — Neaktivní navigace, tabbar a štítek zásoby používají --text-muted na --bg = 4.04:1, což je pod AA; design-system.md přesně před tímhle varoval · active · 2026-08-18
 

@@ -33,7 +33,8 @@
       "preview": "Preview without tools",
       "palette": "More colors",
       "size": "Stroke size",
-      "zoom": "Zoom"
+      "zoom": "Zoom",
+      "clearConfirm": "Clear everything?"
     },
     "colors": {
       "title": "Colors",
@@ -152,7 +153,10 @@
     "account": "Account & privacy",
     "settings": "Settings",
     "signOut": "Sign out",
-    "counts": "{drawings, plural, one {1 drawing} other {# drawings}} · {guesses, plural, one {1 guess} other {# guesses}}"
+    "counts": "{drawings, plural, one {1 drawing} other {# drawings}} · {guesses, plural, one {1 guess} other {# guesses}}",
+    "handedness": "Drawing hand",
+    "handRight": "Right",
+    "handLeft": "Left"
   },
   "auth": {
     "eyebrow": "Closed test",

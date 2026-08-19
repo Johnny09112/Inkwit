@@ -10,6 +10,7 @@ import {
   Palette,
   Send,
   Trash2,
+  TriangleAlert,
   Undo2,
   X,
   CircleUserRound,
@@ -22,6 +23,7 @@ import { SubmitFlow } from "@/components/draw/SubmitFlow";
 import { fetchDraft, submitDrawing, type Draft } from "@/lib/game";
 import { RECENT_COLORS } from "@/lib/mock";
 import { looksRushed, type Stroke, type Tool } from "@/lib/strokes";
+import { useHand } from "@/lib/prefs";
 import { Loader2 } from "lucide-react";
 
 /**
@@ -47,6 +49,8 @@ export default function DrawPage({
   const tDifficulty = useTranslations("difficulty");
   const tNav = useTranslations("nav");
   const router = useRouter();
+  // Svislá lišta na tabletu patří ke kreslicí ruce — leváci přes ni jinak kreslí.
+  const hand = useHand();
 
   const [strokes, setStrokes] = useState<Stroke[]>([]);
   // Historie pro undo — snapshoty polí tahů (smazání všeho je taky krok zpět)
@@ -60,6 +64,7 @@ export default function DrawPage({
   const [previewMode, setPreviewMode] = useState(false);
   const [mode, setMode] = useState<Mode>("draw");
   const [undoCount, setUndoCount] = useState(0);
+  const [confirmClear, setConfirmClear] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
 
@@ -80,6 +85,7 @@ export default function DrawPage({
   const pushHistory = () => setHistory((h) => [...h.slice(-49), strokes]);
 
   const addStroke = (stroke: Stroke) => {
+    setConfirmClear(false);
     pushHistory();
     setStrokes((s) => [...s, stroke]);
   };
@@ -96,10 +102,18 @@ export default function DrawPage({
   };
 
   const clearAll = () => {
+    setConfirmClear(false);
     if (strokes.length === 0) return;
     pushHistory();
     setStrokes([]);
   };
+
+  // Rozmyšlená otázka se po chvíli sama zavře — a nesmí přežít do dalšího tahu.
+  useEffect(() => {
+    if (!confirmClear) return;
+    const timer = setTimeout(() => setConfirmClear(false), 4000);
+    return () => clearTimeout(timer);
+  }, [confirmClear]);
 
   const pickColor = (c: string) => {
     setColor(c);
@@ -183,17 +197,24 @@ export default function DrawPage({
     </>
   );
 
+  // Smazání je jediná nevratná-vypadající akce na plátně a sedí v rohu, kam
+  // dopadá palec. Druhé klepnutí ji potvrdí, po chvíli se ptaní zase zruší —
+  // ať nezůstane obrazovka v natrženém stavu, když od ní člověk odejde.
   const trashButton = (iconSize: number) => (
     <button
       type="button"
-      className="icon-btn icon-btn-danger"
-      aria-label={t("tools.clear")}
+      className={`icon-btn icon-btn-danger${confirmClear ? " is-confirming" : ""}`}
+      aria-label={confirmClear ? t("tools.clearConfirm") : t("tools.clear")}
+      title={confirmClear ? t("tools.clearConfirm") : t("tools.clear")}
       disabled={strokes.length === 0}
-      onClick={clearAll}
+      onClick={() => (confirmClear ? clearAll() : setConfirmClear(true))}
     >
-      <Trash2 size={iconSize} />
+      {confirmClear ? <TriangleAlert size={iconSize} /> : <Trash2 size={iconSize} />}
     </button>
   );
+
+  /** Oddělení nebezpečného tlačítka od sousedů — proti mis-tapům na dotyku. */
+  const trashSeparator = <span className="tool-sep" aria-hidden="true" />;
 
   const swatches = (colors: readonly string[], sizePx?: number) =>
     colors.map((c) => (
@@ -274,6 +295,7 @@ export default function DrawPage({
           </div>
           <div className="draw-float-toolbar">
             {toolButtons(24)}
+            {trashSeparator}
             {trashButton(24)}
             <span className="float-pill-divider" style={{ height: 40 }} />
             <div style={{ display: "flex", gap: 10 }}>
@@ -302,7 +324,7 @@ export default function DrawPage({
             <X size={19} />
           </Link>
         </div>
-        <div className="draw-rail">
+        <div className={`draw-rail draw-rail-${hand}`}>
           {toolButtons(22)}
           <div className="draw-toolcard-divider" />
           <div className="draw-rail-swatches">{swatches(recent.slice(0, 6))}</div>
@@ -392,13 +414,14 @@ export default function DrawPage({
         {!previewMode && (
           <div className="draw-toolcard">
             <div className="swatch-row">
-              <div className="swatch-row-colors">{swatches(recent)}</div>
               {paletteButton}
+              <div className="swatch-row-colors">{swatches(recent)}</div>
             </div>
             <div className="draw-toolcard-divider" />
             <div className="tool-row">
               {toolButtons(20)}
               <span className="spacer" />
+              {trashSeparator}
               {trashButton(20)}
             </div>
             <div className="size-row">

@@ -253,17 +253,15 @@ export default function GuessPage() {
             {showPlayback && (
               <button
                 type="button"
-                aria-label={t("play")}
                 disabled={playing}
                 onClick={() => setPlaying(true)}
               >
-                <Play size={18} />
+                <Play size={18} aria-hidden="true" /> {t("play")}
               </button>
             )}
 
             <button
               type="button"
-              aria-label={tSolved("thumb")}
               aria-pressed={thumbGiven}
               disabled={thumbGiven || thumbUsed || phase === "guessing"}
               onClick={async () => {
@@ -272,19 +270,18 @@ export default function GuessPage() {
                 else setThumbUsed(true);
               }}
             >
-              <ThumbsUp size={18} />
+              <ThumbsUp size={18} aria-hidden="true" /> {tSolved("thumb")}
             </button>
 
             <button
               type="button"
-              aria-label={t("report")}
               disabled={reported}
               onClick={async () => {
                 await reportDrawing(drawing.drawingId, "nevhodný obsah");
                 setReported(true);
               }}
             >
-              <Flag size={18} />
+              <Flag size={18} aria-hidden="true" /> {t("report")}
             </button>
           </div>
 

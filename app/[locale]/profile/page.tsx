@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Hand, Languages, Loader2, ThumbsUp, Trophy } from "lucide-react";
+import { Bell, Hand, Languages, Loader2, PenTool, ThumbsUp, Trophy } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { SignOutRow } from "@/components/auth/SignOutRow";
@@ -13,6 +13,7 @@ import {
   type Notification,
   type Profile,
 } from "@/lib/game";
+import { useHand, writeHand } from "@/lib/prefs";
 
 /**
  * Profil (wireframe 9) a schránka upozornění.
@@ -28,6 +29,7 @@ export default function ProfilePage() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const hand = useHand();
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [items, setItems] = useState<Notification[] | null>(null);
@@ -108,6 +110,17 @@ export default function ProfilePage() {
           <Languages size={18} />
           <span className="settings-row-label">{t("language")}</span>
           <span className="settings-row-value">{locale.toUpperCase()}</span>
+        </button>
+        <button
+          type="button"
+          className="settings-row"
+          onClick={() => writeHand(hand === "left" ? "right" : "left")}
+        >
+          <PenTool size={18} />
+          <span className="settings-row-label">{t("handedness")}</span>
+          <span className="settings-row-value">
+            {hand === "left" ? t("handLeft") : t("handRight")}
+          </span>
         </button>
         <SignOutRow />
       </div>

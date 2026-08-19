@@ -72,7 +72,7 @@ a {
   font-size: var(--text-label);
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .t-label-sm {
@@ -241,6 +241,23 @@ a {
   color: var(--danger);
 }
 
+/* Rozmyšlený krok před smazáním: tlačítko se zeptá a čeká na druhé klepnutí. */
+.icon-btn-danger.is-confirming {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: var(--text-on-action);
+}
+
+/* Odsazení nebezpečné akce od sousedních tlačítek — mis-tapy na dotyku. */
+.tool-sep {
+  width: 1px;
+  align-self: stretch;
+  min-height: 24px;
+  margin: 0 6px;
+  background: var(--border-subtle);
+  flex: none;
+}
+
 .icon-btn-plain {
   background: transparent;
   border-color: transparent;
@@ -306,7 +323,7 @@ a {
   font-size: 13px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .shell-nav a.is-active {
@@ -339,7 +356,7 @@ a {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   border-top: 2px solid transparent;
   margin-top: -1px;
 }
@@ -631,7 +648,6 @@ a {
 
 .draw-rail {
   position: absolute;
-  right: 20px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -643,6 +659,16 @@ a {
   border: 1px solid var(--border-hairline);
   box-shadow: var(--shadow-floating);
   align-items: center;
+}
+
+/* Strana lišty jde za kreslicí rukou (`lib/prefs.ts`) — pravák ji chce vpravo,
+   levák jinak kreslí přes vlastní ruku. */
+.draw-rail-right {
+  right: 20px;
+}
+
+.draw-rail-left {
+  left: 20px;
 }
 
 .draw-rail-swatches {
@@ -856,14 +882,29 @@ a {
 .guess-meta-actions {
   align-self: flex-start;
   display: flex;
-  gap: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
   padding-top: 4px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
+/* Popisek u ikony, ne holá ikona: přehrání je odměna po uhodnutí a bez slova
+   se nedalo poznat, co dělá. */
 .guess-meta-actions button {
   color: inherit;
   display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+  font-size: var(--text-body-sm);
+}
+
+.guess-meta-actions button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .guess-meta-actions button:hover {
@@ -1095,7 +1136,7 @@ a {
   align-items: center;
   gap: 8px;
   padding: 4px 6px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* ---------- Mine ---------- */
@@ -1114,7 +1155,7 @@ a {
   text-transform: uppercase;
   padding: 6px 12px;
   border-radius: var(--radius-pill);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   border: 1px solid transparent;
 }
 
@@ -1149,7 +1190,7 @@ a {
 .mine-item-meta {
   font-family: var(--font-mono), monospace;
   font-size: 10px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 @media (min-width: 768px) {
@@ -1191,7 +1232,7 @@ a {
   align-items: center;
   gap: 8px;
   padding-bottom: 10px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .lb-table {
