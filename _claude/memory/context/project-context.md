@@ -77,6 +77,20 @@ rozhraní se vědomě nestavělo.
   za 1,2 s). Animace se proto nerozběhne a plátno zůstane prázdné — není to
   chyba kódu. Přehrání se musí zkoušet v běžném prohlížeči.
 
+### Přidáno 2026-08-19 (paleta barev)
+
+- **Vlastní paleta se ukládá** (localStorage, 23 barev + tlačítko přidat = 8 × 3).
+  Do teď se neukládala vůbec — byla to konstanta v `lib/mock.ts`.
+- **Kruh barev** pod tlačítkem „+": odstín a sytost tažením, jas posuvníkem,
+  hex se přesunul sem z panelu.
+- **Kolečko u palety oživeno** jako režim úprav s křížky. Do teď to byla mrtvá
+  ikona bez obsluhy.
+- Na umístění se ptá, **až když je paleta plná**; jinak barva padne do volného místa.
+  Viz `decisions/paleta-barev-a-vyber-vlastni.md`.
+- **Neověřeno v prohlížeči** — panel barev je jen na kreslicí obrazovce, kam se
+  náhledový prohlížeč bez session nedostane. Ověřené jsou převody barev
+  (19 testů `npm run test:unit`), typecheck a build.
+
 ### Přidáno 2026-08-19 (gesta a dotyk)
 
 - **Dlouhý stisk už nevybírá text.** iOS Safari nad plátnem i paletou otevíral
@@ -84,7 +98,7 @@ rozhraní se vědomě nestavělo.
   Viz `patterns/ios-dlouhy-stisk-vybira-text.md`.
 - **Gesta na plátně:** jeden prst kreslí, dva přibližují a posouvají (1× až 8×).
   Přiblížení je jen zobrazení — body se dál ukládají v poměrných souřadnicích.
-  Matematika je v `lib/canvasView.ts` a má vlastní testy: `npm run test:view`
+  Matematika je v `lib/canvasView.ts` a má vlastní testy: `npm run test:unit`
   (9 testů, vestavěný runner Node, žádná nová závislost).
   Viz `decisions/gesta-a-vyrez-platna.md`.
 - **Neověřeno v prohlížeči:** náhledový prohlížeč nemá session, takže se do něj

@@ -127,20 +127,3 @@ export const RECENT_COLORS = [
   "#6D6A64",
 ];
 
-export const FULL_PALETTE = [
-  "#2B261F",
-  "#6D6A64",
-  "#FFFCF5",
-  "#B5462F",
-  "#C9756B",
-  "#E9B44C",
-  "#E4C98A",
-  "#52633A",
-  "#7E8F5F",
-  "#3C6E8F",
-  "#7BA3B8",
-  "#8A5A8F",
-  "#B892BC",
-  "#8A6A4A",
-  "#C4A484",
-];

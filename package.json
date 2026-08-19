@@ -8,7 +8,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:db": "node supabase/tests/rls.test.mjs",
-    "test:view": "node --test lib/canvasView.test.ts"
+    "test:unit": "node --test \"lib/*.test.ts\""
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",

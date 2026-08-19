@@ -39,7 +39,7 @@ Dvě věci, které z toho plynou a nejsou vidět:
 
 ## Matematika je zvlášť a má testy
 
-`lib/canvasView.ts` je čistá funkce bez DOM, `npm run test:view` ji ověřuje
+`lib/canvasView.ts` je čistá funkce bez DOM, `npm run test:unit` ji ověřuje
 (9 testů, vestavěný runner Node + odstraňování typů, **žádná nová závislost**).
 Testuje se hlavně to, co se okem nepozná: že bod pod prsty zůstane po přiblížení
 na místě, že převod tam a zpátky sedí i v posunutém výřezu a že rohy výřezu

@@ -9,6 +9,7 @@
 ## Decisions
 - [[gesta-a-vyrez-platna]] — Jeden prst kreslí, dva přibližují a posouvají; přiblížení je jen zobrazení, body zůstávají v poměrných souřadnicích 0–1, matematika výřezu je v lib/canvasView.ts a má vlastní testy · active · 2026-08-19
 - [[knihovna-kreseb-a-mazani]] — Rozepsané kresby se z knihovny skrývají, ale řádek zůstává kvůli metrics_funnel; mazání vlastní kresby je měkké (status removed), detail nesmí ukázat počet pokusů · active · 2026-08-19
+- [[paleta-barev-a-vyber-vlastni]] — Vlastní paleta se ukládá do localStorage (23 barev + tlačítko přidat), nová barva se míchá v kruhu HSV, hex je v něm místo v panelu; na umístění se ptáme až když je paleta plná · active · 2026-08-19
 - [[predvolby-zarizeni-v-localstorage]] — Kreslicí ruka (strana lišty nástrojů) žije v localStorage, ne ve sloupci profiles — vlastnost zařízení, ne účtu; migrace kvůli vzhledu se nevyplatí · active · 2026-08-19
 - [[faze-0-uzavrena-skupina]] — Fáze 0 běží jako uzavřená skupina ~50 pozvaných; veřejné otevření je podmíněné automatickým klasifikátorem obsahu · active · 2026-08-18
 - [[hadani-nad-hotovym-obrazkem]] — Hádá se nad hotovým obrázkem; přehrání tah po tahu je volitelné tlačítko a odměna po uhodnutí, poměr se měří ve fázi 0 · active · 2026-08-18
