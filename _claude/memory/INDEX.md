@@ -25,6 +25,7 @@
 - [[supabase-chyby-podle-kodu]] — Chyby ze Supabase Auth mapovat podle err.code, ne podle textu; zamítnutá pozvánka z triggeru dorazí jako 23514 a fallback nesmí svalovat všechno na pozvánku · active · 2026-08-18
 
 ## Bugs
+- [[revoke-na-sloupec-nefunguje]] — revoke update (sloupec) nedělá nic, když má role právo na celou tabulku — uživatel si mohl přepsat tenant_id a obejít izolaci školního tenantu · resolved · 2026-08-19
 - [[ledger-pravidlo-blokovalo-mazani-uctu]] — Pravidlo "do instead nothing" chránící append-only ledger rozbilo kaskádu z cizího klíče — účet nešel smazat vůbec, ani na žádost podle GDPR · resolved · 2026-08-18
 
 ## Code issues

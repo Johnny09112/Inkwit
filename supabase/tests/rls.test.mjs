@@ -636,6 +636,158 @@ async function main() {
     "autor nepřečte tabulku kreseb napřímo",
   );
 
+  console.log("\nVyžádání a upozornění (blok E):\n");
+
+  const conceptZaba = (await db.query(`select id from public.concepts where slug = 'zaba'`)).rows[0].id;
+
+  // E4 — cizí akce nad mojí kresbou mi dá vědět, vlastní ne.
+  await db.exec("begin");
+  await db.exec(`
+    set local role authenticated;
+    select set_config('request.jwt.claim.sub', '${ALICE}', true);
+  `);
+  await db.query(`select public.submit_guess('${LIVE}', 'chobotnice')`);
+  await db.query(`select public.give_thumb('${LIVE}')`);
+  await db.exec("reset role");
+  const forBob = (
+    await db.query(`select kind from public.notifications where user_id = '${BOB}' order by kind`)
+  ).rows.map((r) => r.kind);
+  report(forBob.includes("guessed"), "autor se dozví, že ho někdo uhodl", forBob.join(","));
+  report(forBob.includes("thumbed"), "autor se dozví o palci");
+  const forAlice = (
+    await db.query(`select count(*)::int n from public.notifications where user_id = '${ALICE}'`)
+  ).rows[0].n;
+  report(forAlice === 0, "hádač si sám sobě upozornění neposílá", String(forAlice));
+  await db.exec("rollback");
+
+  // E3 — splněné vyžádání dá vědět OBĚMA stranám. Ta druhá nese retenci.
+  await db.exec("begin");
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+  const asked = (await db.query(`select public.request_concept('${conceptZaba}') as ok`)).rows[0].ok;
+  report(asked === true, "vyžádání pojmu projde");
+
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${BOB}', true);`,
+  );
+  const rd = (await db.query(`select public.start_drawing('${conceptZaba}') as id`)).rows[0].id;
+  await db.exec("reset role");
+  const src = (await db.query(`select source from public.drawings where id = '${rd}'`)).rows[0].source;
+  report(src === "request", "kresba si pamatuje, že vznikla z vyžádání", src);
+
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${BOB}', true);`,
+  );
+  await db.query(
+    `select public.submit_drawing('${rd}', 'mouse', 0, '[{"tool":"brush","color":"#000","width":5,"points":[0.1,0.1,0,0.4,0.4,50]}]'::jsonb)`,
+  );
+  await db.exec("reset role");
+
+  const reqNotif = (
+    await db.query(`select user_id, kind from public.notifications
+                    where kind in ('request_filled','request_served')`)
+  ).rows;
+  report(
+    reqNotif.some((r) => r.user_id === ALICE && r.kind === "request_filled"),
+    "žadatel se dozví, že je jeho pojem nakreslený",
+  );
+  report(
+    reqNotif.some((r) => r.user_id === BOB && r.kind === "request_served"),
+    "kreslíř se dozví, že splnil konkrétnímu člověku přání — tohle nese retenci",
+  );
+  const reqStatus = (
+    await db.query(`select status from public.concept_requests where concept_id = '${conceptZaba}'`)
+  ).rows[0].status;
+  report(reqStatus === "fulfilled", "žádost se uzavře", reqStatus);
+  await db.exec("rollback");
+
+  // Denní limit žádostí
+  await db.exec("begin");
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+  const slugs = ["pes", "kocka", "ryba", "ptak", "slon"];
+  const results = [];
+  for (const s of slugs) {
+    await db.exec("reset role");
+    const cid = (await db.query(`select id from public.concepts where slug = '${s}'`)).rows[0].id;
+    await db.exec(
+      `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+    );
+    results.push((await db.query(`select public.request_concept('${cid}') as ok`)).rows[0].ok);
+  }
+  await db.exec("rollback");
+  report(
+    results.filter(Boolean).length === 3 && results[3] === false,
+    "denní limit žádostí drží — bez něj je vyžádání spam kanál",
+    results.join(","),
+  );
+
+  console.log("\nProvoz a měření (blok F):\n");
+
+  await db.exec("begin");
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+  const rep1 = (
+    await db.query(`select public.report_drawing('${LIVE}', 'test') as ok`)
+  ).rows[0].ok;
+  report(rep1 === true, "nahlášení projde");
+
+  const lb = (await db.query("select * from public.daily_leaderboard()")).rows;
+  report(Array.isArray(lb), "denní žebříček se načte");
+
+  const prof = (await db.query("select * from public.my_profile()")).rows[0];
+  report(typeof prof.ab_playback === "boolean", "uživatel má přiřazenou skupinu testu přehrání");
+
+  await db.exec("rollback");
+
+  // Sloupce, které si uživatel měnit NESMÍ. Dřív je „chránil" revoke na
+  // sloupec, který ale nic nedělal, když má role právo na celou tabulku
+  // (viz migrace 20260819080000). Nejzávažnější byl tenant_id — šlo se
+  // tím sám přesunout do školního tenantu, tedy obejít pravidlo 1.
+  async function cannotWrite(column, value) {
+    await db.exec("begin");
+    let denied = false;
+    try {
+      await db.exec(
+        `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+      );
+      await db.exec(`update public.profiles set ${column} = ${value} where id = '${ALICE}'`);
+    } catch {
+      denied = true;
+    }
+    await db.exec("rollback");
+    report(denied, `uživatel si nepřepíše ${column}`);
+  }
+
+  await cannotWrite("ab_playback", "true");
+  await cannotWrite("tenant_id", `'${SCHOOL}'`);
+  await cannotWrite("xp", "99999");
+  await cannotWrite("skill_rating", "99");
+  await cannotWrite("is_minor", "false");
+
+  // Co měnit smí, měnit musí jít.
+  await db.exec("begin");
+  let nameOk = false;
+  try {
+    await db.exec(
+      `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+    );
+    await db.exec(`update public.profiles set display_name = 'Alice Nová' where id = '${ALICE}'`);
+    nameOk = true;
+  } catch {
+    nameOk = false;
+  }
+  await db.exec("rollback");
+  report(nameOk, "vlastní jméno si změnit může");
+
+  const views = (
+    await db.query(`select count(*)::int n from pg_views where schemaname = 'private'`)
+  ).rows[0].n;
+  report(views === 5, "metriky existují jako pohledy pro majitele", String(views));
+
   console.log("\nLedger je append-only, ale nebrání smazání účtu:\n");
 
   // Append-only drží odebrané právo, ne pravidlo. Pravidlo by rozbilo kaskádu

@@ -35,8 +35,8 @@ Lokální ověření běží na PGlite (`npm run test:db`) — Docker není pot�
 | **B** | Obsah — koncepty a přijímané tvary CZ/EN | `[x]` | — |
 | **C** | Kreslení end-to-end | `[x]` | D |
 | **D** | Hádání end-to-end | `[x]` | F |
-| **E** | Retenční smyčka — vyžádání a notifikace | `[ ]` | — |
-| **F** | Provoz a měření | `[ ]` | G |
+| **E** | Retenční smyčka — vyžádání a notifikace | `[~]` | — |
+| **F** | Provoz a měření | `[~]` | G |
 | **G** | Nasazení a pozvánky | `[ ]` | — |
 
 **Proč tohle pořadí.** A blokuje všechno, protože bez schématu se nedá uložit nic.
@@ -212,25 +212,36 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
 
 **Tohle nese hlavní hypotézu fáze 0. Když se bude škrtat, škrtá se jinde.**
 
-- `[ ] E1` **`concept_requests`** — tlačítko „chci vidět tenhle pojem", denní
-  limit z `game_config`, `expires_at` povinné.
-- `[ ] E2` **Přednost vyžádaných konceptů v nabídce kreslíři.** Bez tohohle je
-  žádost přání do prázdna.
-- `[ ] E3` **Notifikace oběma směry.** Žadateli, že je hotovo; **kreslíři, že
-  splnil konkrétnímu člověku konkrétní přání.** Druhá polovina nese retenci —
-  je to poslední věc, která smí padnout.
-- `[ ] E4` **Notifikace „tvoji kresbu někdo uhodl / dal jí palec".**
+- `[x] E1` **Vyžádání pojmu** — RPC `request_concept()`, denní limit z `game_config`,
+  `expires_at` povinné (žádosti se uklidí samy).
+- `[x] E2` **Přednost vyžádaných konceptů v nabídce** — v `offer_concepts()` od C1.
+  Kresba si navíc pamatuje, že vznikla z vyžádání (`drawings.source`), jinak by
+  nešlo vyhodnotit, jestli páka funguje.
+- `[x] E3` **Upozornění oběma směry** — obojí ověřené testem. Žádost se při
+  zveřejnění kresby uzavře sama.
+- `[x] E4` **Upozornění „tvoji kresbu někdo uhodl / dal jí palec"** — triggery
+  nad tipy a palci. Vlastní akce se neoznamuje.
 
 ## Blok F — Provoz a měření
 
-- `[ ] F1` **Nahlášení a ruční review majitelem.** Fáze 0 nemá klasifikátor,
-  proto je uzavřená (pravidlo 8).
-- `[ ] F2` **Jeden denní žebříček.**
-- `[ ] F3` **Logování metrik.** Zásoba `live` kreseb vzorkovaná v čase, „začal
-  kreslit" **zvlášť od** „odeslal", odkud přišel impuls, rozdělení `duration_ms`
-  a `stroke_count`.
-- `[ ] F4` **A/B skupiny pro přehrání.** Jedna vidí jen obrázek, druhá má
-  tlačítko „přehrát". Zaznamenat, kdo je v jaké skupině.
+- `[x] F1` **Nahlášení** — RPC `report_drawing()`. Ruční review dělá majitel
+  ze Supabase studia; fáze 0 nemá klasifikátor, proto je uzavřená (pravidlo 8).
+- `[x] F2` **Jeden denní žebříček** — RPC `daily_leaderboard()`, uhodnuté dnes,
+  strop 30 hráčů. Tři žebříčky a ligy jsou nadstavba, ne fáze 0.
+- `[x] F3` **Metriky** — pět pohledů ve schématu `private`, čte je majitel ze
+  Supabase studia. Fáze 0 nemá administrátorské rozhraní; postavit ho by stálo
+  víc než přečíst pět dotazů.
+
+  `metrics_supply` (zásoba neuhodnutých — metrika 2), `metrics_funnel`
+  (drop-off mezi „začal kreslit" a „odeslal" + odkud přišel impuls),
+  `metrics_effort` (rozdělení doby a tahů pro kalibraci detekce čmáranic),
+  `metrics_return` (návrat druhý den ke kreslení — kritérium postupu),
+  `metrics_ab_playback`.
+
+  **Zásoba se nevzorkuje do tabulky.** Jde dopočítat zpětně z časů tipů, takže
+  žádný cron ani úklid navíc.
+- `[x] F4` **A/B skupiny pro přehrání** — `profiles.ab_playback`, přiřazeno
+  náhodně při vzniku účtu a neměnné. *Zbývá:* skrýt tlačítko skupině bez přehrání.
 
 ## Blok G — Nasazení a pozvánky
 
