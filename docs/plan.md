@@ -270,6 +270,38 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
      `npx supabase config push`. Jinak by odkazy z e-mailů vedly na localhost.
   4. Ověřit, že jde appka nainstalovat na telefon (PWA potřebuje HTTPS,
      na Vercelu je automaticky).
+- `[ ] G4` **Vlastní SMTP** — odstraní opakující se ruční práci se zapomenutými hesly.
+
+  Vestavěný odesílatel Supabase má **2 zprávy za hodinu na všech plánech** a je
+  určený jen ke zkoušení (viz „Odesílání pošty" níž). Placený Supabase to
+  nevyřeší — dovolí jen upravit šablonu.
+
+  **Postup:**
+  1. Založit účet u poskytovatele. Bez vlastní domény funguje ověření jedné
+     odesílací adresy (SendGrid single sender). S doménou je na výběr víc.
+     *Přihlašovací údaje zadává majitel, Claude je nevidí.*
+  2. V Supabase: **Authentication → Emails → SMTP Settings**, vyplnit host,
+     port, uživatele, heslo a odesílací adresu.
+  3. V `supabase/config.toml` odkomentovat blok `[auth.email.template.recovery]`
+     a pustit `npx supabase config push`. Šablona je připravená
+     v `supabase/templates/recovery.html`.
+
+  **Jak ověřit, že to funguje — čtyři kroky, ne jeden:**
+  1. **Zpráva dorazí.** Na `/login` kliknout „Zapomněl jsem heslo".
+     *Pozor:* dokud běží vestavěný odesílatel, druhá zpráva ve stejné hodině
+     nedorazí — a vypadá to jako chyba aplikace, ne jako limit.
+  2. **Odkaz funguje ze stejného zařízení.** Nastavit nové heslo a přihlásit se jím.
+  3. **Odkaz funguje z JINÉHO zařízení.** Tohle je vlastní test vlastní šablony:
+     výchozí šablona posílá odkaz vázaný na prohlížeč (PKCE), vlastní posílá
+     `token_hash`, který funguje odkudkoliv. Když druhé zařízení projde, je
+     šablona skutečně aktivní.
+  4. **Limit padl.** Požádat o obnovu třikrát během pěti minut ze tří různých
+     účtů. S vestavěným odesílatelem třetí nedorazí, s vlastním ano.
+
+  *Kritérium:* projdou všechny čtyři. Teprve pak se smí zapnout potvrzování
+  e-mailu (`enable_confirmations`) — dřív by padesát registrací trvalo
+  pětadvacet hodin.
+
 - `[~] G3` **Pozvánky** — 50 kódů vygenerováno a předáno majiteli
   (`pozvanky-faze-0.txt`, mimo git). Rozeslání je na majiteli.
 

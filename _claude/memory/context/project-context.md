@@ -4,79 +4,95 @@ description: Živý stav projektu inkwit — fáze, milníky, aktuální focus
 type: context
 status: active
 created: 2026-08-18
-updated: 2026-08-18
+updated: 2026-08-19
 ---
 
 # inkwit — živý kontext
 
 > Statické věci (stack, konvence, zákony) jsou v projektovém CLAUDE.md. Tady jen DYNAMICKÉ — co se mění během vývoje. Přepisuj v místě, neapenduj.
 
-## Aktuální stav
+## Aktuální stav (2026-08-19)
 
-**Fáze: před fází 0 — frontend skeleton existuje.** Repo obsahuje Next.js 15
-aplikaci (App Router, TS strict, next-intl CZ+EN, `middleware.ts`) s implementací
-všech 10 obrazovek z wireframů, zatím nad mock daty (`lib/mock.ts`). Žádné migrace,
-žádný Supabase projekt, žádný backend. Rozsah fáze 0 se 2026-08-18 rozšířil
-o notifikace autorovi a minimální vyžádání kresby — obojí nese retenční hypotézu.
-Appka (Next.js UI nad mock daty) je od 2026-08-18 v gitu. Supabase projekt `Inkwit`
-založen na free plánu.
-Produktový návrh ve třech dokumentech (`docs/product.md`, `docs/data-model.md`,
-`docs/roadmap.md`) + `CLAUDE.md` s osmi neporušitelnými pravidly.
+**Fáze 0 je nasazená a hratelná od začátku do konce.**
 
-**2026-08-18:** zprovozněna dlouhodobá paměť (šablona VZOR nasazena do `_claude/`,
-hook `reindex.js` v `.claude/hooks/`), repo inicializováno jako git a napojeno na
-GitHub (`Johnny09112/Inkwit`). Opraveno zadání hádání (hotový obrázek místo přehrání)
-a uzavřen rozpor kolem pravidla 8.
+- **Živá adresa:** https://inkwit.vercel.app (Vercel, staví se z GitHubu)
+- **Databáze:** Supabase `Inkwit`, ref `iticpkeqirjfwkelhrvl`, region `eu-central-1`, **free plán**
+- **Repo:** https://github.com/Johnny09112/Inkwit — **veřejné**, 32 commitů
+- **Testy:** `npm run test:db` — 136 kontrol, běží na PGlite, nepotřebuje Docker ani síť
+- **Slovník:** 120 konceptů, 240 zadání a sad odpovědí v databázi
 
-**2026-08-18 (později):** zapsán design systém (`docs/design-system.md`, paleta
-„Oves a oliva" + fonty, viz [[paleta-oves-a-oliva-a-fonty]]) a podle wireframů
-z design projektu „Inkwit vizuální směr" (claude.ai/design) implementován frontend:
-plátno s vektorovými tahy přes PointerEvents (uniformní štětec bez tlaku, časové
-značky, typ zařízení), submit flow s kontrolním krokem jen pro podezřelé kresby
-(`looksRushed` v `lib/strokes.ts`), hádání na tři pokusy, uhodnuto s přehráním,
-prázdný feed (surge), výběr pojmu, moje kresby, žebříčky, profil s přepínačem
-jazyka. Tři responzivní rozvržení plátna: mobil (karta pod plátnem), tablet
-768–1279 (svislá lišta vpravo), desktop ≥1280 (plovoucí ostrůvek + lišta dole).
-Build i typecheck čisté, flow ověřeno v prohlížeči v obou jazycích.
+**Hotové bloky:** 0 (UI), A (základ DB), B (slovník), C (kreslení), D (hádání),
+E (vyžádání a upozornění), F (provoz a měření). **G (nasazení) rozpracované.**
+
+Celý tok ověřený naostro na produkci: registrace pozvánkou → nabídka pojmů →
+kreslení → uložení → hádání → hvězdičky → upozornění autorovi.
+
+**V databázi jsou reálná data majitele** — tři jeho kresby (slon, ananas,
+chameleon, 23–44 tahů, 100–240 s). Nemazat, jsou to první měřená čísla.
+Použitá 1 pozvánka z 50.
 
 ## Aktuální focus
 
-Frontend skeleton stojí nad mock daty. Další krok je backend: Supabase projekt,
-schéma podle `docs/data-model.md`, napojení místo `lib/mock.ts`.
+Zbývá **jediný technický krok k plnému provozu: vlastní SMTP** (krok G4
+v `docs/plan.md`, včetně čtyř kritérií, jak ho otestovat).
+
+Pak už je to na majiteli: **rozeslat pozvánky** (kódy jsou v `pozvanky-faze-0.txt`,
+mimo git, repo je veřejné) a **nechat test běžet**.
+
+## Kde se čtou výsledky
+
+```sql
+select * from private.metrics_funnel;   -- drop-off "začal kreslit" → "odeslal"
+select * from private.metrics_return;   -- návrat druhý den KE KRESLENÍ (kritérium ≥ 20 %)
+select * from private.metrics_supply;   -- zásoba neuhodnutých (metrika 2)
+select * from private.metrics_effort;   -- doba a tahy → kalibrace detekce čmáranic
+select * from private.metrics_ab_playback;
+```
+
+Pohledy jsou jen pro `service_role`, čtou se ze Supabase studia. Administrátorské
+rozhraní se vědomě nestavělo.
 
 ## Otevřené body
 
-### Vyřešeno 2026-08-18
+### Čeká na majitele
 
-- **Pravidlo 8 × rozsah fáze 0** → fáze 0 je uzavřená skupina ~50 pozvaných, veřejné
-  otevření je podmíněné klasifikátorem. Viz [[faze-0-uzavrena-skupina]].
-- **Přehrání kresby při hádání** → majitel opravil zápis v `docs/product.md`: hádá se
-  nad **hotovým obrázkem**, přehrání je volitelné tlačítko a odměna po uhodnutí.
-  Poměr obou variant se měří ve fázi 0. Viz [[hadani-nad-hotovym-obrazkem]].
-- **Otevřená otázka #1 (náhrada sdílené série)** → sérii nenahrazujeme 1:1; retenci
-  nese cizí akce nad tvojí kresbou. Viz [[retence-bez-sdilene-serie]].
+1. **Vlastní SMTP** (G4) — vestavěný odesílatel má **2 zprávy za hodinu na všech
+   plánech**. Placený Supabase to nevyřeší, dovolí jen upravit šablonu.
+2. **Placený Supabase** — zvážit kvůli **stažitelným zálohám** (free je nedovolí;
+   výstup fáze 0 je jediný důvod, proč se dělá) a **konci pozastavování projektu**
+   po týdnu nízké aktivity. Ne kvůli poště.
+3. **Zálohy** — než v DB budou data z testu, naplánovat `pg_dump` na vlastní disk.
+4. **Tmavý režim** — nerozhodnuto, z ovesné palety se neodvodí 1:1.
+5. **Kolik neuhodnutí do archivace** (otázka #3 v `roadmap.md`).
 
-### Otevřené rozpory (nalezeno 2026-08-18, nerozhodnuto)
+### Známé nedodělky
 
-1. **Relay ve školním tenantu × pravidlo 1.** `docs/product.md` doporučuje relay
-   zpřístupnit i školám, ale sdílené plátno je stejný kanál mezi žáky jako volná
-   textová zpráva — a relay má záměrně vypnutou detekci snahy i trust score.
-   Není adresované, jak se ve školním relay brání kresleným obscénnostem.
-   *Nespěchá — relay je fáze 3.*
-2. **Surge × žebříček.** Surge zvedá odměnu za kreslení, takže dvě stejně dobré
-   kresby dostanou různé skóre podle času vzniku. Není pay-to-win, ale ovlivňuje
-   to žebříček. K rozhodnutí: dává surge body do žebříčku, nebo jen kredity mimo něj?
-   *Nespěchá — surge je fáze 1.*
+- **Kontrast neaktivní navigace** — `--text-muted` na `--bg` dává 4.04 místo 4.5.
+  Viz `code-issues/kontrast-text-muted-na-pozadi.md`. Jednořádková oprava.
+- **Tři drobnosti ve vzhledu** z prohlídky: mazání kresby sedí hned pod barvami
+  (mis-tapy na dotyku), lišta nástrojů je natvrdo vpravo (leváci kreslí přes ruku),
+  tlačítko přehrání je drobná ikonka bez popisku.
+- **Nahlášené kresby** se řeší ručně ze studia, obrazovka pro to není.
 
-### Produktové otevřené otázky
+### Otevřené rozpory v zadání (nespěchá)
 
-Šest otázek je v `docs/roadmap.md`. Otázka #1 je zodpovězená (viz
-[[retence-bez-sdilene-serie]]) a přeformulovaná na „vrací notifikace o cizí akci
-člověka ke kreslení?" — odpoví ji až měření ve fázi 0. Zbylé jsou kalibrační,
-ne existenční.
+1. **Relay ve školním tenantu × pravidlo 1** — sdílené plátno je stejný kanál mezi
+   žáky jako volná zpráva. *Fáze 3.*
+2. **Surge × žebříček** — dává surge body do žebříčku, nebo jen kredity mimo něj?
+   *Fáze 1.*
 
-### Před backendem
+## Co je dobré vědět, než na tom začneš dělat
 
-- `game_config` vzniká už ve fázi 0 (pravidlo 6 — balanc nesmí být konstanta v kódu).
-- **Zálohy:** free plán je nedovolí stáhnout. Naplánovat `pg_dump` dřív, než v DB
-  budou data z testu.
+- **Migrace pouští Claude sám** přes `npx supabase db push` — CLI má přihlášení
+  z majitelova `supabase login`. Destruktivní migrace se ukazují předem.
+- **Zadání konceptu je tajemství hry.** Klient nečte `concepts`, `concept_locales`
+  ani `concept_answers`, a ani `drawings` napřímo — všechno jde přes RPC.
+  Viz `decisions/tajemstvi-hry-v-schematu.md`.
+- **Pomocné funkce pro RLS patří do schématu `private`**, ne `public`.
+  Viz `patterns/rls-pomocne-funkce-mimo-public.md`.
+- **U každého sloupce, který uživatel měnit nesmí, musí být test zápisu.**
+  `revoke update (sloupec)` nefunguje — viz `bugs/revoke-na-sloupec-nefunguje.md`.
+- **Advisor hlásí několik věcí trvale a je to záměr** — seznam v
+  `patterns/rls-pomocne-funkce-mimo-public.md`.
+- **Testy nechytnou chyby v UI.** Visící hláška po uhodnutí i syrový klíč
+  překladu se našly až proklikáním. U obrazovek zelené testy nestačí.
