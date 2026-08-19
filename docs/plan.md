@@ -37,7 +37,7 @@ Lokální ověření běží na PGlite (`npm run test:db`) — Docker není pot�
 | **D** | Hádání end-to-end | `[x]` | F |
 | **E** | Retenční smyčka — vyžádání a notifikace | `[x]` | — |
 | **F** | Provoz a měření | `[x]` | G |
-| **G** | Nasazení a pozvánky | `[ ]` | — |
+| **G** | Nasazení a pozvánky | `[~]` | — |
 
 **Proč tohle pořadí.** A blokuje všechno, protože bez schématu se nedá uložit nic.
 B běží nezávisle a je to obsahová práce, ne programování — může jet paralelně.
@@ -250,7 +250,16 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
   soubory, všechno ostatní jde ze sítě. Agresivní cache by u hry postavené na
   čerstvých datech znamenala, že hráč uvidí kresbu, kterou už někdo uhodl,
   nebo starý stav pokusů. Ze Supabase se necachuje nic.
-- `[!] G2` **Deploy na Vercel** — čeká na majitele, potřebuje jeho účet.
+- `[x] G2` **Nasazeno na Vercel** — https://inkwit.vercel.app (2026-08-19).
+  Proměnné prostředí nastavené, `site_url` v `supabase/config.toml` přepsáno
+  na stálou adresu projektu a nasazeno.
+
+  **Pozor na adresu:** Vercel dává každému nasazení vlastní URL s hashem
+  (`inkwit-ck3xa2jvk-…`). Ta platí jen pro jeden build a je navíc za
+  přihlašovací zdí Vercelu — do konfigurace patří stálá adresa projektu.
+
+  *Ověřeno naostro na produkci:* registrace pozvánkou → nabídka pojmů ze
+  slovníku → nakreslení → uložení. Kresba v databázi i s tahy.
 
   Postup:
   1. Naimportovat repo `Johnny09112/Inkwit` do Vercelu.

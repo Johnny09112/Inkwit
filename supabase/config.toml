@@ -9,8 +9,11 @@ project_id = "iticpkeqirjfwkelhrvl"
 [auth]
 # Adresa, na kterou vedou odkazy z e-mailů. Po nasazení na Vercel sem patří
 # ostrá doména, jinak by odkazy vedly na localhost.
-site_url = "http://localhost:3000"
-additional_redirect_urls = ["http://localhost:3000"]
+# Stálá adresa projektu, ne konkrétního nasazení. URL s hashem
+# (inkwit-ck3xa2jvk-…) platí jen pro jeden build a je navíc za přihlašovací
+# zdí Vercelu, takže by odkazy vedly do prázdna.
+site_url = "https://inkwit.vercel.app"
+additional_redirect_urls = ["https://inkwit.vercel.app", "http://localhost:3000"]
 
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
