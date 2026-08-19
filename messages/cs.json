@@ -175,7 +175,8 @@
     },
     "actions": {
       "signin": "Přihlásit se",
-      "signup": "Založit účet"
+      "signup": "Založit účet",
+      "forgot": "Zapomněl jsem heslo"
     },
     "confirmEmail": "Účet je založený. Potvrď ho odkazem, který ti přišel na e-mail, a pak se přihlas.",
     "noInvite": "Kód nemáš? Fáze 0 je zavřená a pozvánky rozdává majitel projektu.",
@@ -190,8 +191,10 @@
       "generic": "Přihlášení se nepovedlo. Zkus to znovu.",
       "emailInvalid": "Tuhle e-mailovou adresu Supabase odmítá. Zkus jinou — testovací domény jako example.com neprojdou.",
       "signupsClosed": "Zakládání účtů je právě zavřené.",
-      "nameTaken": "Tohle jméno mezitím někdo obsadil. Zvol jiné — kód pozvánky ti zůstal."
-    }
+      "nameTaken": "Tohle jméno mezitím někdo obsadil. Zvol jiné — kód pozvánky ti zůstal.",
+      "needEmail": "Nejdřív vyplň e-mail, na který ti máme odkaz poslat."
+    },
+    "resetSent": "Poslali jsme ti odkaz na e-mail. Otevři ho na tomhle zařízení — odkaz je vázaný na prohlížeč, ze kterého jsi o něj požádal."
   },
   "notifications": {
     "loading": "Načítám…",
@@ -202,5 +205,17 @@
     "thumbed": "{name} dal tvojí kresbě palec.",
     "requestFilled": "{name} nakreslil „{concept}“, na který jsi čekal.",
     "requestServed": "Splnil jsi přání: {name} čekal na „{concept}“."
+  },
+  "reset": {
+    "eyebrow": "Nové heslo",
+    "checking": "Ověřuju odkaz…",
+    "newPassword": "Nové heslo",
+    "hint": "Aspoň šest znaků.",
+    "save": "Uložit heslo",
+    "done": "Hotovo. Za chvíli tě přesměrujeme do hry.",
+    "weak": "Heslo musí mít aspoň šest znaků.",
+    "failed": "Heslo se nepodařilo změnit. Zkus to znovu.",
+    "expired": "Tenhle odkaz už neplatí. Odkazy jsou jednorázové a po chvíli vyprší — řekni si o nový.",
+    "backToLogin": "Zpět na přihlášení"
   }
 }

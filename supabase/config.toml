@@ -13,7 +13,14 @@ project_id = "iticpkeqirjfwkelhrvl"
 # (inkwit-ck3xa2jvk-…) platí jen pro jeden build a je navíc za přihlašovací
 # zdí Vercelu, takže by odkazy vedly do prázdna.
 site_url = "https://inkwit.vercel.app"
-additional_redirect_urls = ["https://inkwit.vercel.app", "http://localhost:3000"]
+# Hvězdičky jsou nutné — odkaz z e-mailu míří na /auth/confirm, ne na kořen,
+# a Supabase porovnává celou adresu proti tomuhle seznamu.
+additional_redirect_urls = [
+  "https://inkwit.vercel.app",
+  "https://inkwit.vercel.app/**",
+  "http://localhost:3000",
+  "http://localhost:3000/**",
+]
 
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
@@ -43,3 +50,15 @@ otp_expiry = 3600
 [auth.sms]
 enable_signup = false
 enable_confirmations = false
+
+# Vlastní šablona pro obnovu hesla.
+# Výchozí šablona posílá odkaz přes PKCE, který je vázaný na prohlížeč, kde
+# žádost vznikla — kdo si řekne o obnovu na počítači a otevře e-mail v telefonu,
+# narazí. token_hash funguje odkudkoliv.
+# NELZE NASADIT na free plánu s výchozím odesílatelem — Supabase vrací:
+# "Email template modification is not available for free tier projects using
+# the default email provider." Odkomentovat až s vlastním SMTP; do té doby
+# jede výchozí šablona a /auth/confirm si poradí s obojím.
+# [auth.email.template.recovery]
+# subject = "Inkwit — nové heslo"
+# content_path = "./supabase/templates/recovery.html"

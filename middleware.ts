@@ -7,7 +7,14 @@ import { routing } from "./i18n/routing";
 const handleI18n = createMiddleware(routing);
 
 /** Cesty dostupné bez přihlášení. Všechno ostatní je herní obrazovka. */
-const PUBLIC_PATHS = ["/login"];
+const PUBLIC_PATHS = ["/login", "/reset"];
+
+/**
+ * Odkud se přihlášený vyhazuje zpět do hry. `/reset` tu ZÁMĚRNĚ není —
+ * po ověření odkazu z e-mailu je uživatel přihlášený, ale ještě si nenastavil
+ * nové heslo. Kdyby ho middleware odsud odklidil, nikdy se k tomu nedostane.
+ */
+const SIGNED_IN_REDIRECT_FROM = ["/login"];
 
 /** Odřízne prefix jazyka, ať se cesty porovnávají v jednom tvaru. */
 function withoutLocale(pathname: string): string {
@@ -65,7 +72,7 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (user && isPublic) {
+  if (user && SIGNED_IN_REDIRECT_FROM.includes(path)) {
     const url = request.nextUrl.clone();
     url.pathname = withLocale("/", request.nextUrl.pathname);
     url.search = "";
@@ -79,5 +86,5 @@ export const config = {
   // Vše kromě api, Next interních cest a souborů s příponou.
   // Pozor: tečka jako [.] — path-to-regexp v Next zbaští zpětné lomítko
   // z \. a lookahead by pak odmítl každou cestu delší než jeden znak.
-  matcher: "/((?!api|_next|_vercel|.*[.].*).*)",
+  matcher: "/((?!api|auth|_next|_vercel|.*[.].*).*)",
 };

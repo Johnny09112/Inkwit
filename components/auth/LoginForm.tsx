@@ -28,6 +28,30 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
 
+  /**
+   * Obnova hesla. Odkaz míří na /auth/confirm, které ho ověří a pustí dál
+   * na /reset — ne rovnou na /reset, protože ten odkaz je jednorázový token
+   * a musí ho někdo uplatnit.
+   */
+  async function forgotPassword() {
+    if (!email.trim()) {
+      setError(t("errors.needEmail"));
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    setInfo(null);
+    const { error: err } = await createClient().auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/auth/confirm?type=recovery`,
+    });
+    setBusy(false);
+    if (err) {
+      setError(err.code === "over_email_send_rate_limit" ? t("errors.tooMany") : t("errors.generic"));
+      return;
+    }
+    setInfo(t("resetSent"));
+  }
+
   const trimmedName = name.trim();
   const nameLongEnough = trimmedName.length >= 3;
   const [nameTaken, setNameTaken] = useState<boolean | null>(null);
@@ -301,6 +325,12 @@ export function LoginForm() {
         {busy && <Loader2 size={17} className="spin" aria-hidden="true" />}
         {mode === "signup" ? t("actions.signup") : t("actions.signin")}
       </button>
+
+      {mode === "signin" && (
+        <button type="button" className="btn btn-ghost btn-sm" onClick={forgotPassword} disabled={busy}>
+          {t("actions.forgot")}
+        </button>
+      )}
     </form>
   );
 }

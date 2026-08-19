@@ -175,7 +175,8 @@
     },
     "actions": {
       "signin": "Sign in",
-      "signup": "Create account"
+      "signup": "Create account",
+      "forgot": "I forgot my password"
     },
     "confirmEmail": "Account created. Confirm it with the link we emailed you, then sign in.",
     "noInvite": "No code? Phase 0 is closed and the project owner hands out invites.",
@@ -190,8 +191,10 @@
       "generic": "Sign-in failed. Try again.",
       "emailInvalid": "Supabase rejects this email address. Try another — test domains like example.com will not pass.",
       "signupsClosed": "Account creation is closed right now.",
-      "nameTaken": "Someone took that name in the meantime. Pick another — your invite code is still valid."
-    }
+      "nameTaken": "Someone took that name in the meantime. Pick another — your invite code is still valid.",
+      "needEmail": "Enter the email we should send the link to."
+    },
+    "resetSent": "We emailed you a link. Open it on this device — the link is tied to the browser you asked from."
   },
   "notifications": {
     "loading": "Loading…",
@@ -202,5 +205,17 @@
     "thumbed": "{name} gave your drawing a thumb.",
     "requestFilled": "{name} drew “{concept}” — the one you asked for.",
     "requestServed": "You made someone.s day: {name} was waiting for “{concept}”."
+  },
+  "reset": {
+    "eyebrow": "New password",
+    "checking": "Checking the link…",
+    "newPassword": "New password",
+    "hint": "At least six characters.",
+    "save": "Save password",
+    "done": "Done. Taking you to the game.",
+    "weak": "Password needs at least six characters.",
+    "failed": "Could not change the password. Try again.",
+    "expired": "This link no longer works. Links are single-use and expire — ask for a new one.",
+    "backToLogin": "Back to sign in"
   }
 }
