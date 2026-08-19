@@ -32,7 +32,8 @@
       "preview": "Náhled bez nástrojů",
       "palette": "Další barvy",
       "size": "Velikost stopy",
-      "clearConfirm": "Opravdu smazat?"
+      "clearConfirm": "Opravdu smazat?",
+      "resetZoom": "Zpět na celou kresbu"
     },
     "colors": {
       "title": "Barvy",

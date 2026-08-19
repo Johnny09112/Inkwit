@@ -77,6 +77,21 @@ rozhraní se vědomě nestavělo.
   za 1,2 s). Animace se proto nerozběhne a plátno zůstane prázdné — není to
   chyba kódu. Přehrání se musí zkoušet v běžném prohlížeči.
 
+### Přidáno 2026-08-19 (gesta a dotyk)
+
+- **Dlouhý stisk už nevybírá text.** iOS Safari nad plátnem i paletou otevíral
+  nabídku „Kopírovat". Řeší to `user-select` a `-webkit-touch-callout`, ne PWA.
+  Viz `patterns/ios-dlouhy-stisk-vybira-text.md`.
+- **Gesta na plátně:** jeden prst kreslí, dva přibližují a posouvají (1× až 8×).
+  Přiblížení je jen zobrazení — body se dál ukládají v poměrných souřadnicích.
+  Matematika je v `lib/canvasView.ts` a má vlastní testy: `npm run test:view`
+  (9 testů, vestavěný runner Node, žádná nová závislost).
+  Viz `decisions/gesta-a-vyrez-platna.md`.
+- **Neověřeno v prohlížeči:** náhledový prohlížeč nemá session, takže se do něj
+  kreslicí obrazovka nedostane. Ověřená je matematika výřezu (testy) a vypnutý
+  výběr textu (změřeno na `/login`). Samotné prsty na plátně a nabídku po dlouhém
+  stisku otestuje až telefon.
+
 ### Přidáno 2026-08-19 (mobilní plátno)
 
 - **Šipkové tlačítko `panMode` odstraněno** — jen vypínalo kreslení, žádný posun

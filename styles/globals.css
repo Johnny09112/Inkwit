@@ -1922,3 +1922,61 @@ a {
 .pick-card-tags .t-label-sm {
   color: var(--text-secondary);
 }
+
+/* ---------- Dotykové chování ---------- */
+
+/* Dlouhý stisk na iOS jinak vybere text a otevře nabídku „Kopírovat" — přes
+   celé plátno i paletu barev. Ovládací prvky ani plátno nejsou text, takže
+   se u nich výběr i systémová nabídka vypínají. Pole pro psaní si výběr
+   berou zpátky níž. */
+.draw-screen,
+button,
+.badge,
+.swatch,
+.tabbar,
+.shell-nav,
+.filter-chip,
+.mine-item {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Klepnutí nemá blikat šedým obdélníkem — u plátna to vypadá jako závada. */
+.draw-screen,
+.icon-btn,
+.canvas-tool,
+.canvas-zoom,
+.swatch {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Text, který má jít označit, si to bere zpátky — jinak by se z aplikace
+   nedalo nic zkopírovat ani napsat. */
+input,
+textarea,
+.guess-feedback,
+.solved-side,
+.detail-stats {
+  -webkit-touch-callout: default;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Míra přiblížení plátna. Ukáže se, jen když je od čeho se vracet, a klepnutí
+   vrátí celou kresbu — bez toho by se z přiblížení nedalo odejít. */
+.canvas-zoom {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 2;
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-secondary);
+}

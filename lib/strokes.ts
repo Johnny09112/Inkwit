@@ -57,8 +57,13 @@ export function renderStrokes(
   strokes: readonly Stroke[],
   width: number,
   height: number,
+  /**
+   * Plátno si při přiblížení čistí samo — `clearRect` se totiž řídí aktuální
+   * transformací, takže by při posunutém výřezu smazalo jen jeho část.
+   */
+  options?: { clear?: boolean },
 ): void {
-  ctx.clearRect(0, 0, width, height);
+  if (options?.clear !== false) ctx.clearRect(0, 0, width, height);
   const scale = width / BASE_WIDTH;
 
   for (const stroke of strokes) {

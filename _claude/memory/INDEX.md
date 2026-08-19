@@ -7,6 +7,7 @@
 - [[project-context]] — Živý stav projektu inkwit — fáze, milníky, aktuální focus · active · 2026-08-19
 
 ## Decisions
+- [[gesta-a-vyrez-platna]] — Jeden prst kreslí, dva přibližují a posouvají; přiblížení je jen zobrazení, body zůstávají v poměrných souřadnicích 0–1, matematika výřezu je v lib/canvasView.ts a má vlastní testy · active · 2026-08-19
 - [[knihovna-kreseb-a-mazani]] — Rozepsané kresby se z knihovny skrývají, ale řádek zůstává kvůli metrics_funnel; mazání vlastní kresby je měkké (status removed), detail nesmí ukázat počet pokusů · active · 2026-08-19
 - [[predvolby-zarizeni-v-localstorage]] — Kreslicí ruka (strana lišty nástrojů) žije v localStorage, ne ve sloupci profiles — vlastnost zařízení, ne účtu; migrace kvůli vzhledu se nevyplatí · active · 2026-08-19
 - [[faze-0-uzavrena-skupina]] — Fáze 0 běží jako uzavřená skupina ~50 pozvaných; veřejné otevření je podmíněné automatickým klasifikátorem obsahu · active · 2026-08-18
@@ -22,6 +23,7 @@
 
 ## Patterns
 - [[ctvercove-tlacitko-ve-flex-radku]] — aspect-ratio nevyrobí čtvercové tlačítko vedle roztaženého ve flex řádku — šířka se vyřeší dřív, než align-items stretch roztáhne výšku · active · 2026-08-19
+- [[ios-dlouhy-stisk-vybira-text]] — Dlouhý stisk v iOS Safari označí text a otevře nabídku Kopírovat i nad plátnem a tlačítky; řeší to user-select a -webkit-touch-callout, ne PWA · active · 2026-08-19
 - [[next-cache-rozbita-buildem]] — npm run build za běhu dev serveru přepíše .next a dev pak hlásí "Cannot find module ./vendor-chunks/*.js" — vypadá to jako chyba v kódu, ale je to jen cache · active · 2026-08-19
 - [[jak-tvorit-slovni-zasobu]] — Recept na tvorbu konceptů — kalibrace obtížnosti, co patří a nepatří do přijímaných tvarů, kritéria jednojazyčnosti, povinná kontrola validátorem · active · 2026-08-18
 - [[nextjs-middleware-matcher-tecka]] — V Next.js middleware matcheru nefunguje escapovaná tečka \. uvnitř custom skupiny — path-to-regexp zbaští backslash a lookahead pak odmítne všechno; použij [.] · active · 2026-08-18

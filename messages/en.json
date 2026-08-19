@@ -32,7 +32,8 @@
       "preview": "Preview without tools",
       "palette": "More colors",
       "size": "Stroke size",
-      "clearConfirm": "Clear everything?"
+      "clearConfirm": "Clear everything?",
+      "resetZoom": "Fit whole drawing"
     },
     "colors": {
       "title": "Colors",

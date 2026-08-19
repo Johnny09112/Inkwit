@@ -6,6 +6,9 @@
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
+    // Testy běží na vestavěném runneru Node, který odstraňuje typy a vyžaduje
+    // příponu .ts v importu. Bez tohohle by je tsc odmítl.
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
