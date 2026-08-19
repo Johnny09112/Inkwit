@@ -48,7 +48,11 @@
     "loading": "Načítám zadání…",
     "draftMissing": "Tahle kresba k tobě nepatří, nebo je už odeslaná.",
     "pickAnother": "Vybrat jiný pojem",
-    "sendFailed": "Odeslání se nepovedlo. Kresba ti zůstala, zkus to znovu."
+    "sendFailed": "Odeslání se nepovedlo. Kresba ti zůstala, zkus to znovu.",
+    "leaveTitle": "Odejít bez uložení?",
+    "leaveNote": "Rozdělaná kresba se neuloží a nepůjde v ní pokračovat.",
+    "leaveConfirm": "Rozumím a pokračovat",
+    "leaveBack": "Zpět ke kreslení"
   },
   "submit": {
     "step": "Krok 1 ze 2 · kontrola",
@@ -128,7 +132,19 @@
     "loading": "Načítám tvoje kresby…",
     "loadFailed": "Kresby se nepodařilo načíst. Zkus to znovu.",
     "empty": "Zatím jsi nic nenakreslil. První kresba je ta nejtěžší.",
-    "emptyCta": "Vybrat pojem"
+    "emptyCta": "Vybrat pojem",
+    "detailTitle": "Detail kresby",
+    "drawnAt": "Nakresleno",
+    "stars": "Hvězdičky",
+    "noStars": "zatím žádné",
+    "play": "Přehrát",
+    "delete": "Smazat kresbu",
+    "deleteConfirm": "Opravdu smazat?",
+    "deleteNote": "Kresba zmizí tobě i ostatním. Vrátit to nejde.",
+    "deleteFailed": "Smazat se nepodařilo. Zkus to znovu.",
+    "cancel": "Nechat",
+    "statSolved": "Uhodlo",
+    "statThumbs": "Palce"
   },
   "leaderboards": {
     "title": "Žebříčky",

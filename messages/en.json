@@ -48,7 +48,11 @@
     "loading": "Loading your word…",
     "draftMissing": "This drawing is not yours, or it has already been sent.",
     "pickAnother": "Pick another word",
-    "sendFailed": "Sending failed. Your drawing is still here — try again."
+    "sendFailed": "Sending failed. Your drawing is still here — try again.",
+    "leaveTitle": "Leave without saving?",
+    "leaveNote": "The unfinished drawing will not be saved and cannot be resumed.",
+    "leaveConfirm": "I understand, continue",
+    "leaveBack": "Back to drawing"
   },
   "submit": {
     "step": "Step 1 of 2 · check",
@@ -128,7 +132,19 @@
     "loading": "Loading your drawings…",
     "loadFailed": "Could not load your drawings. Try again.",
     "empty": "You have not drawn anything yet. The first one is the hardest.",
-    "emptyCta": "Pick a word"
+    "emptyCta": "Pick a word",
+    "detailTitle": "Drawing detail",
+    "drawnAt": "Drawn",
+    "stars": "Stars",
+    "noStars": "none yet",
+    "play": "Play",
+    "delete": "Delete drawing",
+    "deleteConfirm": "Delete for good?",
+    "deleteNote": "It disappears for you and everyone else. This cannot be undone.",
+    "deleteFailed": "Could not delete. Try again.",
+    "cancel": "Keep it",
+    "statSolved": "Solved by",
+    "statThumbs": "Thumbs"
   },
   "leaderboards": {
     "title": "Leaderboards",

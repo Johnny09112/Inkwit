@@ -68,11 +68,25 @@ rozhraní se vědomě nestavělo.
 ### Známé nedodělky
 
 - **Nahlášené kresby** se řeší ručně ze studia, obrazovka pro to není.
-- **V databázi zůstala testovací rozepsaná kresba** `0e017896-e357-4b53-bb6f-46168fb29521`
-  (účet Johnny09112, 2026-08-19 16:46). Vznikla při ověřování vzhledu, smazat ji
-  z Supabase studia — jinak se v `metrics_funnel` tváří jako drop-off „začal
-  kreslit, neodeslal". Starší draft `84d0f630-…` z dřívějšího testování tam byl
-  už předtím, ten má stejný problém.
+- **Dva testovací drafty v databázi** — `0e017896-…` (2026-08-19 16:46) a starší
+  `84d0f630-…`. V knihovně už nevadí (rozepsané se neukazují), ale v
+  `metrics_funnel` se počítají jako drop-off „začal kreslit, neodeslal".
+  Před vyhodnocením testu je smazat ze studia.
+- **Přehrání kresby se v tomhle prostředí nedá ověřit.** Náhledový prohlížeč
+  běží skrytý a `requestAnimationFrame` v něm nefiruje vůbec (změřeno: 0 snímků
+  za 1,2 s). Animace se proto nerozběhne a plátno zůstane prázdné — není to
+  chyba kódu. Přehrání se musí zkoušet v běžném prohlížeči.
+
+### Přidáno 2026-08-19 (knihovna kreseb)
+
+- **Prázdné dlaždice v „Moje" byly rozepsané kresby.** `my_drawings()` je teď
+  nevrací. Řádek v databázi zůstává — `metrics_funnel` na něm stojí.
+- **Varování při odchodu z rozdělané kresby** — křížek se s tahy na plátně
+  nejdřív zeptá, prázdné plátno pustí rovnou.
+- **Mazání vlastní kresby** — měkké, `status = removed`, RPC `delete_drawing()`.
+- **Detail kresby** — zvětšení, přehrání, uhodlo / palce / hvězdičky / datum.
+  **Počet pokusů tam vědomě není** (majitelovo rozhodnutí 2026-08-19).
+  Viz `decisions/knihovna-kreseb-a-mazani.md`.
 
 ### Vyřešeno 2026-08-19 (vzhled)
 

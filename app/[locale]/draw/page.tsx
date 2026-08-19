@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
 import {
   Brush,
@@ -65,6 +65,7 @@ export default function DrawPage({
   const [mode, setMode] = useState<Mode>("draw");
   const [undoCount, setUndoCount] = useState(0);
   const [confirmClear, setConfirmClear] = useState(false);
+  const [leaveAsk, setLeaveAsk] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
 
@@ -216,6 +217,30 @@ export default function DrawPage({
   /** Oddělení nebezpečného tlačítka od sousedů — proti mis-tapům na dotyku. */
   const trashSeparator = <span className="tool-sep" aria-hidden="true" />;
 
+  /**
+   * Křížek na plátně. S rozdělanou kresbou se nejdřív zeptá — odchod znamená,
+   * že tahy jsou pryč. Prázdné plátno se ptát nemusí, není o co přijít.
+   *
+   * Rozepsaný řádek v databázi zůstává schválně: `metrics_funnel` na něm měří
+   * drop-off „začal kreslit → neodeslal". V knihovně se neukazuje.
+   */
+  const closeButton = (size: number, className: string, style?: CSSProperties) =>
+    strokes.length === 0 ? (
+      <Link href="/guess" aria-label={tCommon("close")} className={className} style={style}>
+        <X size={size} />
+      </Link>
+    ) : (
+      <button
+        type="button"
+        aria-label={tCommon("close")}
+        className={className}
+        style={style}
+        onClick={() => setLeaveAsk(true)}
+      >
+        <X size={size} />
+      </button>
+    );
+
   const swatches = (colors: readonly string[], sizePx?: number) =>
     colors.map((c) => (
       <button
@@ -271,13 +296,7 @@ export default function DrawPage({
           <span className="draw-concept-name">{draft?.prompt ?? ""}</span>
           {difficultyBadge}
           <span className="float-pill-divider" />
-          <Link
-            href="/guess"
-            aria-label={tCommon("close")}
-            style={{ color: "var(--text-secondary)", display: "inline-flex" }}
-          >
-            <X size={20} />
-          </Link>
+          {closeButton(20, "", { color: "var(--text-secondary)", display: "inline-flex" })}
         </div>
         <div className="draw-float-bottom">
           <div className="draw-float-sizebar">
@@ -316,13 +335,7 @@ export default function DrawPage({
           <span className="draw-concept-name">{draft?.prompt ?? ""}</span>
           {difficultyBadge}
           <span className="float-pill-divider" />
-          <Link
-            href="/guess"
-            aria-label={tCommon("close")}
-            style={{ color: "var(--text-secondary)", display: "inline-flex" }}
-          >
-            <X size={19} />
-          </Link>
+          {closeButton(19, "", { color: "var(--text-secondary)", display: "inline-flex" })}
         </div>
         <div className={`draw-rail draw-rail-${hand}`}>
           {toolButtons(22)}
@@ -384,14 +397,7 @@ export default function DrawPage({
       {/* Mobil: hlavička s pojmem mezi křížkem a profilem (wireframe 1) */}
       <div className="only-mobile">
         <div className="draw-head">
-          <Link
-            href="/guess"
-            aria-label={tCommon("close")}
-            className="icon-btn icon-btn-plain"
-            style={{ width: 34, height: 34 }}
-          >
-            <X size={20} />
-          </Link>
+          {closeButton(20, "icon-btn icon-btn-plain", { width: 34, height: 34 })}
           <div className="draw-concept">
             <span className="draw-concept-name">{draft?.prompt ?? ""}</span>
             {difficultyBadge}
@@ -469,6 +475,30 @@ export default function DrawPage({
           onDrawNext={() => router.push("/pick")}
           onGoGuess={() => router.push("/guess")}
         />
+      )}
+
+      {leaveAsk && (
+        <div className="modal-backdrop" onClick={() => setLeaveAsk(false)}>
+          <div
+            className="modal"
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="modal-title">{t("leaveTitle")}</h2>
+            <p className="t-secondary" style={{ fontSize: "var(--text-body-sm)" }}>
+              {t("leaveNote")}
+            </p>
+            <div className="modal-actions">
+              <Button size="lg" variant="secondary" onClick={() => setLeaveAsk(false)}>
+                {t("leaveBack")}
+              </Button>
+              <Button size="lg" onClick={() => router.push("/guess")}>
+                {t("leaveConfirm")}
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

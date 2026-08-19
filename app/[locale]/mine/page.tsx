@@ -3,10 +3,11 @@
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { DrawingDetail } from "@/components/DrawingDetail";
 import { DrawingThumb } from "@/components/DrawingThumb";
 import { AppShell } from "@/components/shell/AppShell";
 import { Link } from "@/i18n/navigation";
-import { fetchMyDrawings, fetchStrokes, type MyDrawing } from "@/lib/game";
+import { deleteDrawing, fetchMyDrawings, fetchStrokes, type MyDrawing } from "@/lib/game";
 import type { Stroke } from "@/lib/strokes";
 
 type Filter = "all" | "solved" | "waiting";
@@ -25,6 +26,7 @@ export default function MinePage() {
   const [strokes, setStrokes] = useState<Map<string, Stroke[]>>(new Map());
   const [filter, setFilter] = useState<Filter>("all");
   const [error, setError] = useState<string | null>(null);
+  const [openId, setOpenId] = useState<string | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -60,6 +62,8 @@ export default function MinePage() {
       </AppShell>
     );
   }
+
+  const open = items.find((d) => d.drawingId === openId) ?? null;
 
   const solved = items.filter((d) => d.solvedCount > 0);
   const waiting = items.filter((d) => d.solvedCount === 0);
@@ -97,7 +101,13 @@ export default function MinePage() {
       ) : (
         <div className="mine-grid">
           {shown.map((d) => (
-            <div key={d.drawingId} className="mine-item">
+            <button
+              key={d.drawingId}
+              type="button"
+              className="mine-item"
+              aria-label={t("detailTitle")}
+              onClick={() => setOpenId(d.drawingId)}
+            >
               <DrawingThumb strokes={strokes.get(d.drawingId)} label={d.prompt} />
               <div className="mine-item-name">{d.prompt}</div>
               <div className="mine-item-meta">
@@ -107,9 +117,27 @@ export default function MinePage() {
                     }`
                   : t("waiting")}
               </div>
-            </div>
+            </button>
           ))}
         </div>
+      )}
+
+      {open && (
+        <DrawingDetail
+          drawing={open}
+          strokes={strokes.get(open.drawingId)}
+          onClose={() => setOpenId(null)}
+          onDelete={async (id) => {
+            const ok = await deleteDrawing(id);
+            if (ok) {
+              // Seznam se nepřenačítá — server už kresbu nevrátí a jediná
+              // změna je ta jedna položka.
+              setItems((rows) => (rows ?? []).filter((r) => r.drawingId !== id));
+              setOpenId(null);
+            }
+            return ok;
+          }}
+        />
       )}
     </AppShell>
   );

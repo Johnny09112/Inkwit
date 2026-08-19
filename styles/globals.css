@@ -1171,10 +1171,24 @@ a {
   gap: 12px;
 }
 
+/* Dlaždice je tlačítko (otevře detail), ne div — musí si tedy vzít zpátky
+   zarovnání textu, které buttonu prohlížeč nastavuje na střed. */
 .mine-item {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+
+.mine-item:hover .thumb,
+.mine-item:focus-visible .thumb {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
 }
 
 .mine-item .hatch {
@@ -1742,4 +1756,90 @@ a {
 
 .notif.is-new .notif-icon {
   color: var(--action-primary);
+}
+
+/* ---------- Detail vlastní kresby ---------- */
+
+.detail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Plátno přehrání potřebuje rozměr od rodiče — samo si ho nevezme. */
+.detail-art {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  border-radius: var(--radius-xl);
+  background: var(--surface-canvas);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.detail-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0;
+}
+
+.detail-stats dt {
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.detail-stats dd {
+  margin: 4px 0 0;
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-body-strong);
+}
+
+.detail-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Mazání je vedlejší akce, ne rovnocenné tlačítko vedle přehrání — proto
+   textový odkaz v barvě nebezpečí, ne plný button. */
+.detail-delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--danger);
+  font-size: var(--text-body-sm);
+  padding: 8px 4px;
+}
+
+.detail-danger {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--surface-danger);
+}
+
+.detail-danger p {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+@media (min-width: 768px) {
+  .detail-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .detail-modal .modal-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 }

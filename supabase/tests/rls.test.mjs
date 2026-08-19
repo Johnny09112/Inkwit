@@ -636,6 +636,97 @@ async function main() {
     "autor nepřečte tabulku kreseb napřímo",
   );
 
+  console.log("\nKnihovna kreseb — rozepsané ven, mazání jen vlastní:\n");
+
+  // Rozepsaná kresba dělala v mřížce prázdnou dlaždici s popiskem
+  // „čeká na 1. uhodnutí". Nemá tahy a hádat ji nikdo nemůže.
+  await db.exec("begin");
+  await db.exec(`
+    set local role authenticated;
+    select set_config('request.jwt.claim.sub', '${BOB}', true);
+  `);
+  const libraryIds = (await db.query("select drawing_id from public.my_drawings()")).rows.map(
+    (r) => r.drawing_id,
+  );
+  await db.exec("rollback");
+  report(
+    !libraryIds.includes(DRAFT),
+    "rozepsaná kresba se v knihovně neukazuje",
+    libraryIds.join(", "),
+  );
+
+  // Řádek draftu ale musí zůstat — metrics_funnel na něm měří drop-off
+  // „začal kreslit → neodeslal", což je jedno ze tří čísel fáze 0.
+  await db.exec("begin");
+  await db.exec(`
+    set local role authenticated;
+    select set_config('request.jwt.claim.sub', '${BOB}', true);
+  `);
+  const draftKept = (await db.query(`select public.delete_drawing('${DRAFT}') ok`)).rows[0].ok;
+  await db.exec("rollback");
+  const draftStillThere = (
+    await db.query(`select status from public.drawings where id = '${DRAFT}'`)
+  ).rows[0].status;
+  report(
+    draftKept === false && draftStillThere === "draft",
+    "rozepsanou kresbu smazat nejde — drží drop-off pro metrics_funnel",
+    `vráceno ${draftKept}, status ${draftStillThere}`,
+  );
+
+  // Cizí kresbu autorovi nikdo neodstraní. Podmínka je uvnitř update.
+  await db.exec("begin");
+  await db.exec(`
+    set local role authenticated;
+    select set_config('request.jwt.claim.sub', '${ALICE}', true);
+  `);
+  const foreign = (await db.query(`select public.delete_drawing('${LIVE}') ok`)).rows[0].ok;
+  // Roli je potřeba vrátit — `authenticated` tabulku kreseb nepřečte (to je
+  // právě ta ochrana z C4), takže by kontrolní select spadl na 42501.
+  await db.exec("reset role");
+  const foreignStatus = (
+    await db.query(`select status from public.drawings where id = '${LIVE}'`)
+  ).rows[0].status;
+  await db.exec("rollback");
+  report(
+    foreign === false && foreignStatus === "live",
+    "cizí kresbu smazat nejde",
+    `vráceno ${foreign}, status ${foreignStatus}`,
+  );
+
+  // Vlastní ano — měkce, aby cizí tipy a čísla zásoby zůstala.
+  await db.exec("begin");
+  // Cizí tip, který smazání musí přežít. Tvrdý `delete` by ho vzal s sebou
+  // kaskádou a s ním i podklad pro zásobu neuhodnutých (metrika 2).
+  await db.exec(`
+    insert into public.guesses (drawing_id, user_id, locale, attempt_no, text_raw, is_correct)
+    values ('${LIVE}', '${ALICE}', 'cs', 1, 'medúza', false);
+    set local role authenticated;
+    select set_config('request.jwt.claim.sub', '${BOB}', true);
+  `);
+  const removed = (await db.query(`select public.delete_drawing('${LIVE}') ok`)).rows[0].ok;
+  const afterDelete = (await db.query("select drawing_id from public.my_drawings()")).rows.map(
+    (r) => r.drawing_id,
+  );
+  await db.exec("reset role");
+  const rowSurvives = (
+    await db.query(`select status from public.drawings where id = '${LIVE}'`)
+  ).rows[0].status;
+  const guessesSurvive = (
+    await db.query(`select count(*)::int n from public.guesses where drawing_id = '${LIVE}'`)
+  ).rows[0].n;
+  await db.exec("rollback");
+  report(removed === true, "vlastní kresbu autor smaže");
+  report(
+    !afterDelete.includes(LIVE),
+    "smazaná kresba zmizí z knihovny",
+    afterDelete.join(", "),
+  );
+  report(
+    rowSurvives === "removed" && guessesSurvive > 0,
+    "mazání je měkké — cizí tipy a čísla zásoby zůstanou",
+    `status ${rowSurvives}, tipů ${guessesSurvive}`,
+  );
+
   console.log("\nVyžádání a upozornění (blok E):\n");
 
   const conceptZaba = (await db.query(`select id from public.concepts where slug = 'zaba'`)).rows[0].id;

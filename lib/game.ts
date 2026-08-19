@@ -117,6 +117,21 @@ export async function fetchMyDrawings(): Promise<MyDrawing[]> {
   }));
 }
 
+/**
+ * Smazání vlastní kresby.
+ *
+ * Měkké — server jen přepne status na `removed`. Tvrdé smazání by vzalo
+ * s sebou cizí tipy a čísla, ze kterých se počítá zásoba neuhodnutých kreseb.
+ * Vrací `false`, když se nic nezměnilo (cizí kresba nebo už smazaná).
+ */
+export async function deleteDrawing(drawingId: string): Promise<boolean> {
+  const { data, error } = await createClient().rpc("delete_drawing", {
+    p_drawing_id: drawingId,
+  });
+  if (error) throw error;
+  return data === true;
+}
+
 /** Tahy pro víc kreseb najednou — na mřížku náhledů, ať to není dotaz na každou. */
 export async function fetchStrokes(
   drawingIds: string[],

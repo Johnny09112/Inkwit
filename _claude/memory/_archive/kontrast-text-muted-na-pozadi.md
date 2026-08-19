@@ -63,3 +63,16 @@ prochází (4.63 : 1), takže `.input::placeholder`, `.auth-code-prefix`,
 `getComputedStyle().color` proti prvnímu neprůhlednému pozadí předka a porovná
 s prahem 4.5 (3.0 pro velký text). Pouštěl se na `/guess`, `/mine`, `/pick`,
 `/leaderboards` a `/profile` — všechny hlásí nula.
+
+## Past v tom měřicím skriptu (2026-08-19)
+
+První verze brala **jakékoli neprůhledné pozadí jako plnou barvu**, včetně
+`rgba(43,38,31,0.03)`. Tlačítko `.btn-secondary` pak vyšlo na 1.56 : 1, ačkoli
+po správném složení vrstev má 7.2 : 1.
+
+Skript musí alfu skládat: jít po předcích, sbírat vrstvy, dokud nenarazí na
+`alpha = 1`, a pak je složit odspodu (`a·barva + (1−a)·pozadí`).
+
+Chyba vede k **falešným poplachům, ne k přehlédnutí** — poloprůhledné vrstvy
+jsou v téhle paletě vždycky tmavý inkoust na světlém, takže naivní výpočet
+poměr podhodnotí. Dřívější nulové výsledky proto platí i tak.
