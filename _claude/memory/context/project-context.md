@@ -77,6 +77,23 @@ rozhraní se vědomě nestavělo.
   za 1,2 s). Animace se proto nerozběhne a plátno zůstane prázdné — není to
   chyba kódu. Přehrání se musí zkoušet v běžném prohlížeči.
 
+### Opraveno 2026-08-19 (iPad: ukládání kresby)
+
+- **Strop bodů platil třetinový** — `submit_drawing` porovnávala délku plochého
+  pole se stropem počtu bodů, takže limit byl 20 000 místo 60 000. Na 120Hz
+  tabletu se dal potkat. Opraveno + tři testy.
+  Viz `bugs/strop-bodu-se-pocital-tretinovy.md`.
+- **Odmítnutí serveru se teď pojmenuje.** Do teď každé selhání ukázalo „Odeslání
+  se nepovedlo, zkus to znovu" — u trvalé příčiny to člověka nechá zkoušet
+  donekonečna. `submitDrawing()` vrací `SubmitError` s důvodem.
+- **Zapomenutý prst už nezamkne kreslení.** Primární `pointerdown` uklidí
+  evidenci prstů a přibylo `onLostPointerCapture`. Na iOS se ztracený `pointerup`
+  stává (dlaň, systémové gesto) a bez úklidu by každý další dotyk vypadal jako
+  gesto.
+- **Nereprodukováno:** na simulovaném iPadu 834 × 1194 tlačítko Odeslat funguje
+  včetně potvrzení a odeslání. Výše uvedené jsou opravené kandidáti, ne potvrzená
+  příčina.
+
 ### Opraveno 2026-08-19 (paleta, druhé kolo)
 
 - **Paleta vyjela mimo obrazovku** na iPhonu — obal dlaždic s `aspect-ratio`

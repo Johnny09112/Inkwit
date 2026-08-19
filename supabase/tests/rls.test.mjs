@@ -423,6 +423,53 @@ async function main() {
                     from public.drawings where id = '${draftId}'`)
   ).rows[0];
   report(saved.status === "live", "po odeslání je kresba živá", saved.status);
+
+  // Strop bodů se počítal třikrát menší, než říká konfigurace: `v_points` už
+  // jsou body, ale výraz je znovu násobil třemi. Na 120Hz tabletu se dala
+  // hranice potkat a odeslání skončilo obecným „nepovedlo se".
+  {
+    const strop = (
+      await db.query(
+        `select (value)::int v from public.game_config where key = 'max_points_per_drawing'`,
+      )
+    ).rows[0].v;
+    /** Jeden tah s daným počtem bodů: ploché pole [x,y,t,…]. */
+    const tahSBody = (n) => {
+      const pole = [];
+      for (let i = 0; i < n; i++) pole.push(0.5, 0.5, i);
+      return JSON.stringify([{ tool: "brush", color: "#2B261F", width: 8, points: pole }]);
+    };
+    // Savepoint, ne begin/rollback: tenhle kód běží uvnitř už otevřené
+    // transakce a vnořený rollback by zrušil i práci předchozích kroků.
+    const zkusOdeslat = async (bodu) => {
+      await db.exec("savepoint strop");
+      try {
+        const id = (await db.query(`select public.start_drawing('${conceptPes}') id`)).rows[0].id;
+        await db.query(`select public.submit_drawing('${id}', 'touch', 0, $1::jsonb)`, [
+          tahSBody(bodu),
+        ]);
+        return "ok";
+      } catch (e) {
+        return e.message.includes("mnoho bodů") ? "odmítnuto" : `jiná chyba: ${e.message}`;
+      } finally {
+        await db.exec("rollback to savepoint strop");
+      }
+    };
+
+    report(
+      (await zkusOdeslat(strop - 10)) === "ok",
+      `kresba těsně pod stropem projde (${strop - 10} bodů)`,
+    );
+    report(
+      (await zkusOdeslat(strop + 10)) === "odmítnuto",
+      `kresba nad stropem se odmítne (${strop + 10} bodů)`,
+    );
+    // Jádro opravy: třetina stropu je pořád hluboko v povoleném pásmu.
+    report(
+      (await zkusOdeslat(Math.floor(strop / 3) + 100)) === "ok",
+      "třetina stropu se už neodmítá — tam byla ta chyba",
+    );
+  }
   report(saved.stroke_count === 2, "počet tahů spočítal server", String(saved.stroke_count));
   report(
     Math.abs(saved.coverage - 0.12) < 0.001,

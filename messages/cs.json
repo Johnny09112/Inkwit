@@ -58,7 +58,13 @@
     "leaveTitle": "Odejít bez uložení?",
     "leaveNote": "Rozdělaná kresba se neuloží a nepůjde v ní pokračovat.",
     "leaveConfirm": "Rozumím a pokračovat",
-    "leaveBack": "Zpět ke kreslení"
+    "leaveBack": "Zpět ke kreslení",
+    "sendRefused": {
+      "empty": "Plátno je prázdné — nakresli aspoň jeden tah.",
+      "tooManyStrokes": "Kresba má moc tahů, než kolik se dá uložit. Zkus ji zjednodušit.",
+      "tooManyPoints": "Kresba je moc podrobná, než aby se dala uložit. Zkus ji zjednodušit nebo kreslit rychlejšími tahy.",
+      "gone": "Tahle kresba už není rozepsaná — nejspíš byla odeslána z jiného zařízení."
+    }
   },
   "submit": {
     "step": "Krok 1 ze 2 · kontrola",

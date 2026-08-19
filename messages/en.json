@@ -58,7 +58,13 @@
     "leaveTitle": "Leave without saving?",
     "leaveNote": "The unfinished drawing will not be saved and cannot be resumed.",
     "leaveConfirm": "I understand, continue",
-    "leaveBack": "Back to drawing"
+    "leaveBack": "Back to drawing",
+    "sendRefused": {
+      "empty": "The canvas is empty — draw at least one stroke.",
+      "tooManyStrokes": "This drawing has more strokes than can be saved. Try simplifying it.",
+      "tooManyPoints": "This drawing is too detailed to save. Try simplifying it or drawing with quicker strokes.",
+      "gone": "This drawing is no longer a draft — it was probably submitted from another device."
+    }
   },
   "submit": {
     "step": "Step 1 of 2 · check",

@@ -148,6 +148,18 @@ export function DrawingCanvas({
 
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (inputDisabled) return;
+
+    // `isPrimary` je podle specifikace první prst gesta — v tu chvíli žádný
+    // jiný na plátně být nemůže. Cokoli, co v evidenci zbylo, je tedy zapomenutý
+    // prst po nedoručeném `pointerup` (na iOS se to stává u dlaně nebo když
+    // systém dotyk sebere). Bez tohoto úklidu by takový zbytek napořád zamkl
+    // kreslení: každý další dotyk by vypadal jako druhý prst, tedy gesto.
+    if (e.isPrimary) {
+      pointers.current.clear();
+      pinch.current = null;
+      gestureLock.current = false;
+    }
+
     e.currentTarget.setPointerCapture(e.pointerId);
     pointers.current.set(e.pointerId, localPoint(e));
 
@@ -247,6 +259,9 @@ export function DrawingCanvas({
         onPointerMove={handlePointerMove}
         onPointerUp={releasePointer}
         onPointerCancel={releasePointer}
+        // Když prohlížeč zachycení sebere (přepnutí okna, systémové gesto),
+        // `pointerup` už nepřijde. Bez tohohle by prst zůstal v evidenci.
+        onLostPointerCapture={releasePointer}
       />
       {view.scale > 1.01 && (
         <button

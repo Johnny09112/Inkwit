@@ -20,7 +20,7 @@ import { Badge, Button } from "@/components/ui";
 import { DrawingCanvas } from "@/components/draw/DrawingCanvas";
 import { ColorSheet } from "@/components/draw/ColorSheet";
 import { SubmitFlow } from "@/components/draw/SubmitFlow";
-import { fetchDraft, submitDrawing, type Draft } from "@/lib/game";
+import { fetchDraft, submitDrawing, SubmitError, type Draft } from "@/lib/game";
 import { RECENT_COLORS } from "@/lib/mock";
 import { looksRushed, type Stroke, type Tool } from "@/lib/strokes";
 import { useHand } from "@/lib/prefs";
@@ -131,8 +131,11 @@ export default function DrawPage({
     try {
       await submitDrawing(drawingId, strokes, undoCount);
       setMode("done");
-    } catch {
-      setSendError(t("sendFailed"));
+    } catch (err) {
+      // Trvalé odmítnutí (kresba přes strop) se musí říct jinak než výpadek sítě —
+      // jinak to člověk zkouší donekonečna a hlásí jen „nejde uložit".
+      const reason = err instanceof SubmitError ? err.reason : "unknown";
+      setSendError(reason === "unknown" ? t("sendFailed") : t(`sendRefused.${reason}`));
     } finally {
       setSending(false);
     }

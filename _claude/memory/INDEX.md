@@ -35,5 +35,6 @@
 
 ## Bugs
 - [[revoke-na-sloupec-nefunguje]] — revoke update (sloupec) nedělá nic, když má role právo na celou tabulku — uživatel si mohl přepsat tenant_id a obejít izolaci školního tenantu · resolved · 2026-08-19
+- [[strop-bodu-se-pocital-tretinovy]] — submit_drawing porovnávala délku plochého pole se stropem počtu bodů, takže platil limit 20 000 místo 60 000; na 120Hz tabletu se dal potkat a odeslání skončilo obecným "nepovedlo se" · resolved · 2026-08-19
 - [[ledger-pravidlo-blokovalo-mazani-uctu]] — Pravidlo "do instead nothing" chránící append-only ledger rozbilo kaskádu z cizího klíče — účet nešel smazat vůbec, ani na žádost podle GDPR · resolved · 2026-08-18
 

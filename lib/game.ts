@@ -69,6 +69,31 @@ export async function fetchDraft(drawingId: string): Promise<Draft | null> {
   };
 }
 
+/**
+ * Proč server odeslání odmítl. Klíč sedí na hlášku z `submit_drawing()`;
+ * aplikace si z něj vybere srozumitelnou větu.
+ *
+ * Bez tohohle dostane každé odmítnutí stejnou hlášku „zkus to znovu" — a když
+ * je příčina trvalá (kresba přes strop), člověk to zkouší donekonečna a hlásí
+ * jen „nejde uložit". Přesně to se stalo při zkoušce na iPadu.
+ */
+export type SubmitRefusal = "empty" | "tooManyStrokes" | "tooManyPoints" | "gone" | "unknown";
+
+export class SubmitError extends Error {
+  constructor(readonly reason: SubmitRefusal, message: string) {
+    super(message);
+    this.name = "SubmitError";
+  }
+}
+
+function refusalFrom(message: string): SubmitRefusal {
+  if (message.includes("žádné tahy")) return "empty";
+  if (message.includes("mnoho tahů")) return "tooManyStrokes";
+  if (message.includes("mnoho bodů")) return "tooManyPoints";
+  if (message.includes("nenalezena")) return "gone";
+  return "unknown";
+}
+
 /** Odešle kresbu. Server si dopočítá dobu, počet tahů i pokrytí plátna. */
 export async function submitDrawing(
   drawingId: string,
@@ -81,7 +106,7 @@ export async function submitDrawing(
     p_undo_count: undoCount,
     p_strokes: strokesToPayload(strokes),
   });
-  if (error) throw error;
+  if (error) throw new SubmitError(refusalFrom(error.message ?? ""), error.message ?? "");
 }
 
 export interface MyDrawing {
