@@ -145,8 +145,13 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
   *Ověřeno:* 11 testů, včetně toho, že přímý zápis do `drawings` je klientu
   odepřený — takže `duration_ms` nemá jak podvrhnout.
 
-  **Zbývá:** zapojit do aplikace (obrazovky Výběr pojmu a Plátno pořád jedou
-  na `lib/mock.ts`) a encode/decode helper plochého pole v `lib/strokes.ts`.
+  **Zapojeno do aplikace 2026-08-19.** Výběr pojmu volá `offer_concepts()`,
+  plátno si vyzvedne zadání přes `my_draft()` podle id kresby v URL — zadání
+  tak neputuje v adrese ani v historii prohlížeče. Odeslání jde přes
+  `submit_drawing()`, tahy se převádějí na ploché pole v `lib/strokes.ts`.
+  *Ověřeno naostro v prohlížeči:* přihlášení → nabídka ze slovníku → nakreslení
+  hvězdy → odeslání → kresba v databázi (5 tahů, zařízení pen, doba 38 s
+  změřená serverem, body jako [0.5,0.15,0, 0.52,0.195,2, …]).
 - `[ ] C3` **Odvozený náhled.** Bitmapa jen do cache, nikdy jako zdroj pravdy
   (pravidlo 2). Potřeba pro feed a „Moje kresby".
 - `[ ] C4` **Moje kresby z reálných dat.** Autorovi se zobrazuje kolik lidí

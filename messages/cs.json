@@ -43,7 +43,11 @@
       "add": "Přidat barvu",
       "apply": "Použít",
       "hex": "Hex kód barvy"
-    }
+    },
+    "loading": "Načítám zadání…",
+    "draftMissing": "Tahle kresba k tobě nepatří, nebo je už odeslaná.",
+    "pickAnother": "Vybrat jiný pojem",
+    "sendFailed": "Odeslání se nepovedlo. Kresba ti zůstala, zkus to znovu."
   },
   "submit": {
     "step": "Krok 1 ze 2 · kontrola",
@@ -93,7 +97,10 @@
   "pick": {
     "title": "Vyber si pojem",
     "requested": "Vyžádáno: {name} chce „{concept}“",
-    "cta": "Kreslit vybraný pojem"
+    "cta": "Kreslit vybraný pojem",
+    "loading": "Vybírám pojmy…",
+    "loadFailed": "Pojmy se nepodařilo načíst. Zkus to znovu.",
+    "startFailed": "Kresbu se nepodařilo založit. Zkus to znovu."
   },
   "mine": {
     "title": "Moje kresby",

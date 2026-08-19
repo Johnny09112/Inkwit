@@ -1,7 +1,7 @@
 "use client";
 
-import { use, useMemo, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { use, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Brush,
   Eraser,
@@ -19,8 +19,10 @@ import { Badge, Button } from "@/components/ui";
 import { DrawingCanvas } from "@/components/draw/DrawingCanvas";
 import { ColorSheet } from "@/components/draw/ColorSheet";
 import { SubmitFlow } from "@/components/draw/SubmitFlow";
-import { conceptById, RECENT_COLORS } from "@/lib/mock";
+import { fetchDraft, submitDrawing, type Draft } from "@/lib/game";
+import { RECENT_COLORS } from "@/lib/mock";
 import { looksRushed, type Stroke, type Tool } from "@/lib/strokes";
+import { Loader2 } from "lucide-react";
 
 /**
  * Plátno (wireframe 1 + 1b). Tři rozvržení:
@@ -33,11 +35,13 @@ type Mode = "draw" | "confirm" | "done";
 export default function DrawPage({
   searchParams,
 }: {
-  searchParams: Promise<{ concept?: string }>;
+  searchParams: Promise<{ d?: string }>;
 }) {
-  const { concept: conceptParam } = use(searchParams);
-  const concept = conceptById(conceptParam ?? "octopus");
-  const locale = useLocale() as "cs" | "en";
+  // V URL je id rozepsané kresby, ne zadání — odpověď by se jinak válela
+  // v historii prohlížeče. Zadání si vyzvedne autor podle id.
+  const { d: drawingId } = use(searchParams);
+  const [draft, setDraft] = useState<Draft | null>(null);
+  const [loadError, setLoadError] = useState(false);
   const t = useTranslations("draw");
   const tCommon = useTranslations("common");
   const tDifficulty = useTranslations("difficulty");
@@ -55,6 +59,23 @@ export default function DrawPage({
   const [sheetOpen, setSheetOpen] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
   const [mode, setMode] = useState<Mode>("draw");
+  const [undoCount, setUndoCount] = useState(0);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!drawingId) {
+      setLoadError(true);
+      return;
+    }
+    let alive = true;
+    fetchDraft(drawingId)
+      .then((d) => alive && (d ? setDraft(d) : setLoadError(true)))
+      .catch(() => alive && setLoadError(true));
+    return () => {
+      alive = false;
+    };
+  }, [drawingId]);
 
   const pushHistory = () => setHistory((h) => [...h.slice(-49), strokes]);
 
@@ -64,6 +85,9 @@ export default function DrawPage({
   };
 
   const undo = () => {
+    // Počet vrácení je jeden ze signálů snahy — server ho nedopočítá,
+    // je to událost v prohlížeči.
+    setUndoCount((n) => n + 1);
     setHistory((h) => {
       if (h.length === 0) return h;
       setStrokes(h[h.length - 1]);
@@ -89,14 +113,33 @@ export default function DrawPage({
     setPanMode(false);
   };
 
+  /** Odeslání na server. Doba kreslení a pokrytí plátna se počítají tam. */
+  async function send() {
+    if (!drawingId || sending) return;
+    setSending(true);
+    setSendError(null);
+    try {
+      await submitDrawing(drawingId, strokes, undoCount);
+      setMode("done");
+    } catch {
+      setSendError(t("sendFailed"));
+    } finally {
+      setSending(false);
+    }
+  }
+
   const startSubmit = () => {
     // Kontrolní krok jen když kresba vypadá narychlo — tření proti
     // čmáranicím nemají platit poctiví kreslíři (poznámka u wireframu 2)
-    setMode(looksRushed(strokes) ? "confirm" : "done");
+    if (looksRushed(strokes)) {
+      setMode("confirm");
+      return;
+    }
+    void send();
   };
 
   const difficultyBadge = (
-    <Badge tone="accent">{tDifficulty(String(concept.difficulty))}</Badge>
+    <Badge tone="accent">{tDifficulty(String(draft?.difficulty ?? 1))}</Badge>
   );
 
   const toolButtons = (iconSize: number) => (
@@ -204,7 +247,7 @@ export default function DrawPage({
       {/* Desktop: plovoucí ostrůvek s pojmem + lišta dole (wireframe 1 desktop) */}
       <div className="only-desktop">
         <div className="float-pill draw-float-concept">
-          <span className="draw-concept-name">{concept.name[locale]}</span>
+          <span className="draw-concept-name">{draft?.prompt ?? ""}</span>
           {difficultyBadge}
           <span className="float-pill-divider" />
           <Link
@@ -248,7 +291,7 @@ export default function DrawPage({
       {/* Tablet: svislá lišta u pravé ruky + velikost dole (wireframe 1 tablet) */}
       <div className="only-tablet">
         <div className="float-pill draw-float-concept">
-          <span className="draw-concept-name">{concept.name[locale]}</span>
+          <span className="draw-concept-name">{draft?.prompt ?? ""}</span>
           {difficultyBadge}
           <span className="float-pill-divider" />
           <Link
@@ -291,6 +334,29 @@ export default function DrawPage({
     </div>
   );
 
+  // Bez zadání není co kreslit. Nejčastější důvod je otevření odkazu na cizí
+  // nebo už odeslanou kresbu — obojí server odmítne vrátit.
+  if (loadError) {
+    return (
+      <div className="draw-screen draw-screen-message">
+        <p className="auth-note auth-note-error">{t("draftMissing")}</p>
+        <Link href="/pick" className="btn btn-primary">
+          {t("pickAnother")}
+        </Link>
+      </div>
+    );
+  }
+
+  if (!draft) {
+    return (
+      <div className="draw-screen draw-screen-message">
+        <p className="pick-loading">
+          <Loader2 size={18} className="spin" aria-hidden="true" /> {t("loading")}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="draw-screen">
       {/* Mobil: hlavička s pojmem mezi křížkem a profilem (wireframe 1) */}
@@ -305,7 +371,7 @@ export default function DrawPage({
             <X size={20} />
           </Link>
           <div className="draw-concept">
-            <span className="draw-concept-name">{concept.name[locale]}</span>
+            <span className="draw-concept-name">{draft?.prompt ?? ""}</span>
             {difficultyBadge}
           </div>
           <Link
@@ -372,9 +438,11 @@ export default function DrawPage({
         <SubmitFlow
           step={mode}
           strokes={strokes}
-          credit={concept.credit}
+          credit={draft?.difficulty ?? 1}
+          busy={sending}
+          error={sendError}
           onBack={() => setMode("draw")}
-          onConfirm={() => setMode("done")}
+          onConfirm={send}
           onDrawNext={() => router.push("/pick")}
           onGoGuess={() => router.push("/guess")}
         />

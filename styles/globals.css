@@ -1600,3 +1600,19 @@ a {
 .auth-hint-free {
   color: var(--olive-700);
 }
+
+.pick-loading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--text-secondary);
+  padding: var(--space-6) 0;
+}
+
+.draw-screen-message {
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  text-align: center;
+}

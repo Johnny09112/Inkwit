@@ -1,62 +1,124 @@
 "use client";
 
-import { useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { ChevronRight, Hand } from "lucide-react";
-import { useRouter } from "@/i18n/navigation";
+import { ChevronRight, Hand, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import { AppShell } from "@/components/shell/AppShell";
 import { Button } from "@/components/ui";
-import { CONCEPTS, REQUESTS, conceptById } from "@/lib/mock";
+import { useRouter } from "@/i18n/navigation";
+import { fetchOffer, startDrawing, type ConceptOffer } from "@/lib/game";
 
 /**
- * Výběr pojmu (wireframe 6): tři obtížnosti jako ventil pro slabé
- * kreslíře, vyžádaný pojem od konkrétního člověka jako silnější motivace.
+ * Výběr pojmu (wireframe 6). Tři obtížnosti jako ventil pro slabé kreslíře,
+ * vyžádaný pojem od konkrétního člověka jako silnější motivace než body.
+ *
+ * Nabídku skládá server — koncepty jsou pro klienta zavřené, protože zadání
+ * je zároveň odpověď.
  */
-
 export default function PickPage() {
-  const locale = useLocale() as "cs" | "en";
   const t = useTranslations("pick");
   const tCommon = useTranslations("common");
   const tDifficulty = useTranslations("difficulty");
   const router = useRouter();
 
-  const offer = CONCEPTS.slice(0, 3);
-  const [selected, setSelected] = useState(offer[0].id);
-  const request = REQUESTS[0];
+  const [offer, setOffer] = useState<ConceptOffer[] | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [starting, setStarting] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    fetchOffer()
+      .then((rows) => {
+        if (!alive) return;
+        setOffer(rows);
+        setSelected(rows[0]?.conceptId ?? null);
+      })
+      .catch(() => alive && setError(t("loadFailed")));
+    return () => {
+      alive = false;
+    };
+  }, [t]);
+
+  /**
+   * Kresbu zakládáme tady, ne až při odeslání — od téhle chvíle běží serverové
+   * měření doby kreslení a vzniká událost „začal kreslit".
+   */
+  async function begin() {
+    if (!selected) return;
+    setStarting(true);
+    setError(null);
+    try {
+      const drawingId = await startDrawing(selected);
+      router.push(`/draw?d=${drawingId}`);
+    } catch {
+      setError(t("startFailed"));
+      setStarting(false);
+    }
+  }
+
+  if (error && !offer) {
+    return (
+      <AppShell title={t("title")}>
+        <p className="auth-note auth-note-error">{error}</p>
+      </AppShell>
+    );
+  }
+
+  if (!offer) {
+    return (
+      <AppShell title={t("title")}>
+        <p className="pick-loading">
+          <Loader2 size={18} className="spin" aria-hidden="true" /> {t("loading")}
+        </p>
+      </AppShell>
+    );
+  }
+
+  const requested = offer.find((c) => c.requestedBy);
 
   return (
     <AppShell title={t("title")}>
       <div className="pick-list">
         {offer.map((concept) => (
           <button
-            key={concept.id}
+            key={concept.conceptId}
             type="button"
             className="pick-card"
-            aria-pressed={selected === concept.id}
-            onClick={() => setSelected(concept.id)}
+            aria-pressed={selected === concept.conceptId}
+            onClick={() => setSelected(concept.conceptId)}
           >
             <span className="pick-card-meta">
-              <span className="pick-card-name">{concept.name[locale]}</span>
+              <span className="pick-card-name">{concept.prompt}</span>
               <span className="t-label-sm" style={{ color: "var(--text-muted)" }}>
                 {tDifficulty(String(concept.difficulty))} ·{" "}
-                {tCommon("credit", { n: concept.credit })}
+                {tCommon("credit", { n: concept.difficulty })}
               </span>
             </span>
             <ChevronRight size={22} />
           </button>
         ))}
 
-        <div className="pick-requested">
-          <Hand size={16} />
-          <span className="t-label-sm">
-            {t("requested", {
-              name: request.requester,
-              concept: conceptById(request.conceptId).name[locale],
-            })}
-          </span>
-        </div>
+        {requested && (
+          <div className="pick-requested">
+            <Hand size={16} />
+            <span className="t-label-sm">
+              {t("requested", {
+                name: requested.requestedBy as string,
+                concept: requested.prompt,
+              })}
+            </span>
+          </div>
+        )}
 
-        <Button size="lg" onClick={() => router.push(`/draw?concept=${selected}`)}>
+        {error && (
+          <p className="auth-note auth-note-error" role="alert">
+            {error}
+          </p>
+        )}
+
+        <Button size="lg" onClick={begin} disabled={starting || !selected}>
+          {starting && <Loader2 size={17} className="spin" aria-hidden="true" />}
           {t("cta")}
         </Button>
       </div>

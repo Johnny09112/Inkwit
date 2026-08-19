@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Badge, Button } from "@/components/ui";
@@ -15,6 +16,10 @@ interface SubmitFlowProps {
   step: "confirm" | "done";
   strokes: readonly Stroke[];
   credit: number;
+  /** Odesílá se právě teď — tlačítko musí zůstat neaktivní. */
+  busy?: boolean;
+  /** Odeslání selhalo. Kresba zůstává na plátně, dá se zkusit znovu. */
+  error?: string | null;
   onBack: () => void;
   onConfirm: () => void;
   onDrawNext: () => void;
@@ -47,6 +52,8 @@ export function SubmitFlow({
   step,
   strokes,
   credit,
+  busy = false,
+  error = null,
   onBack,
   onConfirm,
   onDrawNext,
@@ -70,11 +77,17 @@ export function SubmitFlow({
             <p className="t-secondary" style={{ fontSize: "var(--text-body-sm)" }}>
               {t("note")}
             </p>
+            {error && (
+              <p className="auth-note auth-note-error" role="alert">
+                {error}
+              </p>
+            )}
             <div className="modal-actions">
-              <Button size="lg" onClick={onConfirm}>
+              <Button size="lg" onClick={onConfirm} disabled={busy}>
+                {busy && <Loader2 size={17} className="spin" aria-hidden="true" />}
                 {t("confirm")}
               </Button>
-              <Button variant="secondary" size="lg" onClick={onBack}>
+              <Button variant="secondary" size="lg" onClick={onBack} disabled={busy}>
                 {t("back")}
               </Button>
             </div>

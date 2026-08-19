@@ -488,8 +488,19 @@ async function main() {
     report(denied, `role ${role} nepřepíše ledger`);
   }
 
+  // Uživatel se smaže i když po sobě něco nechal. Předtím tenhle test prošel
+  // s prázdným účtem a přehlédl, že `drawing_strokes.author_id` blokoval
+  // kaskádu — viz migrace 20260819020000.
   await db.exec("begin");
   await db.exec(`insert into public.ledger (user_id, delta, reason) values ('${ALICE}', 5, 'test')`);
+  await db.exec(`
+    insert into public.drawings (id, author_id, concept_id, source_locale, status)
+    values ('88888888-8888-8888-8888-888888888888', '${ALICE}', '${CONCEPT}', 'cs', 'live');
+    insert into public.drawing_strokes values
+      ('88888888-8888-8888-8888-888888888888', 0, '${ALICE}', 'brush', '#000', 5, '[0.1,0.1,0]'::jsonb);
+    insert into public.guesses (drawing_id, user_id, locale, attempt_no, text_raw)
+    values ('66666666-6666-6666-6666-666666666666', '${ALICE}', 'cs', 1, 'pokus');
+  `);
   let deleted = false;
   let deleteError = "";
   try {

@@ -43,7 +43,11 @@
       "add": "Add color",
       "apply": "Apply",
       "hex": "Color hex code"
-    }
+    },
+    "loading": "Loading your word…",
+    "draftMissing": "This drawing is not yours, or it has already been sent.",
+    "pickAnother": "Pick another word",
+    "sendFailed": "Sending failed. Your drawing is still here — try again."
   },
   "submit": {
     "step": "Step 1 of 2 · check",
@@ -93,7 +97,10 @@
   "pick": {
     "title": "Pick a concept",
     "requested": "Requested: {name} wants “{concept}”",
-    "cta": "Draw the selected concept"
+    "cta": "Draw the selected concept",
+    "loading": "Picking concepts…",
+    "loadFailed": "Could not load concepts. Try again.",
+    "startFailed": "Could not start the drawing. Try again."
   },
   "mine": {
     "title": "My drawings",

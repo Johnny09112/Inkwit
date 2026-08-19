@@ -57,3 +57,20 @@ Obecněji: dvojí jištění téhož není zadarmo. Tohle byla druhá vrstva, kt
 jsem přidal „pro jistotu", a rozbila funkci, o které jsem v tu chvíli nepřemýšlel.
 
 Regresi hlídá test „účet jde smazat i se záznamy v ledgeru (GDPR)".
+
+## Druhý výskyt téže chyby (2026-08-19)
+
+`drawing_strokes.author_id` odkazoval na `profiles` **bez `on delete cascade`**,
+takže platilo NO ACTION a účet, který už něco nakreslil, zase nešel smazat.
+
+**Test to nechytil, protože testovací uživatel žádné tahy neměl.** Test „účet
+jde smazat" existoval od první opravy, ale ověřoval prázdný účet — což je přesně
+ten případ, který nikdy neselže.
+
+Poučení navíc: **test na mazání musí mazat účet, který po sobě něco nechal.**
+Rozšířeno o kresbu, tahy, tip i záznam v ledgeru.
+
+Obecné pravidlo pro tenhle projekt: **každý nový cizí klíč mířící na `profiles`
+potřebuje vědomé rozhodnutí, co se stane při smazání účtu.** Výchozí NO ACTION
+znamená „účet nejde smazat", a to je u produktu pro nezletilé špatná výchozí
+hodnota.

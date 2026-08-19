@@ -103,3 +103,62 @@ export function looksRushed(strokes: readonly Stroke[]): boolean {
   const drawn = strokes.filter((s) => s.tool === "brush");
   return drawn.length < 3 || drawingDurationMs(strokes) < 8000;
 }
+
+/**
+ * Převod tahů do tvaru, ve kterém se posílají na server.
+ *
+ * Body jdou jako **ploché pole** `[x, y, t, x, y, t, …]`, ne jako objekty.
+ * Na drátě je to po gzipu drobnost, ale na disku zhruba 1,7× méně — jeden tah
+ * leží kolem prahu, od kterého teprve začne Postgres komprimovat, a pod ním
+ * se neukládá komprimovaně nic. Měření viz `_claude/memory/decisions/`.
+ */
+export function strokeToPayload(stroke: Stroke) {
+  const points: number[] = [];
+  for (const p of stroke.points) {
+    points.push(p.x, p.y, p.t);
+  }
+  return {
+    tool: stroke.tool,
+    color: stroke.color,
+    width: stroke.size,
+    points,
+  };
+}
+
+export function strokesToPayload(strokes: readonly Stroke[]) {
+  return strokes.map(strokeToPayload);
+}
+
+/** Opačný směr — z plochého pole zpátky na tahy (přehrání, „Moje kresby"). */
+export function strokeFromPayload(row: {
+  tool: string;
+  color: string;
+  width: number;
+  points: number[];
+}): Stroke {
+  const points: StrokePoint[] = [];
+  for (let i = 0; i + 2 < row.points.length; i += 3) {
+    points.push({ x: row.points[i], y: row.points[i + 1], t: row.points[i + 2] });
+  }
+  return {
+    tool: row.tool === "eraser" ? "eraser" : "brush",
+    color: row.color,
+    size: row.width,
+    device: "unknown",
+    startedAt: 0,
+    points,
+  };
+}
+
+/**
+ * Typ zařízení pro celou kresbu. Bere se nejčastější napříč tahy — kdo
+ * začne myší a dokreslí perem, patří k peru, ne k „unknown".
+ */
+export function dominantDevice(strokes: readonly Stroke[]): DeviceType {
+  const tally = new Map<DeviceType, number>();
+  for (const s of strokes) tally.set(s.device, (tally.get(s.device) ?? 0) + 1);
+  let best: DeviceType = "unknown";
+  let bestN = -1;
+  for (const [d, n] of tally) if (n > bestN) { best = d; bestN = n; }
+  return best;
+}
