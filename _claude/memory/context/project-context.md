@@ -77,6 +77,17 @@ rozhraní se vědomě nestavělo.
   za 1,2 s). Animace se proto nerozběhne a plátno zůstane prázdné — není to
   chyba kódu. Přehrání se musí zkoušet v běžném prohlížeči.
 
+### Přidáno 2026-08-19 (logo a ikony)
+
+- **Logotyp z návrhu** místo textového „Inkwit" — `components/InkwitLogo.tsx`,
+  kreslené `w` jako SVG tah a podtržení pod „wit". Nasazeno na `login`, `reset`
+  a v hlavičce `AppShell`.
+- **Ikony**: tři SVG v repu, PNG se z nich rastrují přes `sharp`. Favikon,
+  apple-touch, `any` i `maskable` varianty, manifest doplněn.
+- `sw.js` má `CACHE = "inkwit-v2"`, jinak by lidem zůstala stará ikona.
+- Zdroj: projekt „Inkwit vizuální směr" na claude.ai/design, složka `handoff/`.
+  Viz `decisions/logo-a-ikony-z-navrhu.md`.
+
 ### Opraveno 2026-08-19 (iPad: ukládání kresby)
 
 - **Strop bodů platil třetinový** — `submit_drawing` porovnávala délku plochého

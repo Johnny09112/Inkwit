@@ -12,7 +12,7 @@
  *   - nic z API ani z auth se necachuje NIKDY
  */
 
-const CACHE = "inkwit-v1";
+const CACHE = "inkwit-v2";
 const OFFLINE_URL = "/offline.html";
 
 self.addEventListener("install", (event) => {

@@ -35,6 +35,17 @@ export const metadata: Metadata = {
   title: "Inkwit",
   description: "Asynchronní kreslicí a hádací hra.",
   manifest: "/manifest.webmanifest",
+  /* SVG první, PNG jako záloha pro prohlížeče, které vektorový favikon neumí.
+     Apple ikonu je nutné mít v PNG — iOS SVG na plochu nevezme. */
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  appleWebApp: { title: "Inkwit" },
 };
 
 export const viewport: Viewport = {

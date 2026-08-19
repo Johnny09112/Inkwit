@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
+import { InkwitLogo } from "@/components/InkwitLogo";
 import { LoginForm } from "@/components/auth/LoginForm";
 
 export default async function LoginPage() {
@@ -10,7 +11,7 @@ export default async function LoginPage() {
       <div className="auth-card">
         <div className="auth-head">
           <span className="t-label">{t("eyebrow")}</span>
-          <span className="auth-logo">Inkwit</span>
+          <InkwitLogo fontSize={42} />
           <p className="auth-lede">{t("lede")}</p>
         </div>
 

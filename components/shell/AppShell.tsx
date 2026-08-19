@@ -9,6 +9,7 @@ import {
   Pencil,
   Trophy,
 } from "lucide-react";
+import { InkwitLogo } from "@/components/InkwitLogo";
 import { Link, usePathname } from "@/i18n/navigation";
 
 /**
@@ -54,7 +55,7 @@ export function AppShell({ title, meta, headerAction, children }: AppShellProps)
             <h1 className="shell-title">{title}</h1>
           </span>
           <span className="only-wide">
-            <span className="shell-logo">{tApp("name")}</span>
+            <InkwitLogo fontSize="var(--text-title)" />
           </span>
           <nav className="shell-nav" aria-label={tApp("name")}>
             {TABS.map(({ href, key }) => (

@@ -3,6 +3,7 @@
 import { AlertTriangle, Check, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { InkwitLogo } from "@/components/InkwitLogo";
 import { useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -48,7 +49,7 @@ export default function ResetPage() {
       <div className="auth-card">
         <div className="auth-head">
           <span className="t-label">{t("eyebrow")}</span>
-          <span className="auth-logo">Inkwit</span>
+          <InkwitLogo fontSize={42} />
         </div>
 
         {ready === null && (
