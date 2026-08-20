@@ -4,6 +4,7 @@
 > Plný katalog on-demand záznamů. Always-load vrstvu viz auto-memory/MEMORY.md.
 
 ## Context
+- [[backlog-majitele]] — Dávka chyb a nápadů od majitele z 2026-08-20 pro MVP — zachyceno doslova, s tříděním a s tím, co je v rozporu s pravidly projektu · active · 2026-08-20
 - [[odkud-pokracovat]] — Kde pokračovat po 2026-08-20 — slova i levely jsou hotové, zbývá vlastní SMTP a rozeslání pozvánek · active · 2026-08-20
 - [[project-context]] — Živý stav projektu inkwit — fáze, milníky, aktuální focus · active · 2026-08-20
 
