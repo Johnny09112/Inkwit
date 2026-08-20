@@ -38,12 +38,19 @@ Lokální ověření běží na PGlite (`npm run test:db`) — Docker není pot�
 | **E** | Retenční smyčka — vyžádání a notifikace | `[x]` | — |
 | **F** | Provoz a měření | `[x]` | G |
 | **G** | Nasazení a pozvánky | `[~]` | — |
+| **H** | Správa: moderace, čísla, účty | `[x]` | — |
 
 **Proč tohle pořadí.** A blokuje všechno, protože bez schématu se nedá uložit nic.
 B běží nezávisle a je to obsahová práce, ne programování — může jet paralelně.
 C před D, protože bez kreseb není co hádat. E až po D, protože vyžádání má smysl
 teprve když existuje smyčka, do které vstupuje. F před G, protože nasadit
 neměřitelnou verzi znamená prošvihnout jediný účel fáze 0.
+
+**Blok H přibyl 2026-08-20** a obrací dřívější rozhodnutí u kroku F3 („fáze 0
+administrátorské rozhraní nemá"). Platilo, dokud šlo o čtení čísel; neplatí pro
+moderaci — nahlášení je akce uživatele, na kterou musí někdo odpovědět, a fronta,
+kterou nikdo nevidí, je totéž jako žádná. V okamžiku rozhodnutí ležela
+v `public.reports` tři neviděná hlášení.
 
 ---
 
@@ -380,3 +387,44 @@ Sem píšeme, co se změnilo v plánu a proč. Nejnovější nahoře.
 - **2026-08-18** — plán založen. Blok 0 (UI nad mock daty) hotový z předchozí
   session. Dořešena koruna za slovo (fáze 1+, viz `_claude/memory/decisions/`).
   Blok A blokován rozhodnutím o Supabase projektu.
+
+## Blok H — Správa
+
+**Účel:** odpovědět na hlášení, vidět čísla bez studia a umět zasáhnout proti
+účtu. Ne dashboard — čtyři otázky: běží to · je co hádat · docházejí slova ·
+čeká něco na zásah.
+
+- `[x] H1` **Role a stav účtu.** `profiles.is_admin`, `status`, `banned_at`,
+  `ban_reason`. Chráněné tím, že `UPDATE` na `profiles` je udělený jen na
+  vyjmenované sloupce — nový sloupec uživatel měnit nemůže.
+  **Příznak správce se nastavuje jen ručně v SQL**, nikdy RPC.
+
+  Ban vynucuje **trigger na zápisu** do `drawings`, `guesses`, `reactions`
+  a `concept_requests`, ne kontrola v RPC. Bylo by jich pět a šestá, dopsaná za
+  půl roku, by se na ni zapomněla. `next_drawing()` navíc přestane nabízet
+  kresby zablokovaných.
+
+  Zásahy se zapisují do `admin_actions`. Při jednom majiteli to vypadá zbytečně,
+  ale ban bez stopy je věc, které se za rok nedá věřit.
+  *Ověřeno:* 20 testů, z toho osm na to, že se k funkcím nedostane běžný uživatel.
+
+- `[x] H2` **Moderace.** Fronta hlášení s náhledem kresby, důvodem a autorem;
+  akce skrýt / planý poplach / zablokovat kreslíře. Přehled kreseb s filtry
+  (live, removed, archived, reported, all). Seznam účtů s aktivitou, počtem
+  hlášení proti nim a pásmem důvěry.
+
+  **Školní tenant se vědomě nezahrnuje** — pravidlo 1 ho tvrdě izoluje a admin
+  přes hranici tenanta by z toho udělal díru. Ve fázi 0 žádný neexistuje.
+
+- `[x] H3` **Čísla.** Přehled dnes / 7 dní / celkem. Zásoba slov po
+  obtížnostech s prahem 15 a alarmem „přidej slova". Pojmy, které nikdo neuhodl
+  (podezřelá zadání, ne špatní kreslíři). Pět metrik z F3 čitelných pro správce
+  a export do CSV se středníkem, ať to Excel v češtině nerozsype do sloupce.
+
+**Co v bloku H NENÍ a proč.** Trvalé skrytí kresby je měkké (`removed`), ne
+`delete` — cizí tipy a čísla zásoby musí zůstat. Odblokování účtu vrací jen
+stav, kresby se samy nevrátí. Rozhraní je jednojazyčné: mluví k majiteli.
+
+**Varování z roadmapy platí dál.** *„Denní ruční fronta projekt zabije dřív než
+nedostatek uživatelů."* Pro padesát testerů je fronta v pořádku; pro veřejné
+spuštění je podmínkou klasifikátor, ne tahle obrazovka.

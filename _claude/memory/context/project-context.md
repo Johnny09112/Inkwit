@@ -52,6 +52,13 @@ select * from private.metrics_ab_playback;
 Pohledy jsou jen pro `service_role`, čtou se ze Supabase studia. Administrátorské
 rozhraní se vědomě nestavělo.
 
+## Správa
+
+Od 2026-08-20 má aplikace `/admin` (blok H) — fronta hlášení, přehled kreseb,
+účty s možností zablokovat, čísla se zásobou slov a export metrik do CSV.
+Odkaz je v profilu, ale jen pro účet s `profiles.is_admin`. **Nastavuje se ručně
+v SQL**, oba majitelovy účty ho mají. Viz `decisions/spravcovske-rozhrani.md`.
+
 ## Otevřené body
 
 ### Čeká na majitele

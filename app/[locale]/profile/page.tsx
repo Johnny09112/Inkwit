@@ -1,11 +1,11 @@
 "use client";
 
-import { Bell, Hand, Languages, Loader2, PenTool, ThumbsUp, Trophy } from "lucide-react";
+import { Bell, Hand, Languages, Loader2, PenTool, ShieldCheck, ThumbsUp, Trophy } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { SignOutRow } from "@/components/auth/SignOutRow";
 import { AppShell } from "@/components/shell/AppShell";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import {
   fetchNotifications,
   fetchProfile,
@@ -13,6 +13,7 @@ import {
   type Notification,
   type Profile,
 } from "@/lib/game";
+import { amIAdmin } from "@/lib/admin";
 import { useHand, writeHand } from "@/lib/prefs";
 
 /**
@@ -30,12 +31,16 @@ export default function ProfilePage() {
   const router = useRouter();
   const pathname = usePathname();
   const hand = useHand();
+  // Odkaz na správu vidí jen správce. Je to jen skrytí odkazu — oprávnění
+  // si hlídá každá serverová funkce sama, adresu by šlo uhodnout.
+  const [admin, setAdmin] = useState(false);
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [items, setItems] = useState<Notification[] | null>(null);
 
   useEffect(() => {
     fetchProfile().then(setProfile).catch(() => setProfile(null));
+    amIAdmin().then(setAdmin);
     fetchNotifications()
       .then((n) => {
         setItems(n);
@@ -122,6 +127,12 @@ export default function ProfilePage() {
             {hand === "left" ? t("handLeft") : t("handRight")}
           </span>
         </button>
+        {admin && (
+          <Link href="/admin" className="settings-row">
+            <ShieldCheck size={18} />
+            <span className="settings-row-label">Správa</span>
+          </Link>
+        )}
         <SignOutRow />
       </div>
     </AppShell>

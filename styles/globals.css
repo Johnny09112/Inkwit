@@ -2187,3 +2187,99 @@ textarea,
   resize: vertical;
   font-family: var(--font-body), sans-serif;
 }
+
+/* ---------- Správa (blok H) ---------- */
+
+/* Vědomě střídmé: mluví jen k majiteli, ne k hráčům. Cílem je čitelnost
+   tabulky na telefonu, ne dojem. */
+
+.admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+
+.admin-tabs .filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-color: var(--border-subtle);
+}
+
+.admin-h2 {
+  font-family: var(--font-display), sans-serif;
+  font-weight: var(--weight-display);
+  font-size: var(--text-card-title);
+  padding-top: 18px;
+}
+
+/* Tabulka se na telefonu neláme — roluje se ve vlastním rámci. */
+.admin-table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+  margin-top: 8px;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.admin-table th {
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.admin-warn {
+  color: var(--danger);
+  font-weight: var(--weight-body-strong);
+}
+
+.admin-alarm {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--surface-danger);
+  color: var(--text-primary);
+  font-size: var(--text-body-sm);
+}
+
+.admin-card {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  border: 1px solid var(--border-hairline);
+}
+
+.admin-card-art {
+  width: 96px;
+  flex: none;
+}
+
+.admin-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding-top: 8px;
+}

@@ -961,6 +961,136 @@ async function main() {
   ).rows[0].n;
   report(views === 5, "metriky existují jako pohledy pro majitele", String(views));
 
+  console.log("\nSprávcovské rozhraní (blok H):\n");
+
+  // Nejdůležitější test celého bloku: běžný uživatel se k tomu nedostane.
+  for (const volani of [
+    "public.admin_reports()",
+    "public.admin_drawings()",
+    "public.admin_users()",
+    "public.admin_overview()",
+    "public.admin_supply()",
+    "public.admin_log()",
+    `public.admin_set_user_status('${BOB}', 'banned')`,
+    `public.admin_set_drawing_status('${LIVE}', 'removed')`,
+  ]) {
+    report(
+      (await asUser(ALICE, `select * from ${volani}`)) === "ERROR",
+      `běžný uživatel nesmí ${volani.split("(")[0].replace("public.", "")}`,
+    );
+  }
+
+  // Příznak správce si nesmí nastavit sám — sloupcová práva to musí utnout.
+  await db.exec("begin");
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+  let povysilSe = false;
+  try {
+    await db.exec(`update public.profiles set is_admin = true where id = '${ALICE}'`);
+    povysilSe = true;
+  } catch {
+    povysilSe = false;
+  }
+  await db.exec("rollback");
+  report(!povysilSe, "uživatel si nenastaví is_admin — jinak si vezme celou moderaci");
+
+  // Totéž pro odblokování sebe sama.
+  await db.exec("begin");
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+  let odblokovalSe = false;
+  try {
+    await db.exec(`update public.profiles set status = 'active' where id = '${ALICE}'`);
+    odblokovalSe = true;
+  } catch {
+    odblokovalSe = false;
+  }
+  await db.exec("rollback");
+  report(!odblokovalSe, "uživatel si nepřepíše stav účtu — jinak by ban nic neznamenal");
+
+  // S rolí správce už funkce chodí.
+  await db.exec("begin");
+  await db.exec(`update public.profiles set is_admin = true where id = '${ALICE}'`);
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+  const hlaseni = (await db.query("select * from public.admin_reports('all')")).rows;
+  const prehled = (await db.query("select * from public.admin_overview()")).rows;
+  const zasoba = (await db.query("select * from public.admin_supply()")).rows;
+  const metrika = (await db.query("select public.admin_metrics('supply') as m")).rows[0].m;
+  report(Array.isArray(hlaseni), "správce vidí frontu hlášení", `${hlaseni.length}`);
+  report(prehled.length === 3, "přehled má tři období", prehled.map((r) => r.obdobi).join(", "));
+  report(zasoba.length > 0, "zásoba slov se spočítá", `${zasoba.length} obtížností`);
+  report(Array.isArray(metrika), "metriky z F3 jsou pro správce čitelné");
+
+  // Neznámý název metriky se nesmí dostat do dotazu.
+  // Výjimka uvnitř transakce ji zruší celou, takže test musí mít savepoint.
+  let injektaz = "prošlo";
+  await db.exec("savepoint injektaz");
+  try {
+    await db.query(`select public.admin_metrics('supply; drop table public.profiles')`);
+  } catch {
+    injektaz = "odmítnuto";
+  }
+  await db.exec("rollback to savepoint injektaz");
+  report(injektaz === "odmítnuto", "název metriky mimo výčet se odmítne");
+
+  // Uzavření hlášení. Naostro se neklikalo — jsou to majitelova data.
+  // Hlášení ze začátku testu žilo ve vrácené transakci, takže si tu vyrobíme
+  // vlastní; jinak by se uzavíralo prázdno a test by prošel naprázdno.
+  await db.query(`select public.report_drawing('${LIVE}', 'scribble')`);
+  const otevrene = (await db.query("select * from public.admin_reports('open')")).rows;
+  const zavreno = otevrene.length > 0
+    ? (await db.query(`select public.admin_resolve_report('${otevrene[0].report_id}', 'dismissed') ok`)).rows[0].ok
+    : null;
+  const poZavreni = (await db.query("select * from public.admin_reports('open')")).rows;
+  report(
+    zavreno === true && poZavreni.length === otevrene.length - 1,
+    "uzavřené hlášení zmizí z fronty",
+    `${otevrene.length} → ${poZavreni.length}`,
+  );
+
+  // Neznámý stav hlášení se odmítne, ať ve frontě nevznikne třetí kategorie.
+  let stav = "prošlo";
+  await db.exec("savepoint stavhlaseni");
+  try {
+    await db.query(`select public.admin_resolve_report('${otevrene[0].report_id}', 'smazano')`);
+  } catch {
+    stav = "odmítnuto";
+  }
+  await db.exec("rollback to savepoint stavhlaseni");
+  report(stav === "odmítnuto", "neznámý stav hlášení se odmítne");
+
+  // Ban drží databáze, ne aplikace — trigger na zápisu.
+  await db.exec("reset role");
+  await db.query(`select public.admin_set_user_status('${BOB}', 'banned', 'test')`);
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${BOB}', true);`,
+  );
+  let banFunguje = false;
+  await db.exec("savepoint ban");
+  try {
+    await db.query(`select public.start_drawing('${conceptPes}')`);
+  } catch (e) {
+    banFunguje = e.message.includes("zablokovaný");
+  }
+  await db.exec("rollback to savepoint ban");
+  report(banFunguje, "zablokovaný účet nezaloží kresbu — drží to trigger, ne RPC");
+
+  // A jeho kresby přestanou kolovat.
+  await db.exec(
+    `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+  );
+  const feedPoBanu = (await db.query("select * from public.next_drawing()")).rows;
+  report(feedPoBanu.length === 0, "kresby zablokovaného se přestanou nabízet");
+
+  // Zásah se zapsal.
+  const log = (await db.query("select * from public.admin_log()")).rows;
+  report(log.some((r) => r.action === "user_banned"), "zásah správce je v záznamu");
+  await db.exec("rollback");
+
   console.log("\nLedger je append-only, ale nebrání smazání účtu:\n");
 
   // Append-only drží odebrané právo, ne pravidlo. Pravidlo by rozbilo kaskádu
