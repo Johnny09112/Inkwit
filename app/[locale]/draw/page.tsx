@@ -20,7 +20,14 @@ import { Badge, Button } from "@/components/ui";
 import { DrawingCanvas } from "@/components/draw/DrawingCanvas";
 import { ColorSheet } from "@/components/draw/ColorSheet";
 import { SubmitFlow } from "@/components/draw/SubmitFlow";
-import { fetchDraft, submitDrawing, SubmitError, type Draft } from "@/lib/game";
+import {
+  fetchDraft,
+  fetchProfile,
+  fetchRewards,
+  submitDrawing,
+  SubmitError,
+  type Draft,
+} from "@/lib/game";
 import { RECENT_COLORS } from "@/lib/mock";
 import { looksRushed, type Stroke, type Tool } from "@/lib/strokes";
 import { useHand } from "@/lib/prefs";
@@ -68,8 +75,30 @@ export default function DrawPage({
   // Tvar kreslicí plochy. Plátno ho hlásí, odesílá se s kresbou a bez něj by
   // se kresba u ostatních roztáhla na tvar jejich obrazovky.
   const [aspect, setAspect] = useState(0.68);
+  // Kredity a odemčení míchání — panel barev je potřebuje, aby věděl, jestli
+  // kruh nabídnout, nebo prodat.
+  const [credits, setCredits] = useState(0);
+  const [mixer, setMixer] = useState(true);
+  const [economy, setEconomy] = useState<{ base: Record<string, number>; mixerPrice: number } | null>(null);
+
+  const nactiProfil = () =>
+    fetchProfile()
+      .then((p) => {
+        if (!p) return;
+        setCredits(p.credits);
+        setMixer(p.hasColorMixer);
+      })
+      .catch(() => {});
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
+
+  useEffect(() => {
+    void nactiProfil();
+    fetchRewards()
+      .then((r) => setEconomy({ base: r.base, mixerPrice: r.mixerPrice }))
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!drawingId) {
@@ -487,6 +516,10 @@ export default function DrawPage({
           activeColor={color}
           onPick={pickColor}
           onClose={() => setSheetOpen(false)}
+          mixerUnlocked={mixer}
+          credits={credits}
+          mixerPrice={economy?.mixerPrice ?? 25}
+          onUnlocked={() => void nactiProfil()}
         />
       )}
 
@@ -495,7 +528,7 @@ export default function DrawPage({
           step={mode}
           strokes={strokes}
           aspect={aspect}
-          credit={draft?.difficulty ?? 1}
+          credit={economy?.base[String(draft?.difficulty ?? 1)] ?? (draft?.difficulty ?? 1)}
           busy={sending}
           error={sendError}
           onBack={() => setMode("draw")}

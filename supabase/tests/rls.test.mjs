@@ -961,6 +961,87 @@ async function main() {
   ).rows[0].n;
   report(views === 5, "metriky existují jako pohledy pro majitele", String(views));
 
+  console.log("\nKredity (blok I):\n");
+
+  {
+    // Celý běh v jedné transakci, na konci se vrátí — produkční data se nemění.
+    await db.exec("begin");
+    await db.exec(
+      `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+    );
+
+    const kresba = (await db.query(`select public.start_drawing('${conceptPes}') id`)).rows[0].id;
+    const tah = JSON.stringify([
+      { tool: "brush", color: "#2B261F", width: 8, points: [0.2, 0.2, 0, 0.6, 0.6, 40] },
+    ]);
+    await db.query(`select public.submit_drawing('${kresba}', 'touch', 0, $1::jsonb, 0.68)`, [tah]);
+
+    // conceptPes je snadný pojem → základ 1.
+    const poKresbe = (await db.query("select public.my_credits() c")).rows[0].c;
+    report(poKresbe === 1, "za odeslání kresby se připsal základ", `${poKresbe}`);
+
+    // Uhodne ji někdo jiný: hádač dostane 1, autor bonus podle obtížnosti.
+    await db.exec(`select set_config('request.jwt.claim.sub', '${BOB}', true);`);
+    await db.query(`select * from public.submit_guess('${kresba}', 'pes')`);
+    const hadac = (await db.query("select public.my_credits() c")).rows[0].c;
+    await db.exec(`select set_config('request.jwt.claim.sub', '${ALICE}', true);`);
+    const autor = (await db.query("select public.my_credits() c")).rows[0].c;
+    report(hadac >= 1, "za uhodnutí se připsal kredit hádači", `${hadac}`);
+    report(autor === 2, "autor dostal bonus za první uhodnutí (1 + 1)", `${autor}`);
+
+    // Druhé uhodnutí bonus NEZOPAKUJE — jinak by populární kresba platila pořád.
+    await db.exec("reset role");
+    await db.exec(`insert into auth.users (id, raw_user_meta_data) values
+      ('99999999-9999-9999-9999-999999999999', '{"display_name":"Cyril","invite_code":"INK-SEED"}')`);
+    await db.exec(
+      `set local role authenticated; select set_config('request.jwt.claim.sub', '99999999-9999-9999-9999-999999999999', true);`,
+    );
+    await db.query(`select * from public.submit_guess('${kresba}', 'pes')`);
+    await db.exec(`select set_config('request.jwt.claim.sub', '${ALICE}', true);`);
+    const poDruhem = (await db.query("select public.my_credits() c")).rows[0].c;
+    report(poDruhem === autor, "druhé uhodnutí bonus nezopakuje", `${autor} → ${poDruhem}`);
+
+    // Nákup: bez kreditů se odmítne.
+    let chudy = "prošlo";
+    await db.exec("savepoint nakup");
+    try {
+      await db.query("select public.buy_color_mixer()");
+    } catch (e) {
+      chudy = e.message.includes("Nedostatek") ? "odmítnuto" : `jinak: ${e.message}`;
+    }
+    await db.exec("rollback to savepoint nakup");
+    report(chudy === "odmítnuto", "bez kreditů se míchání barev nekoupí");
+
+    // S kredity projde a odečte se cena z konfigurace.
+    await db.exec("reset role");
+    await db.exec(`insert into public.ledger (user_id, delta, reason) values ('${ALICE}', 100, 'test')`);
+    await db.exec(
+      `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+    );
+    const pred = (await db.query("select public.my_credits() c")).rows[0].c;
+    await db.query("select public.buy_color_mixer()");
+    const po = (await db.query("select public.my_credits() c")).rows[0].c;
+    const profil = (await db.query("select * from public.my_profile()")).rows[0];
+    report(pred - po === 25, "nákup odečte cenu z konfigurace", `${pred} → ${po}`);
+    report(profil.has_color_mixer === true, "odemčení se propíše do profilu");
+
+    await db.query("select public.buy_color_mixer()");
+    const poDruhemNakupu = (await db.query("select public.my_credits() c")).rows[0].c;
+    report(poDruhemNakupu === po, "druhý nákup se neúčtuje", `${po} → ${poDruhemNakupu}`);
+
+    // Uživatel si odemčení nenastaví sám.
+    let podvod = "prošlo";
+    await db.exec("savepoint podvrh");
+    try {
+      await db.exec(`update public.profiles set has_color_mixer = true where id = '${BOB}'`);
+    } catch {
+      podvod = "odmítnuto";
+    }
+    await db.exec("rollback to savepoint podvrh");
+    report(podvod === "odmítnuto", "uživatel si odemčení nenastaví sám");
+
+    await db.exec("rollback");
+  }
   console.log("\nSprávcovské rozhraní (blok H):\n");
 
   // Nejdůležitější test celého bloku: běžný uživatel se k tomu nedostane.

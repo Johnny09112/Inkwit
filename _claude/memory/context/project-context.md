@@ -52,6 +52,13 @@ select * from private.metrics_ab_playback;
 Pohledy jsou jen pro `service_role`, čtou se ze Supabase studia. Administrátorské
 rozhraní se vědomě nestavělo.
 
+## Kredity
+
+Od 2026-08-20 se kredity opravdu ukládají (do té doby byl ledger prázdný).
+Základ podle obtížnosti při odeslání, bonus za první uhodnutí, 1 za tip —
+všechno v `game_config`. Utrácí se za odemčení míchání barev (25).
+**Čísla nejsou kalibrovaná daty**, viz `decisions/kredity-a-odmeny.md`.
+
 ## Správa
 
 Od 2026-08-20 má aplikace `/admin` (blok H) — fronta hlášení, přehled kreseb,

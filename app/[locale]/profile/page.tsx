@@ -78,6 +78,11 @@ export default function ProfilePage() {
               ? t("counts", { drawings: profile.drawings, guesses: profile.guesses })
               : ""}
           </div>
+          {profile && (
+            <div className="profile-credits">
+              {t("credits", { n: profile.credits })}
+            </div>
+          )}
         </div>
       </div>
 

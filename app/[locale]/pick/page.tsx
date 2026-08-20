@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { AppShell } from "@/components/shell/AppShell";
 import { Badge, Button } from "@/components/ui";
 import { useRouter } from "@/i18n/navigation";
-import { fetchOffer, startDrawing, type ConceptOffer } from "@/lib/game";
+import { fetchOffer, fetchRewards, startDrawing, type ConceptOffer } from "@/lib/game";
 
 /**
  * Výběr pojmu (wireframe 6). Tři obtížnosti jako ventil pro slabé kreslíře,
@@ -24,10 +24,14 @@ export default function PickPage() {
   const [offer, setOffer] = useState<ConceptOffer[] | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Odměny se čtou ze serveru, ne počítají z obtížnosti — jinak by aplikace
+  // ukazovala jiná čísla, než jaká se opravdu připíší (pravidlo 6).
+  const [rewards, setRewards] = useState<{ base: Record<string, number>; bonus: Record<string, number> } | null>(null);
   const [starting, setStarting] = useState(false);
 
   useEffect(() => {
     let alive = true;
+    fetchRewards().then((r) => alive && setRewards(r)).catch(() => {});
     fetchOffer()
       .then((rows) => {
         if (!alive) return;
@@ -95,7 +99,10 @@ export default function PickPage() {
               <span className="pick-card-tags">
                 <Badge tone="accent">{tDifficulty(String(concept.difficulty))}</Badge>
                 <span className="t-label-sm">
-                  {tCommon("credit", { n: concept.difficulty })}
+                  {tCommon("credit", {
+                    n: rewards?.base[String(concept.difficulty)] ?? concept.difficulty,
+                    bonus: rewards?.bonus[String(concept.difficulty)] ?? 0,
+                  })}
                 </span>
               </span>
             </span>

@@ -2283,3 +2283,12 @@ textarea,
   align-items: center;
   padding-top: 8px;
 }
+
+/* Zůstatek kreditů v profilu. Jedno číslo, ne měna s ikonou — dokud se za ně
+   dá koupit jediná věc, víc pozornosti si nezaslouží. */
+.profile-credits {
+  padding-top: 4px;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-body-sm);
+  color: var(--action-primary);
+}

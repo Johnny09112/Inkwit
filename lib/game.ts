@@ -302,6 +302,10 @@ export interface Profile {
   drawings: number;
   guesses: number;
   unread: number;
+  /** Zůstatek kreditů — součet ledgeru, počítá ho server. */
+  credits: number;
+  /** Koupené odemčení míchání vlastních barev. */
+  hasColorMixer: boolean;
 }
 
 export async function fetchProfile(): Promise<Profile | null> {
@@ -316,6 +320,36 @@ export async function fetchProfile(): Promise<Profile | null> {
     drawings: r.drawings as number,
     guesses: r.guesses as number,
     unread: r.unread as number,
+    credits: (r.credits as number) ?? 0,
+    hasColorMixer: Boolean(r.has_color_mixer),
+  };
+}
+
+/** Odemčení míchání barev. Cenu i zůstatek hlídá server. */
+export async function buyColorMixer(): Promise<void> {
+  const { error } = await createClient().rpc("buy_color_mixer");
+  if (error) throw error;
+}
+
+/**
+ * Veřejné klíče konfigurace — odměny se z nich čtou, aby aplikace neukazovala
+ * jiná čísla, než jaká server opravdu připisuje (pravidlo 6).
+ */
+export async function fetchRewards(): Promise<{
+  base: Record<string, number>;
+  bonus: Record<string, number>;
+  mixerPrice: number;
+}> {
+  const { data, error } = await createClient()
+    .from("game_config")
+    .select("key, value")
+    .in("key", ["reward_draw_base", "reward_draw_bonus", "price_color_mixer"]);
+  if (error) throw error;
+  const map = Object.fromEntries((data ?? []).map((r) => [r.key, r.value]));
+  return {
+    base: (map.reward_draw_base as Record<string, number>) ?? { 1: 1, 2: 2, 3: 3 },
+    bonus: (map.reward_draw_bonus as Record<string, number>) ?? { 1: 1, 2: 3, 3: 5 },
+    mixerPrice: (map.price_color_mixer as number) ?? 25,
   };
 }
 

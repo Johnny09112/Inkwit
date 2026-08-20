@@ -12,7 +12,7 @@
   "common": {
     "supply": "Supply {n}",
     "close": "Close",
-    "credit": "credit +{n}"
+    "credit": "credit +{n}, +{bonus} when solved"
   },
   "difficulty": {
     "1": "Easy · ★",
@@ -49,7 +49,13 @@
       "placePrompt": "Palette is full. Tap the colour you want to replace.",
       "placeHere": "Replace colour {color}",
       "fullNote": "Palette is full at {n} colours — after saving you pick which one to replace.",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "shopTitle": "Custom colour mixing",
+      "shopLede": "The basic palette is free. Credits unlock the wheel where you mix any colour you want — once and for good.",
+      "shopPrice": "Costs {price} credits · you have {credits}",
+      "shopBuy": "Unlock",
+      "shopNotEnough": "Not enough credits yet",
+      "shopFailed": "Purchase failed. Try again."
     },
     "loading": "Loading your word…",
     "draftMissing": "This drawing is not yours, or it has already been sent.",
@@ -115,7 +121,7 @@
   },
   "empty": {
     "title": "Supply is low",
-    "note": "Nothing to guess right now. Drawing a concept earns double credit — and someone asked for one.",
+    "note": "Nothing to guess. Draw something — someone has already asked for a concept.",
     "requested": "Requested concepts",
     "wants": "{name} wants “{concept}”",
     "cta": "Draw for double credit",
@@ -186,7 +192,8 @@
     "counts": "{drawings, plural, one {1 drawing} other {# drawings}} · {guesses, plural, one {1 guess} other {# guesses}}",
     "handedness": "Drawing hand",
     "handRight": "Right",
-    "handLeft": "Left"
+    "handLeft": "Left",
+    "credits": "{n, plural, one {# credit} other {# credits}}"
   },
   "auth": {
     "eyebrow": "Closed test",

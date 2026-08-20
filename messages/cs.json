@@ -12,7 +12,7 @@
   "common": {
     "supply": "Zásoba {n}",
     "close": "Zavřít",
-    "credit": "kredit +{n}"
+    "credit": "kredit +{n}, po uhodnutí +{bonus}"
   },
   "difficulty": {
     "1": "Snadné · ★",
@@ -49,7 +49,13 @@
       "placePrompt": "Paleta je plná. Klepni na barvu, kterou chceš nahradit.",
       "placeHere": "Nahradit barvu {color}",
       "fullNote": "Paleta má plných {n} barev — po uložení vybereš, kterou nahradit.",
-      "cancel": "Zrušit"
+      "cancel": "Zrušit",
+      "shopTitle": "Míchání vlastních barev",
+      "shopLede": "Základní paleta je zdarma. Za kredity se odemkne kruh, ve kterém si namícháš jakoukoli barvu — jednou a napořád.",
+      "shopPrice": "Stojí {price} kreditů · máš {credits}",
+      "shopBuy": "Odemknout",
+      "shopNotEnough": "Zatím nemáš dost kreditů",
+      "shopFailed": "Nákup se nepovedl. Zkus to znovu."
     },
     "loading": "Načítám zadání…",
     "draftMissing": "Tahle kresba k tobě nepatří, nebo je už odeslaná.",
@@ -115,7 +121,7 @@
   },
   "empty": {
     "title": "Zásoba je nízká",
-    "note": "Není co hádat. Za nakreslený pojem je teď dvojnásobný kredit — a někdo si o něj řekl.",
+    "note": "Není co hádat. Nakresli něco ty — někdo si o pojem už řekl.",
     "requested": "Vyžádané pojmy",
     "wants": "{name} chce „{concept}“",
     "cta": "Kreslit za dvojnásobek",
@@ -186,7 +192,8 @@
     "counts": "{drawings, plural, one {1 kresba} few {# kresby} other {# kreseb}} · {guesses, plural, one {1 tip} few {# tipy} other {# tipů}}",
     "handedness": "Ruka",
     "handRight": "Pravá",
-    "handLeft": "Levá"
+    "handLeft": "Levá",
+    "credits": "{n, plural, one {# kredit} few {# kredity} other {# kreditů}}"
   },
   "auth": {
     "eyebrow": "Zavřený test",
