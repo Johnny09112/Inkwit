@@ -289,5 +289,20 @@
     "how": "Your level grows from the credits you earn — draw and guess. It can't be bought.",
     "progress": "See my progress",
     "ok": "Got it"
+  },
+  "roadmap": {
+    "title": "Level path",
+    "level": "Level {n}",
+    "fromStart": "from the start",
+    "cost": "from {n, plural, one {# credit} other {# credits}}",
+    "remaining": "{n, plural, one {# credit} other {# credits}} to go",
+    "empty": "Nothing unlocks here yet.",
+    "note": "Your level grows from the credits you earn. Spending them never lowers it, and it cannot be bought.",
+    "unlocks": {
+      "core": "Drawing, guessing and every difficulty",
+      "palette": "The full colour palette",
+      "mixer": "Mixing your own colours",
+      "shapes": "Shapes — line, rectangle, ellipse"
+    }
   }
 }

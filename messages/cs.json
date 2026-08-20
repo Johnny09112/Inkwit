@@ -289,5 +289,20 @@
     "how": "Level roste z vydělaných kreditů — kresli a hádej. Koupit se nedá.",
     "progress": "Kde na to mám",
     "ok": "Rozumím"
+  },
+  "roadmap": {
+    "title": "Cesta levely",
+    "level": "Level {n}",
+    "fromStart": "od začátku",
+    "cost": "od {n, plural, one {# kreditu} few {# kreditů} other {# kreditů}}",
+    "remaining": "ještě {n, plural, one {# kredit} few {# kredity} other {# kreditů}} do dalšího",
+    "empty": "Zatím se tu nic neodemyká.",
+    "note": "Level roste z vydělaných kreditů. Utracené ho nesnižují a koupit se nedá.",
+    "unlocks": {
+      "core": "Kreslení, hádání a všechny obtížnosti",
+      "palette": "Celá paleta barev",
+      "mixer": "Míchání vlastních barev",
+      "shapes": "Tvary — čára, obdélník, elipsa"
+    }
   }
 }

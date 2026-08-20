@@ -502,6 +502,20 @@ Každá padla z jiného důvodu a při další úvaze o levelech se vrátí jako
 
 **Levely se nedají koupit.** Prodává se kosmetika, ne postup.
 
+- `[x] J6` **Cesta levely v profilu.** Svislý žebřík: co je za tebou, kde
+  stojíš, co přijde a za kolik. **Čte prahy i odemykací levely z `game_config`**,
+  ne z konstant — natvrdo napsaná roadmapa by po první změně balancu lhala
+  (pravidlo 6). Když má patro práh, ale nic se na něm neodemyká, řekne to;
+  prázdný level je tak vidět na první pohled.
+
+  Při té příležitosti se opravil **pruh postupu**: počítal podíl
+  `lifetime / nextLevelAt`, takže na 18 kreditech z pásma 10–25 ukazoval 72 %
+  místo 53 %. Teď měří uvnitř pásma levelu.
+
+- `[x] J7` **Zamčená funkce vysvětlí sama sebe.** Zámeček se dá klepnout
+  a řekne, na kterém levelu se odemyká a kde je vidět postup. Do té doby to
+  bylo `disabled` tlačítko bez vysvětlení.
+
 ### Co zbývá
 
 - `[ ] J4` **Sink pro kredity.** Zůstatek jen roste — nákup míchání barev byl

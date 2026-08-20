@@ -2646,3 +2646,150 @@ textarea,
   flex-wrap: wrap;
   padding-top: 6px;
 }
+
+/* ---------------------------------------------------------------------------
+   Cesta levely
+   ---------------------------------------------------------------------------
+   Svislý žebřík: uzel s číslem vlevo, obsah vpravo, spojnice mezi uzly.
+   Barvy uzlů schválně NEJSOU bronz/stříbro/zlato — ty patří obtížnostem
+   a tady by znamenaly něco jiného. */
+
+.roadmap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.roadmap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.roadmap-step {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding: 0 0 16px 0;
+}
+
+/* Spojnice vede od uzlu dolů k dalšímu. Poslední patro ji nemá — jinak by
+   žebřík vypadal, že pokračuje někam, kde nic není. */
+.roadmap-step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 32px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-subtle);
+}
+
+.roadmap-step.is-done:not(:last-child)::before {
+  background: var(--action-primary);
+}
+
+.roadmap-node {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label-sm);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.roadmap-step.is-done .roadmap-node {
+  background: var(--action-primary);
+  border-color: var(--action-primary);
+  color: var(--text-on-action);
+}
+
+/* Aktuální patro je jediné, co má prstenec — má být poznat na první pohled,
+   kde člověk stojí. */
+.roadmap-step.is-current .roadmap-node {
+  background: var(--surface-accent);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 3px var(--surface-accent);
+}
+
+.roadmap-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+}
+
+.roadmap-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.roadmap-level {
+  font-family: var(--font-display), sans-serif;
+  font-weight: var(--weight-display);
+}
+
+.roadmap-cost {
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label-sm);
+  color: var(--text-secondary);
+}
+
+.roadmap-unlock {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+}
+
+.roadmap-unlock svg {
+  flex: none;
+  color: var(--action-primary);
+}
+
+/* Zamčené patro je vidět, ale nekřičí — cílem je ukázat, co přijde,
+   ne dráždit. */
+.roadmap-step.is-locked .roadmap-level,
+.roadmap-step.is-locked .roadmap-unlock {
+  color: var(--text-secondary);
+}
+
+.roadmap-step.is-locked .roadmap-unlock svg {
+  color: var(--text-muted);
+}
+
+.roadmap-empty {
+  margin: 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.roadmap-remaining {
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label-sm);
+  color: var(--text-secondary);
+  padding-top: 2px;
+}
+
+.roadmap-note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-label-sm);
+}

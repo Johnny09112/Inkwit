@@ -341,6 +341,8 @@ export async function fetchRewards(): Promise<{
   paletteFullLevel: number;
   mixerLevel: number;
   shapesLevel: number;
+  /** Kolik CELKEM vydělaných kreditů dělá který level. Index 0 = level 1. */
+  thresholds: number[];
 }> {
   const { data, error } = await createClient()
     .from("game_config")
@@ -351,6 +353,7 @@ export async function fetchRewards(): Promise<{
       "level_palette_full",
       "level_color_mixer",
       "level_shapes",
+      "level_thresholds",
     ]);
   if (error) throw error;
   const map = Object.fromEntries((data ?? []).map((r) => [r.key, r.value]));
@@ -360,6 +363,10 @@ export async function fetchRewards(): Promise<{
     paletteFullLevel: (map.level_palette_full as number) ?? 2,
     mixerLevel: (map.level_color_mixer as number) ?? 3,
     shapesLevel: (map.level_shapes as number) ?? 4,
+    // Záloha jen pro případ, že by se konfigurace nenačetla. Zdroj pravdy je
+    // server (pravidlo 6) — roadmapa v profilu z těchhle čísel čte přímo,
+    // takže se po změně balancu nemusí nic přepisovat v kódu.
+    thresholds: (map.level_thresholds as number[]) ?? [0, 10, 25, 50],
   };
 }
 

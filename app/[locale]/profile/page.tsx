@@ -4,11 +4,13 @@ import { Bell, Hand, Languages, Loader2, PenTool, ShieldCheck, ThumbsUp, Trophy 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { SignOutRow } from "@/components/auth/SignOutRow";
+import { LevelRoadmap } from "@/components/LevelRoadmap";
 import { AppShell } from "@/components/shell/AppShell";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import {
   fetchNotifications,
   fetchProfile,
+  fetchRewards,
   markNotificationsRead,
   type Notification,
   type Profile,
@@ -24,6 +26,18 @@ import { useHand, writeHand } from "@/lib/prefs";
  * uhodli 4 lidé" je ta rychlá emoční odměna, kterou `docs/product.md` označuje
  * za povinnou.
  */
+/**
+ * Kolik procent pásma aktuálního levelu má člověk za sebou.
+ * Bez pásma by pruh porovnával celkové kredity s prahem dalšího levelu
+ * a byl by skoro plný pořád.
+ */
+function bandProgress(lifetime: number, level: number, thresholds: number[]): number {
+  const od = thresholds[level - 1] ?? 0;
+  const do_ = thresholds[level];
+  if (do_ === undefined || do_ <= od) return 100;
+  return Math.min(100, Math.max(0, Math.round(((lifetime - od) / (do_ - od)) * 100)));
+}
+
 export default function ProfilePage() {
   const t = useTranslations("profile");
   const tNotif = useTranslations("notifications");
@@ -37,9 +51,16 @@ export default function ProfilePage() {
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [items, setItems] = useState<Notification[] | null>(null);
+  /**
+   * Prahy a odemykací levely. Roadmapa je čte ze serveru, ne z konstant —
+   * balanc je serverová konfigurace (pravidlo 6) a natvrdo napsaná roadmapa
+   * by po první změně balancu lhala.
+   */
+  const [economy, setEconomy] = useState<Awaited<ReturnType<typeof fetchRewards>> | null>(null);
 
   useEffect(() => {
     fetchProfile().then(setProfile).catch(() => setProfile(null));
+    fetchRewards().then(setEconomy).catch(() => setEconomy(null));
     amIAdmin().then(setAdmin);
     fetchNotifications()
       .then((n) => {
@@ -89,18 +110,33 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {profile && profile.nextLevelAt !== null && (
+      {profile && economy && profile.nextLevelAt !== null && (
         <div className="level-progress">
           <div className="level-progress-bar">
+            {/* Postup se počítá UVNITŘ pásma levelu, ne z celkových kreditů.
+                Do 2026-08-20 to byl podíl `lifetime / nextLevelAt`, takže na
+                18 kreditech z pásma 10–25 ukazoval pruh 72 % místo 53 % —
+                pořád skoro plný, ať byl člověk kdekoli. */}
             <div
               className="level-progress-fill"
-              style={{ width: `${Math.min(100, Math.round((profile.lifetime / profile.nextLevelAt) * 100))}%` }}
+              style={{ width: `${bandProgress(profile.lifetime, profile.level, economy.thresholds)}%` }}
             />
           </div>
           <span className="t-label-sm">
             {t("toNextLevel", { n: profile.nextLevelAt - profile.lifetime })}
           </span>
         </div>
+      )}
+
+      {profile && economy && (
+        <LevelRoadmap
+          level={profile.level}
+          lifetime={profile.lifetime}
+          thresholds={economy.thresholds}
+          paletteFullLevel={economy.paletteFullLevel}
+          mixerLevel={economy.mixerLevel}
+          shapesLevel={economy.shapesLevel}
+        />
       )}
 
       <section className="notif-section">

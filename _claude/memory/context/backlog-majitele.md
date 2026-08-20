@@ -20,14 +20,25 @@ zvýšit `max_uses`, dnes je u všech 50 kódů `1`).
 
 ---
 
+## Postup (2026-08-20 odpoledne)
+
+Majitel zvolil pořadí **chyby → levné úpravy → meta-vrstva** a vyžádaná slova
+nechal ve veřejné hře.
+
+- **Hotovo:** všechny čtyři chyby · výchozí barvy · kovy u obtížností ·
+  zámeček s vysvětlením · **cesta levely v profilu**.
+- **Zbývá z vlny 3:** oslava postupu na level, vlastní kreslený avatar.
+- **Pak:** přeskočení za kredit (a s ním sink), denní výzva, dětský režim,
+  výplň uzavřených tvarů, achievementy, metriky v žebříčcích.
+
 ## Chyby
 
 | # | Co | Stav |
 |---|---|---|
-| 1 | Text „po uhodnutí" u výběru pojmu láme řádek; šipka pryč (stejně jen označuje) | kořen znám |
-| 2 | Přepínání Kreslit/Hádat/Moje/Žebříčky trvá extra dlouho | **nezměřeno** |
-| 3 | „Opět rozbitá paleta viz obrázek" | **obrázek nedorazil** |
-| 4 | Vybrané barvy se přeskakují; prstenec je moc velký a usekává se | kořen znám |
+| 1 | Text „po uhodnutí" u výběru pojmu láme řádek; šipka pryč (stejně jen označuje) | opraveno |
+| 2 | Přepínání Kreslit/Hádat/Moje/Žebříčky trvá extra dlouho | opraveno — chyběla `loading.tsx`, viz [[prepnuti-zalozky-zamrzlo-bez-hranice-nacitani]] |
+| 3 | „Opět rozbitá paleta viz obrázek" | **nebyla to paleta, byl to posuvník** — viz [[lista-nastroju-ma-pevny-rozpocet]] |
+| 4 | Vybrané barvy se přeskakují; prstenec je moc velký a usekává se | opraveno |
 
 **Kořeny, které jsou jisté:**
 - #4a: `app/[locale]/draw/page.tsx` — `pickColor` dělá
