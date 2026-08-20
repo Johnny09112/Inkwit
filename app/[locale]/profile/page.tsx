@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { SignOutRow } from "@/components/auth/SignOutRow";
 import { LevelRoadmap } from "@/components/LevelRoadmap";
 import { LevelUpGate } from "@/components/LevelUp";
+import { Avatar } from "@/components/Avatar";
+import { AvatarEditor } from "@/components/AvatarEditor";
 import { AppShell } from "@/components/shell/AppShell";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import {
@@ -13,6 +15,7 @@ import {
   fetchProfile,
   fetchRewards,
   markNotificationsRead,
+  setAvatar,
   type Notification,
   type Profile,
 } from "@/lib/game";
@@ -42,6 +45,7 @@ function bandProgress(lifetime: number, level: number, thresholds: number[]): nu
 export default function ProfilePage() {
   const t = useTranslations("profile");
   const tNotif = useTranslations("notifications");
+  const tAvatar = useTranslations("avatar");
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
@@ -58,6 +62,24 @@ export default function ProfilePage() {
    * by po první změně balancu lhala.
    */
   const [economy, setEconomy] = useState<Awaited<ReturnType<typeof fetchRewards>> | null>(null);
+  const [avatarOpen, setAvatarOpen] = useState(false);
+  const [avatarBusy, setAvatarBusy] = useState(false);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
+
+  /** Uloží avatar a načte profil znovu, ať se hned překreslí. */
+  async function ulozAvatar(strokes: Parameters<typeof setAvatar>[0]) {
+    setAvatarBusy(true);
+    setAvatarError(null);
+    try {
+      await setAvatar(strokes);
+      setProfile(await fetchProfile());
+      setAvatarOpen(false);
+    } catch {
+      setAvatarError(tAvatar("failed"));
+    } finally {
+      setAvatarBusy(false);
+    }
+  }
 
   useEffect(() => {
     fetchProfile().then(setProfile).catch(() => setProfile(null));
@@ -92,7 +114,17 @@ export default function ProfilePage() {
   return (
     <AppShell title={t("title")}>
       <div className="card profile-card">
-        <div className="profile-avatar" />
+        <Avatar
+          strokes={profile?.avatarStrokes ?? null}
+          level={profile?.level ?? 1}
+          progress={
+            profile && economy
+              ? bandProgress(profile.lifetime, profile.level, economy.thresholds)
+              : 0
+          }
+          label={profile ? tAvatar("edit") : tAvatar("title")}
+          onClick={() => setAvatarOpen(true)}
+        />
         <div>
           <div className="profile-name">{profile?.displayName ?? "…"}</div>
           <div className="t-label" style={{ textTransform: "none" }}>
@@ -139,6 +171,17 @@ export default function ProfilePage() {
           paletteFullLevel={economy.paletteFullLevel}
           mixerLevel={economy.mixerLevel}
           shapesLevel={economy.shapesLevel}
+        />
+      )}
+
+      {avatarOpen && (
+        <AvatarEditor
+          initial={profile?.avatarStrokes ?? null}
+          busy={avatarBusy}
+          error={avatarError}
+          onCancel={() => setAvatarOpen(false)}
+          onSave={(s) => void ulozAvatar(s)}
+          onClear={() => void ulozAvatar([])}
         />
       )}
 

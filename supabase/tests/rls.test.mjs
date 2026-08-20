@@ -1113,6 +1113,76 @@ async function main() {
       "neznámý nástroj se odmítne, i když má level na tvary",
     );
 
+    // --- Avatar ---------------------------------------------------------------
+    //
+    // Avatar je vektorová kresba v profilu, ne řádek v `drawings` — nesmí se
+    // dostat do fondu k hádání ani do metrik.
+
+    const avatarTah = (tool = "brush", body = [0.2, 0.2, 0, 0.7, 0.7, 90]) =>
+      JSON.stringify([{ tool, color: "#2B261F", width: 8, points: body }]);
+
+    const zkusAvatar = async (kdo, payload) => {
+      await db.exec("savepoint av");
+      let vysledek = "odmítnuto";
+      try {
+        await db.exec(`select set_config('request.jwt.claim.sub', '${kdo}', true);`);
+        await db.query("select public.set_avatar($1::jsonb)", [payload]);
+        vysledek = "prošlo";
+      } catch {
+        vysledek = "odmítnuto";
+      }
+      await db.exec("rollback to savepoint av");
+      await db.exec(`select set_config('request.jwt.claim.sub', '${ALICE}', true);`);
+      return vysledek;
+    };
+
+    report((await zkusAvatar(ALICE, avatarTah())) === "prošlo", "avatar se uloží");
+    report(
+      (await zkusAvatar(ALICE, JSON.stringify([]))) === "prošlo",
+      "prázdné pole avatar smaže, ne odmítne",
+    );
+    report(
+      (await zkusAvatar(ALICE, avatarTah("kbelik"))) === "odmítnuto",
+      "neznámý nástroj v avataru se odmítne",
+    );
+    report(
+      (await zkusAvatar(ALICE, JSON.stringify([{ tool: "brush", color: "#000", width: 8, points: [0.1, 0.2] }]))) === "odmítnuto",
+      "poškozené body v avataru se odmítnou",
+    );
+    // Tvary jsou za levelem i v avataru — jinak by to byla zadní vrátka
+    // k zamčenému nástroji. Bob má z jednoho uhodnutí level 1.
+    report(
+      (await zkusAvatar(BOB, avatarTah("line"))) === "odmítnuto",
+      "tvar v avataru neprojde pod odemykacím levelem",
+    );
+    report(
+      (await zkusAvatar(ALICE, avatarTah("line"))) === "prošlo",
+      "na levelu 4 tvar v avataru projde",
+    );
+
+    // Nejdůležitější test: sloupec nesmí jít přepsat napřímo. Kdyby šel,
+    // dala by se obejít i kontrola stropů a levelu.
+    let primyZapis = "prošlo";
+    await db.exec("savepoint av_direct");
+    try {
+      await db.query(
+        `update public.profiles set avatar_strokes = '[]'::jsonb where id = '${ALICE}'`,
+      );
+    } catch {
+      primyZapis = "odmítnuto";
+    }
+    await db.exec("rollback to savepoint av_direct");
+    report(primyZapis === "odmítnuto", "uživatel si nepřepíše avatar napřímo, jen přes RPC");
+
+    // A profil ho vrací, ať se má co vykreslit.
+    await db.query("select public.set_avatar($1::jsonb)", [avatarTah()]);
+    const sAvatarem = (await db.query("select * from public.my_profile()")).rows[0];
+    report(
+      Array.isArray(sAvatarem.avatar_strokes) && sAvatarem.avatar_strokes.length === 1,
+      "profil vrací avatar i s tahy",
+      `${JSON.stringify(sAvatarem.avatar_strokes)?.slice(0, 40)}…`,
+    );
+
     await db.exec("rollback");
   }
   console.log("\nSprávcovské rozhraní (blok H):\n");

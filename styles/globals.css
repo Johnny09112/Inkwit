@@ -2971,3 +2971,128 @@ textarea,
     animation: levelup-backdrop 200ms ease-out both;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Avatar
+   ---------------------------------------------------------------------------
+   Kolečko s vlastní kresbou, kolem něj postup do dalšího levelu, v rohu level.
+   Kresba se vykresluje z tahů (pravidlo 2), ne z bitmapy. */
+
+.avatar {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.avatar-button {
+  cursor: pointer;
+}
+
+/* Prstenec postupu. `conic-gradient` je jedna vlastnost místo SVG kruhu —
+   míň prvků ve stromu a dá se animovat. */
+.avatar-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-pill);
+  background: conic-gradient(
+    var(--action-primary) var(--progress, 0%),
+    var(--border-subtle) var(--progress, 0%)
+  );
+  transition: background 300ms ease;
+}
+
+.avatar-face {
+  position: absolute;
+  inset: 4px;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  background: var(--surface-canvas);
+  border: 1px solid var(--border-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.avatar-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Level sedí v rohu na medovém poli — stejná barva jako štítek obtížnosti
+   „těžké", ale jiný tvar a místo, takže se nepletou. */
+.avatar-level {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--text-primary);
+  border: 2px solid var(--surface-card);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label-sm);
+  font-weight: var(--weight-body-strong);
+}
+
+/* ---------- Kreslení avatara ---------- */
+
+.avatar-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  /* Stejná past jako u panelu barev a u oslavy levelu: bez stropu a rolování
+     by tlačítko Uložit skončilo pod klávesnicí nebo mimo obrazovku. */
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+}
+
+/* Čtverec — avatar je kolečko a obdélníkové plátno by se do něj ořezávalo.
+
+   `flex: none` NENÍ kosmetika: modal je flex sloupec se stropem výšky, takže
+   se položka smí smrsknout — a plátno, které bere výšku z `aspect-ratio`,
+   se smrskne na dva pixely. Změřeno.
+
+   Šířka je omezená, aby na ležatém displeji nevznikl obří čtverec. */
+.avatar-canvas-wrap {
+  position: relative;
+  flex: none;
+  width: min(100%, 300px);
+  margin: 0 auto;
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface-canvas);
+  border: 1px solid var(--border-subtle);
+  touch-action: none;
+}
+
+.avatar-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.avatar-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

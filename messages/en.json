@@ -317,5 +317,14 @@
       "mixer": "Mixing your own colours",
       "shapes": "Shapes — line, rectangle, ellipse"
     }
+  },
+  "avatar": {
+    "title": "Draw your avatar",
+    "lede": "It stands in for you in your profile. Drawn just like any picture.",
+    "save": "Save",
+    "cancel": "Back",
+    "remove": "Remove avatar",
+    "edit": "Change avatar",
+    "failed": "Could not save the avatar. Try again."
   }
 }

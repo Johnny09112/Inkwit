@@ -307,6 +307,11 @@ export interface Profile {
   /** Celkem vydělané kredity. Z nich se počítá level; utracení ho nesnižuje. */
   lifetime: number;
   level: number;
+  /**
+   * Vlastní kreslený avatar jako vektorové tahy (pravidlo 2), nebo null.
+   * Vykresluje se stejnou funkcí jako kresby — druhý formát by se rozešel.
+   */
+  avatarStrokes: Stroke[] | null;
   /** Kolik celkem vydělaných chce další level. Null na stropu. */
   nextLevelAt: number | null;
 }
@@ -326,6 +331,14 @@ export async function fetchProfile(): Promise<Profile | null> {
     credits: (r.credits as number) ?? 0,
     lifetime: (r.lifetime as number) ?? 0,
     level: (r.level as number) ?? 1,
+    avatarStrokes: Array.isArray(r.avatar_strokes)
+      ? (r.avatar_strokes as {
+          tool: string;
+          color: string;
+          width: number;
+          points: number[];
+        }[]).map(strokeFromPayload)
+      : null,
     nextLevelAt: (r.next_level_at as number | null) ?? null,
   };
 }
@@ -401,6 +414,19 @@ export async function reportDrawing(drawingId: string, reason: string): Promise<
   const { error } = await createClient().rpc("report_drawing", {
     p_drawing_id: drawingId,
     p_reason: reason,
+  });
+  if (error) throw error;
+}
+
+/**
+ * Uloží avatar jako vektorové tahy. Prázdné pole ho smaže a vrátí piktogram.
+ *
+ * Stropy hlídá server (`set_avatar`), ne klient — a hlídá i level u tvarů,
+ * jinak by byl avatar zadními vrátky k zamčenému nástroji.
+ */
+export async function setAvatar(strokes: readonly Stroke[]): Promise<void> {
+  const { error } = await createClient().rpc("set_avatar", {
+    p_strokes: strokesToPayload(strokes),
   });
   if (error) throw error;
 }

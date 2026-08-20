@@ -531,6 +531,23 @@ Každá padla z jiného důvodu a při další úvaze o levelech se vrátí jako
   se rozešly a hráč by dostal gratulaci k něčemu, co v roadmapě nestojí.
   *Ověřeno:* osm unit testů na to, kdy se oslava ukázat MÁ a kdy NESMÍ.
 
+- `[x] J9` **Vlastní kreslený avatar.** Kreslí se **stejným plátnem jako
+  kresby** a ukládá se jako **vektorové tahy** (pravidlo 2) do
+  `profiles.avatar_strokes` — ne do `drawings`. Kdyby to byla kresba, musela
+  by mít koncept a stav a `next_drawing()` by ji jednou nabídl k uhodnutí.
+
+  Editor nemá vlastní kreslicí kód: `DrawingCanvas` už řeší gesta, zapomenuté
+  prsty i dlouhý stisk na iOS a druhé plátno by ty pasti obcházelo znovu.
+
+  Kolem avatara je prstenec postupu do dalšího levelu, v rohu level.
+  *Ověřeno:* devět testů DB — stropy, poškozené body, neznámý nástroj, tvary
+  za levelem (jinak by byl avatar zadními vrátky k zamčenému nástroji) a
+  hlavně **že sloupec nejde přepsat napřímo**, jen přes RPC.
+
+  **Zatím ho vidí jen majitel účtu.** Ukázat ho ostatním u kreseb znamená
+  rozšířit `next_drawing()` a hlavně vyřešit moderaci — avatar je veřejný
+  obsah a pravidlo 8 na něj platí stejně jako na kresby.
+
 ### Co zbývá
 
 - `[ ] J4` **Sink pro kredity.** Zůstatek jen roste — nákup míchání barev byl

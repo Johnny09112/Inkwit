@@ -317,5 +317,14 @@
       "mixer": "Míchání vlastních barev",
       "shapes": "Tvary — čára, obdélník, elipsa"
     }
+  },
+  "avatar": {
+    "title": "Nakresli si avatar",
+    "lede": "Bude tě zastupovat v profilu. Kreslí se stejně jako kresby.",
+    "save": "Uložit",
+    "cancel": "Zpět",
+    "remove": "Smazat avatar",
+    "edit": "Změnit avatar",
+    "failed": "Avatar se nepodařilo uložit. Zkus to znovu."
   }
 }

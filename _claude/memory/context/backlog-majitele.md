@@ -27,7 +27,9 @@ nechal ve veřejné hře.
 
 - **Hotovo:** všechny čtyři chyby · výchozí barvy · kovy u obtížností ·
   zámeček s vysvětlením · **cesta levely v profilu**.
-- **Zbývá z vlny 3:** vlastní kreslený avatar (oslava postupu hotová).
+- **Vlna 3 hotová:** roadmapa levelů, oslava postupu, vlastní kreslený avatar.
+  Avatar zatím vidí jen majitel účtu — ukázat ho ostatním znamená vyřešit
+  moderaci (pravidlo 8 platí i na něj).
 - **Pak:** přeskočení za kredit (a s ním sink), denní výzva, dětský režim,
   výplň uzavřených tvarů, achievementy, metriky v žebříčcích.
 
