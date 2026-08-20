@@ -50,12 +50,9 @@
       "placeHere": "Nahradit barvu {color}",
       "fullNote": "Paleta má plných {n} barev — po uložení vybereš, kterou nahradit.",
       "cancel": "Zrušit",
-      "shopTitle": "Míchání vlastních barev",
-      "shopLede": "Základní paleta je zdarma. Za kredity se odemkne kruh, ve kterém si namícháš jakoukoli barvu — jednou a napořád.",
-      "shopPrice": "Stojí {price} kreditů · máš {credits}",
-      "shopBuy": "Odemknout",
-      "shopNotEnough": "Zatím nemáš dost kreditů",
-      "shopFailed": "Nákup se nepovedl. Zkus to znovu."
+      "lockedTitle": "Míchání vlastních barev",
+      "lockedLede": "Odemyká se na levelu {level}. Kresli a hádej — level roste sám z vydělaných kreditů.",
+      "lockedBack": "Zpět na barvy"
     },
     "loading": "Načítám zadání…",
     "draftMissing": "Tahle kresba k tobě nepatří, nebo je už odeslaná.",
@@ -193,7 +190,9 @@
     "handedness": "Ruka",
     "handRight": "Pravá",
     "handLeft": "Levá",
-    "credits": "{n, plural, one {# kredit} few {# kredity} other {# kreditů}}"
+    "credits": "{n, plural, one {# kredit} few {# kredity} other {# kreditů}}",
+    "level": "Level {n}",
+    "toNextLevel": "Do dalšího levelu {n, plural, one {# kredit} few {# kredity} other {# kreditů}}"
   },
   "auth": {
     "eyebrow": "Zavřený test",

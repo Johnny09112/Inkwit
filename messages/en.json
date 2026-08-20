@@ -50,12 +50,9 @@
       "placeHere": "Replace colour {color}",
       "fullNote": "Palette is full at {n} colours — after saving you pick which one to replace.",
       "cancel": "Cancel",
-      "shopTitle": "Custom colour mixing",
-      "shopLede": "The basic palette is free. Credits unlock the wheel where you mix any colour you want — once and for good.",
-      "shopPrice": "Costs {price} credits · you have {credits}",
-      "shopBuy": "Unlock",
-      "shopNotEnough": "Not enough credits yet",
-      "shopFailed": "Purchase failed. Try again."
+      "lockedTitle": "Custom colour mixing",
+      "lockedLede": "Unlocks at level {level}. Draw and guess — your level grows from the credits you earn.",
+      "lockedBack": "Back to colours"
     },
     "loading": "Loading your word…",
     "draftMissing": "This drawing is not yours, or it has already been sent.",
@@ -193,7 +190,9 @@
     "handedness": "Drawing hand",
     "handRight": "Right",
     "handLeft": "Left",
-    "credits": "{n, plural, one {# credit} other {# credits}}"
+    "credits": "{n, plural, one {# credit} other {# credits}}",
+    "level": "Level {n}",
+    "toNextLevel": "{n, plural, one {# credit} other {# credits}} to the next level"
   },
   "auth": {
     "eyebrow": "Closed test",

@@ -304,8 +304,11 @@ export interface Profile {
   unread: number;
   /** Zůstatek kreditů — součet ledgeru, počítá ho server. */
   credits: number;
-  /** Koupené odemčení míchání vlastních barev. */
-  hasColorMixer: boolean;
+  /** Celkem vydělané kredity. Z nich se počítá level; utracení ho nesnižuje. */
+  lifetime: number;
+  level: number;
+  /** Kolik celkem vydělaných chce další level. Null na stropu. */
+  nextLevelAt: number | null;
 }
 
 export async function fetchProfile(): Promise<Profile | null> {
@@ -321,14 +324,10 @@ export async function fetchProfile(): Promise<Profile | null> {
     guesses: r.guesses as number,
     unread: r.unread as number,
     credits: (r.credits as number) ?? 0,
-    hasColorMixer: Boolean(r.has_color_mixer),
+    lifetime: (r.lifetime as number) ?? 0,
+    level: (r.level as number) ?? 1,
+    nextLevelAt: (r.next_level_at as number | null) ?? null,
   };
-}
-
-/** Odemčení míchání barev. Cenu i zůstatek hlídá server. */
-export async function buyColorMixer(): Promise<void> {
-  const { error } = await createClient().rpc("buy_color_mixer");
-  if (error) throw error;
 }
 
 /**
@@ -338,18 +337,26 @@ export async function buyColorMixer(): Promise<void> {
 export async function fetchRewards(): Promise<{
   base: Record<string, number>;
   bonus: Record<string, number>;
-  mixerPrice: number;
+  /** Od kterého levelu je celá základní paleta a míchání vlastních barev. */
+  paletteFullLevel: number;
+  mixerLevel: number;
 }> {
   const { data, error } = await createClient()
     .from("game_config")
     .select("key, value")
-    .in("key", ["reward_draw_base", "reward_draw_bonus", "price_color_mixer"]);
+    .in("key", [
+      "reward_draw_base",
+      "reward_draw_bonus",
+      "level_palette_full",
+      "level_color_mixer",
+    ]);
   if (error) throw error;
   const map = Object.fromEntries((data ?? []).map((r) => [r.key, r.value]));
   return {
     base: (map.reward_draw_base as Record<string, number>) ?? { 1: 1, 2: 2, 3: 3 },
     bonus: (map.reward_draw_bonus as Record<string, number>) ?? { 1: 1, 2: 3, 3: 5 },
-    mixerPrice: (map.price_color_mixer as number) ?? 25,
+    paletteFullLevel: (map.level_palette_full as number) ?? 2,
+    mixerLevel: (map.level_color_mixer as number) ?? 3,
   };
 }
 

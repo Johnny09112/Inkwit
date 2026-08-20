@@ -75,19 +75,17 @@ export default function DrawPage({
   // Tvar kreslicí plochy. Plátno ho hlásí, odesílá se s kresbou a bez něj by
   // se kresba u ostatních roztáhla na tvar jejich obrazovky.
   const [aspect, setAspect] = useState(0.68);
-  // Kredity a odemčení míchání — panel barev je potřebuje, aby věděl, jestli
-  // kruh nabídnout, nebo prodat.
-  const [credits, setCredits] = useState(0);
-  const [mixer, setMixer] = useState(true);
-  const [economy, setEconomy] = useState<{ base: Record<string, number>; mixerPrice: number } | null>(null);
+  // Level a odemykací hranice — panel barev podle nich pozná, co smí nabídnout.
+  const [level, setLevel] = useState(99);
+  const [economy, setEconomy] = useState<{
+    base: Record<string, number>;
+    paletteFullLevel: number;
+    mixerLevel: number;
+  } | null>(null);
 
   const nactiProfil = () =>
     fetchProfile()
-      .then((p) => {
-        if (!p) return;
-        setCredits(p.credits);
-        setMixer(p.hasColorMixer);
-      })
+      .then((p) => p && setLevel(p.level))
       .catch(() => {});
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
@@ -95,7 +93,13 @@ export default function DrawPage({
   useEffect(() => {
     void nactiProfil();
     fetchRewards()
-      .then((r) => setEconomy({ base: r.base, mixerPrice: r.mixerPrice }))
+      .then((r) =>
+        setEconomy({
+          base: r.base,
+          paletteFullLevel: r.paletteFullLevel,
+          mixerLevel: r.mixerLevel,
+        }),
+      )
       .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -516,10 +520,9 @@ export default function DrawPage({
           activeColor={color}
           onPick={pickColor}
           onClose={() => setSheetOpen(false)}
-          mixerUnlocked={mixer}
-          credits={credits}
-          mixerPrice={economy?.mixerPrice ?? 25}
-          onUnlocked={() => void nactiProfil()}
+          level={level}
+          mixerLevel={economy?.mixerLevel ?? 3}
+          paletteFullLevel={economy?.paletteFullLevel ?? 2}
         />
       )}
 

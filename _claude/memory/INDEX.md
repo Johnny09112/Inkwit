@@ -8,6 +8,7 @@
 
 ## Decisions
 - [[kredity-a-odmeny]] — Kredity se do 2026-08-20 nikam neukládaly a aplikace slibovala odměnu, která nikdy nepřišla; nový balanc je základ podle obtížnosti plus bonus za první uhodnutí, utrácí se za odemčení míchání barev · active · 2026-08-20
+- [[levely-bez-gati-na-jadro]] — Level roste z celkem vydělaných kreditů a odemyká jen kosmetiku; gatování hádání, obtížností a vyžádání pojmu padlo, protože každé z nich rozbíjí měření fáze 0 nebo pravidlo 3 · active · 2026-08-20
 - [[spravcovske-rozhrani]] — Blok H — role admina, fronta hlášení, bany vynucené triggerem a čísla s exportem; obrací rozhodnutí F3, že fáze 0 admina nemá · active · 2026-08-20
 - [[gesta-a-vyrez-platna]] — Jeden prst kreslí, dva přibližují a posouvají; přiblížení je jen zobrazení, body zůstávají v poměrných souřadnicích 0–1, matematika výřezu je v lib/canvasView.ts a má vlastní testy · active · 2026-08-19
 - [[knihovna-kreseb-a-mazani]] — Rozepsané kresby se z knihovny skrývají, ale řádek zůstává kvůli metrics_funnel; mazání vlastní kresby je měkké (status removed), detail nesmí ukázat počet pokusů · active · 2026-08-19

@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { ChevronDown, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui";
 import { ColorWheel } from "@/components/draw/ColorWheel";
-import { buyColorMixer } from "@/lib/game";
 import { PALETTE_MAX, usePalette } from "@/lib/prefs";
 
 /**
@@ -23,19 +22,17 @@ interface ColorSheetProps {
   activeColor: string;
   onPick: (color: string) => void;
   onClose: () => void;
-  /** Koupené odemčení míchání. Bez něj je kruh za zámkem. */
-  mixerUnlocked?: boolean;
-  credits?: number;
-  mixerPrice?: number;
-  /** Po úspěšném nákupu — rodič si přenačte profil. */
-  onUnlocked?: () => void;
+  /** Level hráče a odemykací hranice. Míchání je kosmetika za postup, ne za peníze. */
+  level?: number;
+  mixerLevel?: number;
+  paletteFullLevel?: number;
 }
 
 /** Co panel zrovna dělá: vybírá barvu, míchá novou, uklízí, nebo hledá místo. */
 type Mode =
   | { kind: "pick" }
   | { kind: "wheel" }
-  | { kind: "shop" }
+  | { kind: "locked" }
   | { kind: "place"; color: string };
 
 export function ColorSheet({
@@ -43,16 +40,13 @@ export function ColorSheet({
   activeColor,
   onPick,
   onClose,
-  mixerUnlocked = true,
-  credits = 0,
-  mixerPrice = 25,
-  onUnlocked,
+  level = 99,
+  mixerLevel = 3,
+  paletteFullLevel = 2,
 }: ColorSheetProps) {
   const t = useTranslations("draw.colors");
   const [palette, savePalette] = usePalette();
   const [mode, setMode] = useState<Mode>({ kind: "pick" });
-  const [buying, setBuying] = useState(false);
-  const [shopError, setShopError] = useState<string | null>(null);
 
   const isFull = palette.length >= PALETTE_MAX;
 
@@ -98,14 +92,13 @@ export function ColorSheet({
     />
   );
 
-  if (mode.kind === "shop") {
-    const staci = credits >= mixerPrice;
+  if (mode.kind === "locked") {
     return (
       <>
         <div className="sheet-backdrop" onClick={onClose} />
-        <div className="color-sheet" role="dialog" aria-label={t("shopTitle")}>
+        <div className="color-sheet" role="dialog" aria-label={t("lockedTitle")}>
           <div className="color-sheet-head">
-            <span className="color-sheet-title">{t("shopTitle")}</span>
+            <span className="color-sheet-title">{t("lockedTitle")}</span>
             <button
               type="button"
               className="icon-btn icon-btn-plain"
@@ -116,40 +109,12 @@ export function ColorSheet({
               <ChevronDown size={18} />
             </button>
           </div>
-
           <p className="t-secondary" style={{ fontSize: "var(--text-body-sm)" }}>
-            {t("shopLede")}
+            {t("lockedLede", { level: mixerLevel })}
           </p>
-          <p className="wheel-note">{t("shopPrice", { price: mixerPrice, credits })}</p>
-
-          {shopError && (
-            <p className="auth-note auth-note-error" role="alert">
-              {shopError}
-            </p>
-          )}
-
           <div className="modal-actions">
-            <Button
-              size="lg"
-              disabled={!staci || buying}
-              onClick={async () => {
-                setBuying(true);
-                setShopError(null);
-                try {
-                  await buyColorMixer();
-                  onUnlocked?.();
-                  setMode({ kind: "wheel" });
-                } catch {
-                  setShopError(t("shopFailed"));
-                } finally {
-                  setBuying(false);
-                }
-              }}
-            >
-              {staci ? t("shopBuy") : t("shopNotEnough")}
-            </Button>
-            <Button variant="secondary" size="lg" onClick={() => setMode({ kind: "pick" })}>
-              {t("cancel")}
+            <Button size="lg" onClick={() => setMode({ kind: "pick" })}>
+              {t("lockedBack")}
             </Button>
           </div>
         </div>
@@ -174,6 +139,9 @@ export function ColorSheet({
   }
 
   const placing = mode.kind === "place" ? mode.color : null;
+  // Pod odemykacím levelem je vidět jen prvních osm barev — zbytek přijde
+  // s postupem. Je to kosmetika, na férovost hry to vliv nemá.
+  const viditelne = level >= paletteFullLevel ? palette : palette.slice(0, 8);
 
   return (
     <>
@@ -210,7 +178,7 @@ export function ColorSheet({
           )}
 
           <div className="color-grid">
-            {palette.map((c, i) =>
+            {viditelne.map((c, i) =>
               placing ? (
                 <button
                   key={`slot-${i}`}
@@ -231,7 +199,11 @@ export function ColorSheet({
               aria-label={placing ? t("cancel") : t("add")}
               onClick={() =>
                 setMode(
-                  placing ? { kind: "pick" } : mixerUnlocked ? { kind: "wheel" } : { kind: "shop" },
+                  placing
+                    ? { kind: "pick" }
+                    : level >= mixerLevel
+                      ? { kind: "wheel" }
+                      : { kind: "locked" },
                 )
               }
             >

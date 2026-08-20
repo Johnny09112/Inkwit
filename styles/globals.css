@@ -2292,3 +2292,47 @@ textarea,
   font-size: var(--text-body-sm);
   color: var(--action-primary);
 }
+
+/* ---------- Level ---------- */
+
+.profile-level {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+.profile-level-badge {
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-success);
+  color: var(--olive-700);
+}
+
+/* Pruh je jediné místo, kde je vidět, že postup někam vede. Bez čísla vedle
+   by z něj nebylo poznat, kolik chybí. */
+.level-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0 12px;
+}
+
+.level-progress-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.level-progress-fill {
+  height: 100%;
+  background: var(--action-primary);
+  transition: width 240ms ease;
+}

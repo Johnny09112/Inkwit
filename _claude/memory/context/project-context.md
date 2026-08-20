@@ -59,6 +59,13 @@ Základ podle obtížnosti při odeslání, bonus za první uhodnutí, 1 za tip 
 všechno v `game_config`. Utrácí se za odemčení míchání barev (25).
 **Čísla nejsou kalibrovaná daty**, viz `decisions/kredity-a-odmeny.md`.
 
+## Levely
+
+Od 2026-08-20 má hra levely (prahy v `game_config`, počítají se z celkem
+vydělaných kreditů). **Gatují jen kosmetiku** — jádro hry, vyžádání pojmu
+i přehrání zůstávají od začátku, každé z jiného důvodu.
+Viz `decisions/levely-bez-gati-na-jadro.md`.
+
 ## Správa
 
 Od 2026-08-20 má aplikace `/admin` (blok H) — fronta hlášení, přehled kreseb,

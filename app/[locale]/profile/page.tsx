@@ -79,12 +79,29 @@ export default function ProfilePage() {
               : ""}
           </div>
           {profile && (
-            <div className="profile-credits">
-              {t("credits", { n: profile.credits })}
+            <div className="profile-level">
+              <span className="profile-level-badge">
+                {t("level", { n: profile.level })}
+              </span>
+              <span className="profile-credits">{t("credits", { n: profile.credits })}</span>
             </div>
           )}
         </div>
       </div>
+
+      {profile && profile.nextLevelAt !== null && (
+        <div className="level-progress">
+          <div className="level-progress-bar">
+            <div
+              className="level-progress-fill"
+              style={{ width: `${Math.min(100, Math.round((profile.lifetime / profile.nextLevelAt) * 100))}%` }}
+            />
+          </div>
+          <span className="t-label-sm">
+            {t("toNextLevel", { n: profile.nextLevelAt - profile.lifetime })}
+          </span>
+        </div>
+      )}
 
       <section className="notif-section">
         <span className="lbl">

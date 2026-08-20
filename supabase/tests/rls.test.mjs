@@ -1001,44 +1001,41 @@ async function main() {
     const poDruhem = (await db.query("select public.my_credits() c")).rows[0].c;
     report(poDruhem === autor, "druhé uhodnutí bonus nezopakuje", `${autor} → ${poDruhem}`);
 
-    // Nákup: bez kreditů se odmítne.
-    let chudy = "prošlo";
-    await db.exec("savepoint nakup");
-    try {
-      await db.query("select public.buy_color_mixer()");
-    } catch (e) {
-      chudy = e.message.includes("Nedostatek") ? "odmítnuto" : `jinak: ${e.message}`;
-    }
-    await db.exec("rollback to savepoint nakup");
-    report(chudy === "odmítnuto", "bez kreditů se míchání barev nekoupí");
-
-    // S kredity projde a odečte se cena z konfigurace.
+    // Level roste z CELKEM vydělaných, ne ze zůstatku.
     await db.exec("reset role");
-    await db.exec(`insert into public.ledger (user_id, delta, reason) values ('${ALICE}', 100, 'test')`);
+    await db.exec(`insert into public.ledger (user_id, delta, reason) values ('${ALICE}', 60, 'test')`);
     await db.exec(
       `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
     );
-    const pred = (await db.query("select public.my_credits() c")).rows[0].c;
-    await db.query("select public.buy_color_mixer()");
-    const po = (await db.query("select public.my_credits() c")).rows[0].c;
-    const profil = (await db.query("select * from public.my_profile()")).rows[0];
-    report(pred - po === 25, "nákup odečte cenu z konfigurace", `${pred} → ${po}`);
-    report(profil.has_color_mixer === true, "odemčení se propíše do profilu");
+    const p1 = (await db.query("select * from public.my_profile()")).rows[0];
+    // Prahy 0/10/25/50/100/175 → 62 vydělaných je level 4.
+    report(p1.level === 4, "level se počítá z vydělaných kreditů", `${p1.lifetime} → level ${p1.level}`);
+    report(p1.next_level_at === 100, "profil hlásí, kolik chce další level", `${p1.next_level_at}`);
 
-    await db.query("select public.buy_color_mixer()");
-    const poDruhemNakupu = (await db.query("select public.my_credits() c")).rows[0].c;
-    report(poDruhemNakupu === po, "druhý nákup se neúčtuje", `${po} → ${poDruhemNakupu}`);
+    // Utracení level NESNÍŽÍ — jinak by nákup kosmetiky vzal odemčené funkce.
+    await db.exec("reset role");
+    await db.exec(`insert into public.ledger (user_id, delta, reason) values ('${ALICE}', -50, 'utrata')`);
+    await db.exec(
+      `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+    );
+    const p2 = (await db.query("select * from public.my_profile()")).rows[0];
+    report(
+      p2.level === p1.level && p2.credits < p1.credits,
+      "utracení sníží zůstatek, ale ne level",
+      `level ${p1.level} → ${p2.level}, zůstatek ${p1.credits} → ${p2.credits}`,
+    );
 
-    // Uživatel si odemčení nenastaví sám.
-    let podvod = "prošlo";
-    await db.exec("savepoint podvrh");
+    // Vyžádání pojmu se NEGATUJE — nese hlavní hypotézu fáze 0.
+    let vyzadani = "odmítnuto";
+    await db.exec("savepoint vyzadani");
     try {
-      await db.exec(`update public.profiles set has_color_mixer = true where id = '${BOB}'`);
+      await db.query(`select public.request_concept('${conceptZaba}')`);
+      vyzadani = "prošlo";
     } catch {
-      podvod = "odmítnuto";
+      vyzadani = "odmítnuto";
     }
-    await db.exec("rollback to savepoint podvrh");
-    report(podvod === "odmítnuto", "uživatel si odemčení nenastaví sám");
+    await db.exec("rollback to savepoint vyzadani");
+    report(vyzadani === "prošlo", "vyžádání pojmu není za levelem — nese hypotézu fáze 0");
 
     await db.exec("rollback");
   }
