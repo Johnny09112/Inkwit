@@ -10,6 +10,7 @@
 ## Decisions
 - [[kredity-a-odmeny]] — Kredity se do 2026-08-20 nikam neukládaly a aplikace slibovala odměnu, která nikdy nepřišla; nový balanc je základ podle obtížnosti plus bonus za první uhodnutí, utrácí se za odemčení míchání barev · active · 2026-08-20
 - [[levely-bez-gati-na-jadro]] — Level roste z celkem vydělaných kreditů a odemyká jen kosmetiku; gatování hádání, obtížností a vyžádání pojmu padlo, protože každé z nich rozbíjí měření fáze 0 nebo pravidlo 3 · active · 2026-08-20
+- [[slovnik-vyrovnany-pomer-obtiznosti]] — Slovník má 300 pojmů ve vyrovnaném poměru 100/100/100, protože nabídka bere jeden pojem od každé obtížnosti a buckety se čerpají stejně rychle bez ohledu na svou velikost · active · 2026-08-20
 - [[spravcovske-rozhrani]] — Blok H — role admina, fronta hlášení, bany vynucené triggerem a čísla s exportem; obrací rozhodnutí F3, že fáze 0 admina nemá · active · 2026-08-20
 - [[gesta-a-vyrez-platna]] — Jeden prst kreslí, dva přibližují a posouvají; přiblížení je jen zobrazení, body zůstávají v poměrných souřadnicích 0–1, matematika výřezu je v lib/canvasView.ts a má vlastní testy · active · 2026-08-19
 - [[knihovna-kreseb-a-mazani]] — Rozepsané kresby se z knihovny skrývají, ale řádek zůstává kvůli metrics_funnel; mazání vlastní kresby je měkké (status removed), detail nesmí ukázat počet pokusů · active · 2026-08-19
@@ -29,6 +30,7 @@
 - [[tajemstvi-hry-v-schematu]] — Text konceptu a drawings.concept_id jsou tajemství hry — klient je nečte vůbec; RLS je řádková, takže se tajné sloupce oddělují do vlastních tabulek a feed jde přes pohled · active · 2026-08-18
 
 ## Patterns
+- [[jak-tvorit-slovni-zasobu]] — Recept na tvorbu konceptů — kalibrace obtížnosti, co patří a nepatří do přijímaných tvarů, kritéria jednojazyčnosti, povinná kontrola validátorem · active · 2026-08-20
 - [[ctvercove-tlacitko-ve-flex-radku]] — aspect-ratio nevyrobí čtvercové tlačítko vedle roztaženého ve flex řádku — šířka se vyřeší dřív, než align-items stretch roztáhne výšku · active · 2026-08-19
 - [[hvezdicky-a-graficke-hodnoty]] — Hvězdičky se kreslí včetně prázdných a jejich obrys musí být dost tmavý; medová výplň má proti ovesnému pozadí jen 1,61 : 1, takže tvar nese obrys, ne barva · active · 2026-08-19
 - [[ios-dlouhy-stisk-vybira-text]] — Dlouhý stisk v iOS Safari označí text a otevře nabídku Kopírovat i nad plátnem a tlačítky; řeší to user-select a -webkit-touch-callout, ne PWA · active · 2026-08-19
@@ -36,13 +38,13 @@
 - [[next-cache-rozbita-buildem]] — npm run build za běhu dev serveru přepíše .next a dev pak hlásí "Cannot find module ./vendor-chunks/*.js" — vypadá to jako chyba v kódu, ale je to jen cache · active · 2026-08-19
 - [[service-worker-serviruje-stary-kod]] — Ve vývoji drží service worker z PWA staré balíčky a stránka pak ukazuje kód, který v souborech dávno není — vypadá to jako by se změna neprojevila · active · 2026-08-19
 - [[vyvojova-obrazovka-playground]] — /playground pouští kreslicí komponenty bez přihlášení, aby šly prohlédnout v prohlížeči; v produkci ji notFound() vypne napevno a middleware ji nepouští · active · 2026-08-19
-- [[jak-tvorit-slovni-zasobu]] — Recept na tvorbu konceptů — kalibrace obtížnosti, co patří a nepatří do přijímaných tvarů, kritéria jednojazyčnosti, povinná kontrola validátorem · active · 2026-08-18
 - [[nextjs-middleware-matcher-tecka]] — V Next.js middleware matcheru nefunguje escapovaná tečka \. uvnitř custom skupiny — path-to-regexp zbaští backslash a lookahead pak odmítne všechno; použij [.] · active · 2026-08-18
 - [[rls-pomocne-funkce-mimo-public]] — Politiky RLS se vyhodnocují právy dotazujícího se uživatele, takže revoke execute je rozbije — pomocné funkce se schovávají přesunem do schématu mimo PostgREST, ne odebráním práv · active · 2026-08-18
 - [[supabase-chyby-podle-kodu]] — Chyby ze Supabase Auth mapovat podle err.code, ne podle textu; zamítnutá pozvánka z triggeru dorazí jako 23514 a fallback nesmí svalovat všechno na pozvánku · active · 2026-08-18
 
 ## Bugs
 - [[kresba-se-roztahovala-podle-plochy]] — Body se mapovaly na každou osu zvlášť, takže kresba měnila tvar podle plochy — v náhledu byla dvakrát širší než při kreslení; kresba si teď nese poměr a všude se do něj vepisuje · resolved · 2026-08-20
+- [[tolerance-preklepu-uznavala-cizi-pojem]] — Kontrola slovníku hlídala jen dvojice do čtyř znaků, což je bezpečná zóna; od pěti znaků výš hra uznávala tip patřící jinému pojmu — „sleep" uhodlo ovci · resolved · 2026-08-20
 - [[revoke-na-sloupec-nefunguje]] — revoke update (sloupec) nedělá nic, když má role právo na celou tabulku — uživatel si mohl přepsat tenant_id a obejít izolaci školního tenantu · resolved · 2026-08-19
 - [[strop-bodu-se-pocital-tretinovy]] — submit_drawing porovnávala délku plochého pole se stropem počtu bodů, takže platil limit 20 000 místo 60 000; na 120Hz tabletu se dal potkat a odeslání skončilo obecným "nepovedlo se" · resolved · 2026-08-19
 - [[ledger-pravidlo-blokovalo-mazani-uctu]] — Pravidlo "do instead nothing" chránící append-only ledger rozbilo kaskádu z cizího klíče — účet nešel smazat vůbec, ani na žádost podle GDPR · resolved · 2026-08-18

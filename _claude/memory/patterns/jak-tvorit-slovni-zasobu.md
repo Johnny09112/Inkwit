@@ -4,7 +4,7 @@ description: Recept na tvorbu konceptů — kalibrace obtížnosti, co patří a
 type: pattern
 status: active
 created: 2026-08-18
-updated: 2026-08-18
+updated: 2026-08-20
 ---
 
 # Jak tvořit slovní zásobu
@@ -43,10 +43,17 @@ stejně dobře na jiný pojem, je to past na hádající, ne obtížnost.
 | ★★ | potřebuje detail, scénu nebo vztah dvou věcí | kolotoč, maják, plavání, vodopád |
 | ★★★ | abstraktní nebo dějové, jde nakreslit mnoha způsoby | nostalgie, spěch, ticho, kýchnutí |
 
-**Poměr má být nakloněný ke snadným, ne vyvážený** — první sada je 58 / 40 / 22,
-tedy zhruba 50 / 33 / 17 %. Důvod: nabídka tří konceptů je ventil pro toho, kdo
-kreslit neumí (`docs/product.md`). Kdyby byly obtížnosti rovnoměrné, ventil
-přestane fungovat, protože v nabídce často nebude nic snadného.
+**Poměr má být vyrovnaný, 1 : 1 : 1** — druhá sada je 100 / 100 / 100.
+
+> Do 2026-08-20 tu stálo „nakloněný ke snadným, 50/33/17", se zdůvodněním, že
+> nabídka tří konceptů je ventil pro toho, kdo kreslit neumí. **Ten ventil ale
+> drží struktura nabídky, ne počet:** `offer_concepts()` bere jeden pojem od
+> KAŽDÉ obtížnosti, takže snadná možnost je v nabídce vždycky.
+>
+> Počet ovlivňuje něco jiného — nabídka vylučuje jen to, co ten člověk už
+> kreslil, takže se **všechny tři buckety čerpají stejně rychle**. Při 58/40/22
+> došly těžké 2,6× dřív a alarm v `/admin` svítil právě na nich.
+> Viz [[slovnik-vyrovnany-pomer-obtiznosti]].
 
 ## Přijímané tvary
 
@@ -88,10 +95,19 @@ Na první sadě našel:
 1. **Kolizi přijímaných tvarů.** Slovo `budík` přijímaly `hodiny` i `budik`.
    V praxi: hráč napíše správnou odpověď a hra ji vyhodnotí jako špatnou.
    **Tohle je nejzávažnější chyba, jakou lze v sadě udělat**, a roste s velikostí.
-2. **Krátká slova lišící se jedním znakem** napříč pojmy — `pes`/`děs`,
-   `slon`/`shon`, `cat`/`bat`/`car`, `bear`/`pear`/`fear`. Neopravují se v datech;
-   je to vstup pro prahy fuzzy shody (do 4 znaků jen přesná shoda).
-3. Duplicity uvnitř seznamu a zadání chybějící mezi přijímanými tvary.
+   Je to CHYBA, ne upozornění.
+2. **Dvojice v dosahu tolerance překlepů** — na skutečné prahy, ne jen krátká
+   slova. Od 2026-08-20 je to **upozornění**, protože pojistka v
+   `answer_matches` už tip patřící jinému pojmu neuzná; viz
+   [[tolerance-preklepu-uznavala-cizi-pojem]]. Blízkost dvou tvarů ale skoro
+   vždycky znamená, že jeden z nich je zbytečný — je levnější ho vyhodit.
+3. **Krátká slova lišící se jedním znakem** se jen počítají. Je to doklad, proč
+   práh „do 4 znaků jen přesná shoda" existuje (`pes`/`děs`, `cat`/`bat`).
+4. Duplicity uvnitř seznamu a zadání chybějící mezi přijímanými tvary.
+
+**Prahy ve validátoru jsou kopie `game_config`.** `FUZZY_EXACT` a `FUZZY_ONE`
+v `check-concepts.mjs` musí sedět s `fuzzy_exact_below` a `fuzzy_one_below`.
+Když se rozejdou, validátor přestane kontrolovat to, co hra dělá.
 
 **U tisíce slov roste počet dvojic kvadraticky.** Bez validátoru je sada té
 velikosti neudržitelná.
