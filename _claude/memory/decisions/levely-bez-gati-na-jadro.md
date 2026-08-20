@@ -48,7 +48,7 @@ Zámek levelem by měření rozbil.
 
 ## Co tedy levely dělají
 
-Level roste z **celkem vydělaných** kreditů (prahy 0 / 10 / 25 / 50 / 100 / 175
+Level roste z **celkem vydělaných** kreditů (prahy `[0, 10, 25, 50]`
 v `game_config`). Ze zůstatku ne — utracení za kosmetiku by srazilo level a vzalo
 odemčené funkce.
 
@@ -57,10 +57,31 @@ odemčené funkce.
 | 1 | kreslení, hádání, všechny obtížnosti, 8 barev |
 | 2 | celá základní paleta (15 barev) |
 | 3 | míchání vlastních barev |
-| 4–6 | zatím nic — party a nástroje neexistují |
+| 4 | **tvary — čára, obdélník, elipsa** |
 
-**Třicet levelů se nezavedlo.** Reálná odemčení jsou dvě; dvacet prázdných levelů
-je horší než žádné. Prahy jsou v konfiguraci, takže přidat další jde bez nasazení.
+**Třicet levelů se nezavedlo.** Prahů bylo nejdřív šest, ale odemčení dvě.
+
+**Doplněno 2026-08-20 odpoledne:** žebříček se zkrátil ze šesti pater na čtyři
+a level 4 dostal obsah. Prázdné levely 4–6 nesly cenu, kterou platil ten, kdo
+hraje nejvíc — majitelovy tři účty na nich přesně stály (133 / 71 / 53
+vydělaných = level 5 / 4 / 4). **Prázdný level cítí jako první ten, kdo hraje
+nejvíc**, ne nováček. Páté patro se přidá v konfiguraci, až bude čím.
+
+### Proč tvary, a proč ne kbelík
+
+**Kbelík (plošná výplň) porušuje pravidlo 2** — kresba se ukládá jen jako
+vektorové tahy. Vyplněná plocha se jako tah zapsat nedá; rozbila by přehrání,
+export GIFu i detekci čmáranic, která stojí na časových značkách bodů.
+Tohle je past, do které se dá při „přidejme nástroje" snadno spadnout.
+
+**Tvar je naopak tah jako každý jiný:** dva body a jiná hodnota v `tool`.
+Datový model se nemění. Při kreslení se druhý bod přepisuje, ne přidává —
+proto zůstane tah dvoubodový bez ohledu na délku tažení.
+
+**Zámek je na serveru,** ne jen v UI: `submit_drawing` volá
+`private.require_level('level_shapes')`, jednou za kresbu (počítat level
+u každého tahu by znamenalo sečíst ledger tolikrát, kolik má kresba tahů).
+Do té doby byla `require_level` napsaná, ale nikde nepoužitá.
 
 ## Nákup míchání barev zrušen tentýž den
 

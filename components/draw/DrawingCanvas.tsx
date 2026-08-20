@@ -6,6 +6,7 @@ import {
   BASE_WIDTH,
   deviceTypeFrom,
   fitBox,
+  isShapeTool,
   renderStrokes,
   roundCoord,
   type Stroke,
@@ -242,7 +243,10 @@ export function DrawingCanvas({
         ).width * viewRef.current.scale),
       device: deviceTypeFrom(e.pointerType),
       startedAt: Date.now(),
-      points: [pointFromEvent(e)],
+      // Tvar má od začátku dva body — začátek a konec. Konec se pak tažením
+      // přepisuje, takže tah zůstane dvoubodový bez ohledu na to, jak dlouho
+      // se táhne. Štětec naopak body přidává.
+      points: isShapeTool(tool) ? [pointFromEvent(e), pointFromEvent(e)] : [pointFromEvent(e)],
     };
     redraw();
   };
@@ -265,7 +269,11 @@ export function DrawingCanvas({
 
     const stroke = activeStroke.current;
     if (!stroke) return;
-    stroke.points.push(pointFromEvent(e));
+    if (isShapeTool(stroke.tool)) {
+      stroke.points[stroke.points.length - 1] = pointFromEvent(e);
+    } else {
+      stroke.points.push(pointFromEvent(e));
+    }
     redraw();
   };
 

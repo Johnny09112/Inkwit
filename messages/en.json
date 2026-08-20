@@ -27,6 +27,11 @@
     "tools": {
       "brush": "Brush",
       "eraser": "Eraser",
+      "shapes": "Shapes",
+      "line": "Line",
+      "rect": "Rectangle",
+      "ellipse": "Ellipse",
+      "shapesLocked": "Shapes unlock at level {level}",
       "undo": "Undo",
       "clear": "Clear all",
       "preview": "Preview without tools",

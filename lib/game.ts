@@ -337,9 +337,10 @@ export async function fetchProfile(): Promise<Profile | null> {
 export async function fetchRewards(): Promise<{
   base: Record<string, number>;
   bonus: Record<string, number>;
-  /** Od kterého levelu je celá základní paleta a míchání vlastních barev. */
+  /** Od kterého levelu je celá základní paleta, míchání barev a tvary. */
   paletteFullLevel: number;
   mixerLevel: number;
+  shapesLevel: number;
 }> {
   const { data, error } = await createClient()
     .from("game_config")
@@ -349,6 +350,7 @@ export async function fetchRewards(): Promise<{
       "reward_draw_bonus",
       "level_palette_full",
       "level_color_mixer",
+      "level_shapes",
     ]);
   if (error) throw error;
   const map = Object.fromEntries((data ?? []).map((r) => [r.key, r.value]));
@@ -357,6 +359,7 @@ export async function fetchRewards(): Promise<{
     bonus: (map.reward_draw_bonus as Record<string, number>) ?? { 1: 1, 2: 3, 3: 5 },
     paletteFullLevel: (map.level_palette_full as number) ?? 2,
     mixerLevel: (map.level_color_mixer as number) ?? 3,
+    shapesLevel: (map.level_shapes as number) ?? 4,
   };
 }
 

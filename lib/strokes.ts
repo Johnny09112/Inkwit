@@ -25,7 +25,22 @@ export interface StrokePoint {
   t: number;
 }
 
-export type Tool = "brush" | "eraser";
+export type Tool = "brush" | "eraser" | "line" | "rect" | "ellipse";
+
+/**
+ * Tvary (level 4). Jsou to obyčejné tahy o dvou bodech — začátek a konec —
+ * jen se vykreslují jinak. Pravidlo 2 tím zůstává v platnosti: kresba je pořád
+ * jen vektorové tahy s časovými značkami, žádná bitmapa. Proto tu není kbelík:
+ * plošnou výplň jako tah zapsat nejde a rozbila by přehrání i detekci čmáranic.
+ */
+export const SHAPE_TOOLS = ["line", "rect", "ellipse"] as const;
+export type ShapeTool = (typeof SHAPE_TOOLS)[number];
+
+export function isShapeTool(tool: Tool): tool is ShapeTool {
+  return (SHAPE_TOOLS as readonly string[]).includes(tool);
+}
+
+const TOOLS: readonly Tool[] = ["brush", "eraser", ...SHAPE_TOOLS];
 
 /** Typ zařízení z PointerEvent.pointerType — metadata od prvního dne. */
 export type DeviceType = "mouse" | "touch" | "pen" | "unknown";
@@ -98,6 +113,9 @@ export function renderStrokes(
   // výřezu zesílil, i když kresba zůstala stejná.
   const scale = box.width / BASE_WIDTH;
 
+  const px = (p: StrokePoint) => box.x + p.x * box.width;
+  const py = (p: StrokePoint) => box.y + p.y * box.height;
+
   for (const stroke of strokes) {
     if (stroke.points.length === 0) continue;
     ctx.globalCompositeOperation =
@@ -107,9 +125,38 @@ export function renderStrokes(
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.beginPath();
+
+    // Tvar nese jen dva body: kde tah začal a kde skončil. Bere se první
+    // a POSLEDNÍ, ne první dva — při kreslení se poslední bod přepisuje, ale
+    // ze serveru může přijít cokoli, co prošlo validací.
+    if (isShapeTool(stroke.tool)) {
+      const a = stroke.points[0];
+      const b = stroke.points[stroke.points.length - 1];
+      const x0 = px(a);
+      const y0 = py(a);
+      const x1 = px(b);
+      const y1 = py(b);
+      if (stroke.tool === "line") {
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x1, y1);
+      } else if (stroke.tool === "rect") {
+        ctx.rect(Math.min(x0, x1), Math.min(y0, y1), Math.abs(x1 - x0), Math.abs(y1 - y0));
+      } else {
+        ctx.ellipse(
+          (x0 + x1) / 2,
+          (y0 + y1) / 2,
+          Math.abs(x1 - x0) / 2,
+          Math.abs(y1 - y0) / 2,
+          0,
+          0,
+          Math.PI * 2,
+        );
+      }
+      ctx.stroke();
+      continue;
+    }
+
     const [first, ...rest] = stroke.points;
-    const px = (p: StrokePoint) => box.x + p.x * box.width;
-    const py = (p: StrokePoint) => box.y + p.y * box.height;
     ctx.moveTo(px(first), py(first));
     if (rest.length === 0) {
       // Tečka — čára nulové délky se s lineCap: round vykreslí jako kruh
@@ -139,7 +186,9 @@ export function drawingDurationMs(strokes: readonly Stroke[]): number {
  */
 export function looksRushed(strokes: readonly Stroke[]): boolean {
   if (strokes.length === 0) return true;
-  const drawn = strokes.filter((s) => s.tool === "brush");
+  // Guma nic nepřidává; štětec i tvary ano. Kdyby se počítal jen štětec,
+  // kresba složená z tvarů by vždycky vypadala jako čmáranice.
+  const drawn = strokes.filter((s) => s.tool !== "eraser");
   return drawn.length < 3 || drawingDurationMs(strokes) < 8000;
 }
 
@@ -180,7 +229,7 @@ export function strokeFromPayload(row: {
     points.push({ x: row.points[i], y: row.points[i + 1], t: row.points[i + 2] });
   }
   return {
-    tool: row.tool === "eraser" ? "eraser" : "brush",
+    tool: (TOOLS as readonly string[]).includes(row.tool) ? (row.tool as Tool) : "brush",
     color: row.color,
     size: row.width,
     device: "unknown",

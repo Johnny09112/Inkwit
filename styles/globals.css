@@ -2336,3 +2336,62 @@ textarea,
   background: var(--action-primary);
   transition: width 240ms ease;
 }
+
+/* ---------------------------------------------------------------------------
+   Výběr tvaru (level 4)
+   ---------------------------------------------------------------------------
+   Jedno tlačítko v liště, nabídka tří tvarů nad ním. Na mobilu i na desktopu
+   je lišta vodorovná a nabídka jde nahoru; na tabletu je rail svislý, takže
+   se otevírá do strany (`.shape-menu-side`).
+
+   Nabídka je `position: absolute` v obalu, ne v plátně — jinak by ji ořízl
+   `overflow` kreslicí plochy. */
+
+.shape-picker {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+
+.shape-menu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  border: 1px solid var(--border-hairline);
+  box-shadow: var(--shadow-floating);
+  z-index: 20;
+}
+
+.shape-menu-side {
+  bottom: auto;
+  top: 50%;
+  left: auto;
+  right: calc(100% + 8px);
+  transform: translateY(-50%);
+  flex-direction: column;
+}
+
+/* Rail u levé ruky má tlačítka vlevo, takže nabídka musí ven na druhou stranu. */
+.draw-rail-left .shape-menu-side {
+  right: auto;
+  left: calc(100% + 8px);
+}
+
+/* Zamčený nástroj se ukazuje, ne skrývá — jinak není poznat, že je na co
+   se těšit. Skutečný zámek je na serveru. */
+.icon-btn.is-locked {
+  opacity: 0.55;
+  border-style: dashed;
+}
+
+/* Když nad tlačítkem není místo (lišta nahoře), nabídka se překlopí pod něj. */
+.shape-menu-down {
+  top: calc(100% + 8px);
+  bottom: auto;
+}

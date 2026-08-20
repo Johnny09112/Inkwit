@@ -1033,9 +1033,9 @@ async function main() {
       `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
     );
     const p1 = (await db.query("select * from public.my_profile()")).rows[0];
-    // Prahy 0/10/25/50/100/175 → 62 vydělaných je level 4.
+    // Prahy 0/10/25/50 → 62 vydělaných je level 4, tedy strop žebříčku.
     report(p1.level === 4, "level se počítá z vydělaných kreditů", `${p1.lifetime} → level ${p1.level}`);
-    report(p1.next_level_at === 100, "profil hlásí, kolik chce další level", `${p1.next_level_at}`);
+    report(p1.next_level_at === null, "na stropu žebříčku se další level nehlásí", `${p1.next_level_at}`);
 
     // Utracení level NESNÍŽÍ — jinak by nákup kosmetiky vzal odemčené funkce.
     await db.exec("reset role");
@@ -1061,6 +1061,57 @@ async function main() {
     }
     await db.exec("rollback to savepoint vyzadani");
     report(vyzadani === "prošlo", "vyžádání pojmu není za levelem — nese hypotézu fáze 0");
+
+    // --- Tvary (level 4) -----------------------------------------------------
+    //
+    // Zamčený nástroj v UI je pohodlí, ne zámek. Kdo si upraví payload, musí
+    // narazit až tady — CLAUDE.md: „Klientu se nevěří nic."
+
+    const tvarTah = JSON.stringify([
+      { tool: "line", color: "#2B261F", width: 8, points: [0.1, 0.1, 0, 0.8, 0.8, 200] },
+    ]);
+
+    /** Zkusí odeslat kresbu daným uživatelem a vrátí, jestli prošla. */
+    const zkusOdeslat = async (kdo, strokesJson) => {
+      await db.exec("savepoint tvary");
+      let vysledek = "odmítnuto";
+      try {
+        await db.exec(`select set_config('request.jwt.claim.sub', '${kdo}', true);`);
+        const id = (await db.query(`select public.start_drawing('${conceptZaba}') id`)).rows[0].id;
+        await db.query(`select public.submit_drawing('${id}', 'mouse', 0, $1::jsonb, 0.68)`, [
+          strokesJson,
+        ]);
+        vysledek = "prošlo";
+      } catch {
+        vysledek = "odmítnuto";
+      }
+      await db.exec("rollback to savepoint tvary");
+      await db.exec(`select set_config('request.jwt.claim.sub', '${ALICE}', true);`);
+      return vysledek;
+    };
+
+    // Bob má z jednoho uhodnutí 1 vydělaný kredit, tedy level 1.
+    report(
+      (await zkusOdeslat(BOB, tvarTah)) === "odmítnuto",
+      "na levelu 1 tvar neprojde ani přímo přes RPC",
+    );
+    report(
+      (await zkusOdeslat(ALICE, tvarTah)) === "prošlo",
+      "na levelu 4 tvar projde",
+    );
+    report(
+      (await zkusOdeslat(BOB, tah)) === "prošlo",
+      "štětec zámek tvarů neomezuje",
+    );
+    report(
+      (await zkusOdeslat(
+        ALICE,
+        JSON.stringify([
+          { tool: "kbelik", color: "#2B261F", width: 8, points: [0.1, 0.1, 0] },
+        ]),
+      )) === "odmítnuto",
+      "neznámý nástroj se odmítne, i když má level na tvary",
+    );
 
     await db.exec("rollback");
   }

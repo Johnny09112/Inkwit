@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { useState } from "react";
 import { ColorSheet } from "@/components/draw/ColorSheet";
 import { DrawingCanvas } from "@/components/draw/DrawingCanvas";
+import { ShapePicker } from "@/components/draw/ShapePicker";
 import { RECENT_COLORS } from "@/lib/mock";
 import type { Stroke, Tool } from "@/lib/strokes";
 
@@ -45,6 +46,9 @@ export default function PlaygroundPage() {
         >
           {tool}
         </button>
+        {/* Tvary jsou v samotné hře za levelem 4; tady bez zámku, ať jdou
+            prohlédnout bez účtu. */}
+        <ShapePicker tool={tool} onPick={setTool} iconSize={20} />
         <input
           type="range"
           min={2}

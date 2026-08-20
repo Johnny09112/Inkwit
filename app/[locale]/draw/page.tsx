@@ -29,7 +29,8 @@ import {
   type Draft,
 } from "@/lib/game";
 import { RECENT_COLORS } from "@/lib/mock";
-import { looksRushed, type Stroke, type Tool } from "@/lib/strokes";
+import { looksRushed, type ShapeTool, type Stroke, type Tool } from "@/lib/strokes";
+import { ShapePicker } from "@/components/draw/ShapePicker";
 import { useHand } from "@/lib/prefs";
 import { Loader2 } from "lucide-react";
 
@@ -81,6 +82,7 @@ export default function DrawPage({
     base: Record<string, number>;
     paletteFullLevel: number;
     mixerLevel: number;
+    shapesLevel: number;
   } | null>(null);
 
   const nactiProfil = () =>
@@ -98,6 +100,7 @@ export default function DrawPage({
           base: r.base,
           paletteFullLevel: r.paletteFullLevel,
           mixerLevel: r.mixerLevel,
+          shapesLevel: r.shapesLevel,
         }),
       )
       .catch(() => {});
@@ -191,7 +194,19 @@ export default function DrawPage({
     <Badge tone="accent">{tDifficulty(String(draft?.difficulty ?? 1))}</Badge>
   );
 
-  const toolButtons = (iconSize: number) => (
+  const shapesLevel = economy?.shapesLevel ?? 4;
+  const shapePicker = (iconSize: number, side = false) => (
+    <ShapePicker
+      tool={tool}
+      onPick={(s: ShapeTool) => selectTool(s)}
+      locked={level < shapesLevel}
+      lockLevel={shapesLevel}
+      iconSize={iconSize}
+      side={side}
+    />
+  );
+
+  const toolButtons = (iconSize: number, side = false) => (
     <>
       <button
         type="button"
@@ -211,6 +226,7 @@ export default function DrawPage({
       >
         <Eraser size={iconSize} />
       </button>
+      {shapePicker(iconSize, side)}
       <button
         type="button"
         className="icon-btn"
@@ -389,7 +405,7 @@ export default function DrawPage({
           {closeButton(19, "", { color: "var(--text-secondary)", display: "inline-flex" })}
         </div>
         <div className={`draw-rail draw-rail-${hand}`}>
-          {toolButtons(22)}
+          {toolButtons(22, true)}
           <div className="draw-toolcard-divider" />
           <div className="draw-rail-swatches">{swatches(recent.slice(0, 6))}</div>
           {paletteButton}
@@ -503,6 +519,7 @@ export default function DrawPage({
               >
                 <Brush size={20} />
               </button>
+              {shapePicker(20)}
             </div>
           </div>
         )}

@@ -27,6 +27,11 @@
     "tools": {
       "brush": "Štětec",
       "eraser": "Guma",
+      "shapes": "Tvary",
+      "line": "Čára",
+      "rect": "Obdélník",
+      "ellipse": "Elipsa",
+      "shapesLocked": "Tvary se odemykají na levelu {level}",
       "undo": "Zpět",
       "clear": "Smazat vše",
       "preview": "Náhled bez nástrojů",

@@ -404,6 +404,8 @@ Kvóty free plánu: 500 MB DB na projekt, **5 GB egress**, 1 GB storage, 50 000 
 
 Sem píšeme, co se změnilo v plánu a proč. Nejnovější nahoře.
 
+- **2026-08-20** — žebříček levelů zkrácen na čtyři patra a level 4 dostal
+  obsah: **tvary** (čára, obdélník, elipsa). Viz blok J.
 - **2026-08-20** — slovník rozšířen na **300 pojmů** ve vyrovnaném poměru
   100/100/100 (důvod u B1). Kontrola slovníku dostala skutečné prahy tolerance
   a našla jedenáct dvojic, které si hra pletla; opraveno pojistkou v
@@ -453,3 +455,59 @@ stav, kresby se samy nevrátí. Rozhraní je jednojazyčné: mluví k majiteli.
 **Varování z roadmapy platí dál.** *„Denní ruční fronta projekt zabije dřív než
 nedostatek uživatelů."* Pro padesát testerů je fronta v pořádku; pro veřejné
 spuštění je podmínkou klasifikátor, ne tahle obrazovka.
+
+## Blok J — Kredity a levely
+
+**Účel:** důvod se vracet, který nesahá na férovost ani na měření fáze 0.
+
+- `[x] J1` **Kredity.** Základ podle obtížnosti při odeslání, bonus za první
+  uhodnutí, 1 za správný tip. Všechno v `game_config` (pravidlo 6). Ledger je
+  append-only. **Čísla nejsou kalibrovaná daty** — kalibrace přijde po pozvánkách.
+
+- `[x] J2` **Levely.** Level roste z **celkem vydělaných** kreditů, ne ze
+  zůstatku — jinak by utracení za kosmetiku vzalo odemčené funkce.
+  Prahy `level_thresholds` = `[0, 10, 25, 50]`.
+
+  | level | odemyká |
+  |---|---|
+  | 1 | kreslení, hádání, všechny obtížnosti, 8 barev |
+  | 2 | celá základní paleta (15 barev) |
+  | 3 | míchání vlastních barev |
+  | 4 | tvary — čára, obdélník, elipsa |
+
+  **Žebříček je krátký schválně.** Prahů bylo šest, ale odemčení dvě; levely
+  4–6 nedělaly nic a majitelovy účty na nich stály. Prázdný level cítí jako
+  první ten, kdo hraje nejvíc. Páté patro se přidá v konfiguraci, až bude čím —
+  bez nasazení.
+
+- `[x] J3` **Tvary jako nástroj** (level 4). Tvar je tah o dvou bodech s jinou
+  hodnotou v `tool`; datový model se nemění a pravidlo 2 platí dál.
+
+  **Kbelík se vědomě nedělá:** plošná výplň se jako vektorový tah zapsat nedá,
+  rozbila by přehrání, export GIFu i detekci čmáranic.
+
+  Zámek je **na serveru** (`submit_drawing` volá `private.require_level`),
+  ne jen v UI — klientu se nevěří nic. *Ověřeno:* čtyři testy DB (level 1
+  neprojde, level 4 projde, štětec zámek neomezuje, neznámý nástroj se odmítne)
+  a pět unit testů; tři tvary ověřené v prohlížeči vykreslením a odečtem pixelů.
+
+### Čtyři věci, které se levelem gatovat nesmí
+
+Každá padla z jiného důvodu a při další úvaze o levelech se vrátí jako pokušení:
+
+1. **Hádání** — vynucené kreslení zabije metriku 1 z `CLAUDE.md`.
+2. **Obtížnosti** — těžký pojem vydělá 4× víc, takže je to pay-to-win (pravidlo 3).
+3. **Vyžádání pojmu** — nese hlavní hypotézu fáze 0 (blok E).
+4. **Přehrání kresby** — běží pod ním A/B test kroku F4.
+
+**Levely se nedají koupit.** Prodává se kosmetika, ne postup.
+
+### Co zbývá
+
+- `[ ] J4` **Sink pro kredity.** Zůstatek jen roste — nákup míchání barev byl
+  zrušen a nahrazen levelem. Zůstatek a celkem vydělané se počítají odděleně
+  právě proto, aby se sink dal vrátit (palety, sady barev). Nespěchá: nic se
+  neztrácí a meta-vrstva se podle `CLAUDE.md` nemá stavět dřív, než je ověřeno,
+  že lidé dobrovolně kreslí.
+- `[ ] J5` **Kalibrace prahů.** `[0, 10, 25, 50]` je odhad. Po pozvánkách se
+  uvidí, jak rychle lidé postupují.
