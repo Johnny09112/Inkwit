@@ -124,13 +124,13 @@ export const PROFILE = {
  * ruka si pamatuje, kde co je.
  */
 export const BASE_COLORS = [
-  "#2B261F",
-  "#B5462F",
-  "#E9B44C",
-  "#52633A",
-  "#3C6E8F",
-  "#8A5A8F",
-  "#C9756B",
-  "#6D6A64",
+  "#2B261F", // černá — inkoustová, ne čistá; sedí k ovesnému plátnu
+  "#C63B22", // červená
+  "#E07A28", // oranžová
+  "#E9B44C", // žlutá
+  "#4B7F3A", // zelená
+  "#2F6C9E", // modrá
+  "#7B4B9C", // fialová
+  "#8A5A33", // hnědá
 ];
 

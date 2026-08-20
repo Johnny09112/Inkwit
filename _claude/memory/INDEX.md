@@ -32,6 +32,7 @@
 
 ## Patterns
 - [[jak-tvorit-slovni-zasobu]] — Recept na tvorbu konceptů — kalibrace obtížnosti, co patří a nepatří do přijímaných tvarů, kritéria jednojazyčnosti, povinná kontrola validátorem · active · 2026-08-20
+- [[lista-nastroju-ma-pevny-rozpocet]] — Mobilní lišta nástrojů má pevný rozpočet šířky; přidání čtvrtého tlačítka rozbilo posuvník, protože input[type=range] se jako flex položka nesmrskne pod svou minimální šířku · active · 2026-08-20
 - [[ctvercove-tlacitko-ve-flex-radku]] — aspect-ratio nevyrobí čtvercové tlačítko vedle roztaženého ve flex řádku — šířka se vyřeší dřív, než align-items stretch roztáhne výšku · active · 2026-08-19
 - [[hvezdicky-a-graficke-hodnoty]] — Hvězdičky se kreslí včetně prázdných a jejich obrys musí být dost tmavý; medová výplň má proti ovesnému pozadí jen 1,61 : 1, takže tvar nese obrys, ne barva · active · 2026-08-19
 - [[ios-dlouhy-stisk-vybira-text]] — Dlouhý stisk v iOS Safari označí text a otevře nabídku Kopírovat i nad plátnem a tlačítky; řeší to user-select a -webkit-touch-callout, ne PWA · active · 2026-08-19

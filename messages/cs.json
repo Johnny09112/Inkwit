@@ -282,5 +282,12 @@
     "cancel": "Zrušit",
     "done": "Díky, hlášení odesláno. Majitel se na to podívá.",
     "failed": "Hlášení se nepodařilo odeslat. Zkus to znovu."
+  },
+  "locked": {
+    "title": "Zatím zamčeno",
+    "lede": "Odemyká se na levelu {level}.",
+    "how": "Level roste z vydělaných kreditů — kresli a hádej. Koupit se nedá.",
+    "progress": "Kde na to mám",
+    "ok": "Rozumím"
   }
 }

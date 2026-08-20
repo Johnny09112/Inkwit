@@ -183,6 +183,23 @@ a {
   color: var(--text-primary);
 }
 
+/* Obtížnost se pozná barvou dřív než čtením. Do 2026-08-20 měly všechny tři
+   stejný medový štítek. */
+.badge-bronze {
+  background: var(--metal-bronze);
+  color: var(--text-primary);
+}
+
+.badge-silver {
+  background: var(--metal-silver);
+  color: var(--text-primary);
+}
+
+.badge-gold {
+  background: var(--metal-gold);
+  color: var(--text-primary);
+}
+
 .badge-neutral {
   background: var(--surface-sunken);
   color: var(--text-secondary);
@@ -472,11 +489,25 @@ a {
   gap: 8px;
 }
 
+/* Barva se NIKDY neschovává. Do 2026-08-20 měl řádek `overflow: hidden`
+   a osmá barva na šířce 375 px končila 41 px za ořezem — nedalo se na ni
+   klepnout vůbec. Na širokém telefonu se to nepoznalo.
+
+   Dlaždice jsou proto na mobilu menší a řádek smí v krajním případě zalomit.
+   Zalomení je horší než jeden řádek, ale nedostupná barva je horší než obojí. */
 .swatch-row-colors {
   flex: 1;
   display: flex;
-  gap: 8px;
-  overflow: hidden;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+@media (max-width: 420px) {
+  .swatch-row-colors .swatch {
+    width: 26px;
+    height: 26px;
+  }
 }
 
 .swatch {
@@ -546,11 +577,24 @@ a {
   border: 1px solid var(--border-subtle);
 }
 
-.size-dot-min {
-  width: 10px;
-  height: 10px;
+/* Jedna tečka místo dvou, a ukazuje SKUTEČNOU tloušťku stopy, ne krajní meze.
+   Dvě značky min/max braly 44 px z řádku, ve kterém po přidání tvarů zbylo
+   na posuvník 61 px. Živý náhled je navíc užitečnější než hraniční značky.
+
+   Box má pevných 28 px (= největší stopa), aby se šířka posuvníku neměnila
+   při tažení — jinak by pod prstem poskakoval. */
+.size-preview-dot {
   border-radius: var(--radius-pill);
   background: var(--ink-900);
+  flex: none;
+}
+
+/* Kraje rozsahu — v panelu velikosti, ne v liště. */
+.size-dot-min {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--text-secondary);
   flex: none;
 }
 
@@ -558,12 +602,16 @@ a {
   width: 20px;
   height: 20px;
   border-radius: var(--radius-pill);
-  background: var(--ink-900);
+  background: var(--text-secondary);
   flex: none;
 }
 
 .size-slider {
   flex: 1;
+  /* Bez tohohle se posuvník nesmrskne pod svou vlastní minimální šířku
+     (129 px měřeno) — je to flex položka a `min-width` má výchozí `auto`.
+     Řádek pak přeteče a značka velikosti zaleze pod tlačítko štětce. */
+  min-width: 0;
   appearance: none;
   -webkit-appearance: none;
   height: 4px;
@@ -2371,13 +2419,15 @@ textarea,
    Nabídka je `position: absolute` v obalu, ne v plátně — jinak by ji ořízl
    `overflow` kreslicí plochy. */
 
-.shape-picker {
+.shape-picker,
+.tool-popover {
   position: relative;
   display: inline-flex;
   flex: none;
 }
 
-.shape-menu {
+.shape-menu,
+.tool-menu {
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
@@ -2390,6 +2440,15 @@ textarea,
   border: 1px solid var(--border-hairline);
   box-shadow: var(--shadow-floating);
   z-index: 20;
+}
+
+/* Panel se středí na tlačítko, které sedí druhé zleva. Při 260 px vyjížděl
+   na šířce 320 px dvanáct pixelů za levý okraj (změřeno) — 200 px se vejde
+   i tam a na posuvník pořád zbyde přes 140 px. */
+.size-menu {
+  width: min(200px, calc(100vw - 32px));
+  align-items: center;
+  gap: 10px;
 }
 
 .shape-menu-side {
@@ -2415,7 +2474,8 @@ textarea,
 }
 
 /* Když nad tlačítkem není místo (lišta nahoře), nabídka se překlopí pod něj. */
-.shape-menu-down {
+.shape-menu-down,
+.tool-menu-down {
   top: calc(100% + 8px);
   bottom: auto;
 }
@@ -2529,4 +2589,60 @@ textarea,
     animation: none;
     background: none;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Vysvětlení zamčené funkce
+   ---------------------------------------------------------------------------
+   Zámek bez vysvětlení je horší než skrytá funkce: vidíš ji, nemůžeš ji použít
+   a nevíš proč. Do 2026-08-20 bylo zamčené tlačítko jen `disabled`. */
+
+.locked-modal {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.locked-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-accent);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.locked-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: var(--weight-display);
+  font-size: var(--text-card-title);
+  margin: 0;
+}
+
+.locked-feature {
+  margin: 0;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.locked-lede {
+  margin: 0;
+  font-weight: var(--weight-body-strong);
+}
+
+.locked-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 6px;
 }

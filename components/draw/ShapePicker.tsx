@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Circle, Lock, Minus, Shapes, Square } from "lucide-react";
+import { LockedDialog } from "@/components/LockedDialog";
+import { useDismissOnOutside, useFlipWhenNoRoom } from "@/lib/popover";
 import { SHAPE_TOOLS, type ShapeTool, type Tool } from "@/lib/strokes";
 
 /**
@@ -51,43 +53,37 @@ export function ShapePicker({
   const menu = useRef<HTMLDivElement>(null);
   const [posledni, setPosledni] = useState<ShapeTool>("line");
   const [dolu, setDolu] = useState(false);
+  const [info, setInfo] = useState(false);
 
   const aktivni = (SHAPE_TOOLS as readonly string[]).includes(tool);
   const Ikona = aktivni ? IKONY[tool as ShapeTool] : Shapes;
 
-  /**
-   * Nabídka se otevírá nad tlačítkem, protože lišta je skoro vždycky dole.
-   * Když nad ním místo není, překlopí se pod. Bez toho by nabídka u lišty
-   * nahoře vyjela mimo obrazovku a nedalo by se na ni dosáhnout.
-   */
-  useLayoutEffect(() => {
-    if (!open) { setDolu(false); return; }
-    const r = menu.current?.getBoundingClientRect();
-    if (r && r.top < 0) setDolu(true);
-  }, [open]);
-
-  // Klepnutí mimo nabídku ji zavře. Bez toho zůstane viset přes plátno
-  // a další tah do ní spadne.
-  useEffect(() => {
-    if (!open) return;
-    const zavri = (e: PointerEvent) => {
-      if (!wrap.current?.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("pointerdown", zavri);
-    return () => document.removeEventListener("pointerdown", zavri);
-  }, [open]);
+  // Chování panelu je společné s výběrem velikosti — viz `lib/popover.ts`.
+  useFlipWhenNoRoom(open, menu, setDolu);
+  useDismissOnOutside(open, wrap, () => setOpen(false));
 
   if (locked) {
+    // Zamčené tlačítko NENÍ `disabled` — jinak se na něj nedá klepnout
+    // a nikde se člověk nedozví, co ho odemkne.
     return (
-      <button
-        type="button"
-        className="icon-btn is-locked"
-        aria-label={t("tools.shapesLocked", { level: lockLevel })}
-        title={t("tools.shapesLocked", { level: lockLevel })}
-        disabled
-      >
-        <Lock size={iconSize} />
-      </button>
+      <>
+        <button
+          type="button"
+          className="icon-btn is-locked"
+          aria-label={t("tools.shapesLocked", { level: lockLevel })}
+          title={t("tools.shapesLocked", { level: lockLevel })}
+          onClick={() => setInfo(true)}
+        >
+          <Lock size={iconSize} />
+        </button>
+        {info && (
+          <LockedDialog
+            feature={t("tools.shapes")}
+            level={lockLevel}
+            onClose={() => setInfo(false)}
+          />
+        )}
+      </>
     );
   }
 

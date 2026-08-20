@@ -50,7 +50,18 @@ export function Card({ elevated = true, className, children, ...rest }: CardProp
   );
 }
 
-type BadgeTone = "accent" | "neutral" | "success" | "danger";
+type BadgeTone = "accent" | "neutral" | "success" | "danger" | "bronze" | "silver" | "gold";
+
+/**
+ * Obtížnost jako kov: snadné bronz, střední stříbro, těžké zlato.
+ * Do 2026-08-20 měly všechny tři stejný medový štítek, takže obtížnost šlo
+ * poznat jen přečtením.
+ */
+export function difficultyTone(difficulty: number): BadgeTone {
+  if (difficulty >= 3) return "gold";
+  if (difficulty === 2) return "silver";
+  return "bronze";
+}
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   tone?: BadgeTone;

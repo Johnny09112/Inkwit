@@ -4,7 +4,7 @@ import { Check, Coins, Hand, Lightbulb, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/shell/AppShell";
-import { Badge, Button } from "@/components/ui";
+import { Badge, Button, difficultyTone } from "@/components/ui";
 import { useRouter } from "@/i18n/navigation";
 import { fetchOffer, fetchRewards, startDrawing, type ConceptOffer } from "@/lib/game";
 
@@ -97,7 +97,9 @@ export default function PickPage() {
               {/* Stejný zlatý štítek jako nad plátnem — obtížnost má vypadat
                   na obou obrazovkách stejně, ať ji člověk pozná bez čtení. */}
               <span className="pick-card-tags">
-                <Badge tone="accent">{tDifficulty(String(concept.difficulty))}</Badge>
+                <Badge tone={difficultyTone(concept.difficulty)}>
+                  {tDifficulty(String(concept.difficulty))}
+                </Badge>
                 {/* Odměna graficky, ne větou. Věta „kredit +3, po uhodnutí +5"
                     se štítkem a šipkou nevešla na jeden řádek od šířky 360 px
                     níž (změřeno). Čtečce se pošle celá — mince a žárovka samy

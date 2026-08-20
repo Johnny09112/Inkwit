@@ -16,7 +16,7 @@ import {
   CircleUserRound,
 } from "lucide-react";
 import { Link, useRouter } from "@/i18n/navigation";
-import { Badge, Button } from "@/components/ui";
+import { Badge, Button, difficultyTone } from "@/components/ui";
 import { DrawingCanvas } from "@/components/draw/DrawingCanvas";
 import { ColorSheet } from "@/components/draw/ColorSheet";
 import { SubmitFlow } from "@/components/draw/SubmitFlow";
@@ -31,6 +31,7 @@ import {
 import { BASE_COLORS } from "@/lib/mock";
 import { looksRushed, type ShapeTool, type Stroke, type Tool } from "@/lib/strokes";
 import { ShapePicker } from "@/components/draw/ShapePicker";
+import { SizePicker } from "@/components/draw/SizePicker";
 import { useHand } from "@/lib/prefs";
 import { Loader2 } from "lucide-react";
 
@@ -203,7 +204,9 @@ export default function DrawPage({
   };
 
   const difficultyBadge = (
-    <Badge tone="accent">{tDifficulty(String(draft?.difficulty ?? 1))}</Badge>
+    <Badge tone={difficultyTone(draft?.difficulty ?? 1)}>
+      {tDifficulty(String(draft?.difficulty ?? 1))}
+    </Badge>
   );
 
   const shapesLevel = economy?.shapesLevel ?? 4;
@@ -518,11 +521,15 @@ export default function DrawPage({
               >
                 <Eraser size={20} />
               </button>
-              <div className="size-row">
-                <span className="size-dot-min" />
-                {sizeSlider}
-                <span className="size-dot-max" />
-              </div>
+              {/* Velikost je v panelu, ne v řádku. Čtyři tlačítka a posuvník
+                  se do mobilního řádku nevejdou — na 360 px zbylo na posuvník
+                  52 px a na 320 px dvanáct. Viz SizePicker. */}
+              <SizePicker
+                size={size}
+                max={28}
+                previewColor={tool === "eraser" ? "var(--border-strong)" : color}
+                slider={sizeSlider}
+              />
               <button
                 type="button"
                 className={`icon-btn${tool === "brush" ? " is-active" : ""}`}

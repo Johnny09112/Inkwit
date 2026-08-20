@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ColorSheet } from "@/components/draw/ColorSheet";
 import { DrawingCanvas } from "@/components/draw/DrawingCanvas";
 import { ShapePicker } from "@/components/draw/ShapePicker";
+import { SizePicker } from "@/components/draw/SizePicker";
 import { BASE_COLORS } from "@/lib/mock";
 import type { Stroke, Tool } from "@/lib/strokes";
 
@@ -49,13 +50,21 @@ export default function PlaygroundPage() {
         {/* Tvary jsou v samotné hře za levelem 4; tady bez zámku, ať jdou
             prohlédnout bez účtu. */}
         <ShapePicker tool={tool} onPick={setTool} iconSize={20} />
-        <input
-          type="range"
-          min={2}
+        <SizePicker
+          size={size}
           max={28}
-          value={size}
-          aria-label="velikost"
-          onChange={(e) => setSize(Number(e.target.value))}
+          previewColor={tool === "eraser" ? "var(--border-strong)" : color}
+          slider={
+            <input
+              type="range"
+              className="size-slider"
+              min={2}
+              max={28}
+              value={size}
+              aria-label="velikost"
+              onChange={(e) => setSize(Number(e.target.value))}
+            />
+          }
         />
       </div>
 

@@ -21,6 +21,12 @@
   --butter-500: #e9b44c; /* accent */
   --butter-100: #fbefd4; /* accent tint surface */
 
+  /* Kovy k obtížnostem: snadné bronz, střední stříbro, těžké zlato.
+     Světlé odstíny schválně — text v nich je inkoustový a musí být čitelný. */
+  --metal-bronze: #d9a066;
+  --metal-silver: #d5d2cc;
+  --metal-gold: #e9b44c;
+
   --brick-600: #b5462f; /* error / destructive */
   --brick-100: #f6e0d9; /* error tint surface */
 

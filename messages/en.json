@@ -282,5 +282,12 @@
     "cancel": "Cancel",
     "done": "Thanks, report sent. The owner will take a look.",
     "failed": "Could not send the report. Try again."
+  },
+  "locked": {
+    "title": "Locked for now",
+    "lede": "Unlocks at level {level}.",
+    "how": "Your level grows from the credits you earn — draw and guess. It can't be bought.",
+    "progress": "See my progress",
+    "ok": "Got it"
   }
 }
