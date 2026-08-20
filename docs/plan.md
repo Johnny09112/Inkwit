@@ -516,6 +516,21 @@ Každá padla z jiného důvodu a při další úvaze o levelech se vrátí jako
   a řekne, na kterém levelu se odemyká a kde je vidět postup. Do té doby to
   bylo `disabled` tlačítko bez vysvětlení.
 
+- `[x] J8` **Oslava postupu na level.** Ztmavené a rozostřené pozadí, medaile
+  naskočí ze zmenšeniny s přestřelením, prší girlandy z barev hry a zespodu
+  vyjede výčet toho, co se otevřelo. Zavírá se klepnutím, **ne časem** — kdo
+  čte pomalu, nesmí o výčet přijít. Při `prefers-reduced-motion` jen prolnutí.
+
+  **Nespouští se po akci, ale při každém načtení profilu, které ukáže vyšší
+  level, než jaký člověk naposledy viděl** (`localStorage`). Důvod: bonus za
+  uhodnutí připíše cizí tip ve chvíli, kdy je autor jinde — a to je ten
+  nejhezčí posun, který by se navázáním na akci nikdy neukázal. Skok o víc
+  pater vyjmenuje všechna.
+
+  Seznam odemčení je sdílený s roadmapou (`lib/unlocks.ts`) — dva seznamy by
+  se rozešly a hráč by dostal gratulaci k něčemu, co v roadmapě nestojí.
+  *Ověřeno:* osm unit testů na to, kdy se oslava ukázat MÁ a kdy NESMÍ.
+
 ### Co zbývá
 
 - `[ ] J4` **Sink pro kredity.** Zůstatek jen roste — nákup míchání barev byl

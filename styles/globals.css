@@ -2793,3 +2793,181 @@ textarea,
   color: var(--text-secondary);
   font-size: var(--text-label-sm);
 }
+
+/* ---------------------------------------------------------------------------
+   Oslava postupu na level
+   ---------------------------------------------------------------------------
+   Sled: pozadí se ztmaví a rozostří (180 ms) → medaile naskočí ze zmenšeniny
+   s lehkým přestřelením (420 ms) → prší girlandy (900–1300 ms) → zespodu
+   vyjede výčet toho, co se otevřelo (240 ms).
+
+   Zavírá se klepnutím, ne časem. Kdo se dívá na to, co dostal, nesmí o to
+   přijít jen proto, že četl pomalu. */
+
+.levelup {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(43, 38, 31, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: levelup-backdrop 180ms ease-out both;
+  overflow: hidden;
+}
+
+@keyframes levelup-backdrop {
+  from { opacity: 0; }
+}
+
+.levelup-card {
+  position: relative;
+  z-index: 1;
+  width: min(360px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 26px 22px 22px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-card);
+  border: 1px solid var(--border-hairline);
+  box-shadow: var(--shadow-floating);
+  text-align: center;
+  animation: levelup-card 240ms ease-out 320ms both;
+  /* Kdo skočí o tři patra najednou, dostane delší výčet. Bez stropu by karta
+     na ležatém telefonu vyjela ven — stejná past, na kterou narazil panel
+     barev a pak `.modal`. */
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+}
+
+@keyframes levelup-card {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
+/* Medaile přestřelí o 6 % a vrátí se — bez toho vypadá naskočení mrtvě. */
+.levelup-medal {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-accent);
+  border: 3px solid var(--accent);
+  animation: levelup-medal 420ms cubic-bezier(0.34, 1.56, 0.64, 1) 80ms both;
+}
+
+@keyframes levelup-medal {
+  from { opacity: 0; transform: scale(0.6); }
+}
+
+.levelup-medal-n {
+  font-family: var(--font-display), sans-serif;
+  font-weight: var(--weight-display-strong);
+  font-size: var(--text-hero);
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.levelup-medal-spark {
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  color: var(--action-primary);
+}
+
+.levelup-kicker {
+  margin: 0;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.levelup-title {
+  margin: 0;
+  font-family: var(--font-display), sans-serif;
+  font-weight: var(--weight-display-strong);
+  font-size: var(--text-title);
+}
+
+.levelup-lede {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.levelup-unlocks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.levelup-unlocks li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+}
+
+.levelup-unlocks svg {
+  flex: none;
+  color: var(--action-primary);
+}
+
+/* ---------- Girlandy ---------- */
+
+.levelup-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.levelup-flake {
+  position: absolute;
+  top: -18px;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  animation-name: levelup-fall;
+  animation-timing-function: ease-in;
+  animation-fill-mode: both;
+}
+
+/* Barvy z palety hry, ne duhové konfety — má to vypadat jako Inkwit. */
+.levelup-flake.tone-a { background: var(--accent); }
+.levelup-flake.tone-b { background: var(--action-primary); }
+.levelup-flake.tone-c { background: var(--metal-bronze); }
+.levelup-flake.tone-d { background: var(--oat-100); }
+
+@keyframes levelup-fall {
+  from { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg); }
+  to { opacity: 0; transform: translate3d(var(--drift, 0), 78vh, 0) rotate(420deg); }
+}
+
+/* Kdo si vypnul pohyb, dostane jen prolnutí — bez padání a bez přestřelení.
+   Stejné pravidlo jako u obrazovky po uhodnutí a u kostry načítání. */
+@media (prefers-reduced-motion: reduce) {
+  .levelup-confetti {
+    display: none;
+  }
+
+  .levelup-card,
+  .levelup-medal {
+    animation: levelup-backdrop 200ms ease-out both;
+  }
+}

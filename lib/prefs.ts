@@ -116,3 +116,45 @@ export function usePalette(): [string[], (colors: readonly string[]) => void] {
 
   return [palette, writePalette];
 }
+
+/* ---------------------------------------------------------------------------
+   Poslední viděný level
+   ---------------------------------------------------------------------------
+   Level roste na serveru, ale posun se hráč často dozví až později: bonus za
+   uhodnutí připíše cizí tip ve chvíli, kdy je člověk jinde nebo vůbec v
+   aplikaci není. Proto se nesleduje „právě proběhla akce", ale rozdíl proti
+   tomu, co člověk naposledy viděl — gratulace ho pak zastihne při nejbližším
+   otevření.
+
+   Je to vlastnost zařízení, ne účtu: na druhém telefonu se oslava ukáže znovu
+   a to je v pořádku. Sloupec v databázi kvůli tomu nestojí za migraci. */
+
+const LEVEL_SEEN_KEY = "inkwit.levelSeen";
+
+export interface LevelUp {
+  from: number;
+  to: number;
+}
+
+/**
+ * Zapíše aktuální level a vrátí posun, jestli k němu došlo.
+ *
+ * **Poprvé nevrací nic** — jinak by nový účet dostal gratulaci k levelu 1,
+ * který nikdy nepřekročil.
+ */
+export function takeLevelUp(level: number): LevelUp | null {
+  if (typeof window === "undefined" || !Number.isFinite(level)) return null;
+
+  const raw = window.localStorage.getItem(LEVEL_SEEN_KEY);
+  const seen = raw === null ? null : Number.parseInt(raw, 10);
+
+  if (seen === null || !Number.isFinite(seen)) {
+    window.localStorage.setItem(LEVEL_SEEN_KEY, String(level));
+    return null;
+  }
+
+  if (level <= seen) return null;
+
+  window.localStorage.setItem(LEVEL_SEEN_KEY, String(level));
+  return { from: seen, to: level };
+}

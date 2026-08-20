@@ -304,5 +304,18 @@
       "mixer": "Mixing your own colours",
       "shapes": "Shapes — line, rectangle, ellipse"
     }
+  },
+  "levelUp": {
+    "kicker": "You levelled up!",
+    "title": "Level {n}",
+    "opened": "You just unlocked:",
+    "nothingYet": "New tools are still on their way here.",
+    "ok": "Nice",
+    "unlocks": {
+      "core": "Drawing, guessing and every difficulty",
+      "palette": "The full colour palette",
+      "mixer": "Mixing your own colours",
+      "shapes": "Shapes — line, rectangle, ellipse"
+    }
   }
 }

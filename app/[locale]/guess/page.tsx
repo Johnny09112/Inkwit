@@ -13,6 +13,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { AppShell } from "@/components/shell/AppShell";
+import { LevelUpGate } from "@/components/LevelUp";
 import { ReportDialog } from "@/components/ReportDialog";
 import { Stars } from "@/components/Stars";
 import { StrokePlayback } from "@/components/StrokePlayback";
@@ -73,9 +74,18 @@ export default function GuessPage() {
   const [askedFor, setAskedFor] = useState<string[]>([]);
   const [askLimit, setAskLimit] = useState(false);
 
+  /**
+   * Level se drží kvůli oslavě postupu. Načítá se s profilem, který se tu
+   * stahuje stejně kvůli A/B skupině přehrání — request navíc to není.
+   */
+  const [level, setLevel] = useState<number | null>(null);
+
   useEffect(() => {
     fetchProfile()
-      .then((p) => setShowPlayback(p?.abPlayback ?? true))
+      .then((p) => {
+        setShowPlayback(p?.abPlayback ?? true);
+        setLevel(p?.level ?? null);
+      })
       .catch(() => setShowPlayback(true));
   }, []);
 
@@ -114,6 +124,10 @@ export default function GuessPage() {
       setResult(r);
       if (r.correct) {
         setPhase("solved");
+        // Za uhodnutí se připisuje kredit, takže tady se může přehoupnout
+        // level. Profil se stahuje jen po ÚSPĚŠNÉM tipu — u nepovedených
+        // by to byl request navíc za nic.
+        fetchProfile().then((p) => setLevel(p?.level ?? null)).catch(() => {});
         // Hláška z předchozího špatného tipu by po uhodnutí zůstala viset.
         setFeedback(null);
         setWrong(false);
@@ -139,6 +153,7 @@ export default function GuessPage() {
   if (error) {
     return (
       <AppShell title={t("title")}>
+      <LevelUpGate level={level} />
         <p className="auth-note auth-note-error">{error}</p>
       </AppShell>
     );

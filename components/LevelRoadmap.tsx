@@ -2,6 +2,7 @@
 
 import { Check, Lock, Palette, Pencil, Pipette, Shapes } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { allUnlocks, type UnlockKey } from "@/lib/unlocks";
 
 /**
  * Cesta levely — co je otevřené, co přijde a za kolik.
@@ -19,9 +20,12 @@ import { useTranslations } from "next-intl";
  * a znamenaly by tu něco jiného.
  */
 
-const IKONY = { core: Pencil, palette: Palette, mixer: Pipette, shapes: Shapes } as const;
-
-type UnlockKey = keyof typeof IKONY;
+const IKONY: Record<UnlockKey, typeof Pencil> = {
+  core: Pencil,
+  palette: Palette,
+  mixer: Pipette,
+  shapes: Shapes,
+};
 
 interface LevelRoadmapProps {
   /** Aktuální level hráče. */
@@ -47,14 +51,9 @@ export function LevelRoadmap({
 
   if (thresholds.length === 0) return null;
 
-  // Level 1 nese jádro hry. Zbytek se mapuje z konfigurace, takže se pořadí
-  // i patra řídí serverem.
-  const odemceni: { level: number; key: UnlockKey }[] = [
-    { level: 1, key: "core" },
-    { level: paletteFullLevel, key: "palette" },
-    { level: mixerLevel, key: "mixer" },
-    { level: shapesLevel, key: "shapes" },
-  ];
+  // Seznam je sdílený s oslavou postupu — dva seznamy by se rozešly a hráč
+  // by dostal gratulaci k něčemu, co v roadmapě nestojí.
+  const odemceni = allUnlocks({ paletteFullLevel, mixerLevel, shapesLevel });
 
   return (
     <section className="roadmap">

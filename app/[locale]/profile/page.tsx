@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { SignOutRow } from "@/components/auth/SignOutRow";
 import { LevelRoadmap } from "@/components/LevelRoadmap";
+import { LevelUpGate } from "@/components/LevelUp";
 import { AppShell } from "@/components/shell/AppShell";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import {
@@ -127,6 +128,8 @@ export default function ProfilePage() {
           </span>
         </div>
       )}
+
+      <LevelUpGate level={profile?.level} />
 
       {profile && economy && (
         <LevelRoadmap

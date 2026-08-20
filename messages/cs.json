@@ -304,5 +304,18 @@
       "mixer": "Míchání vlastních barev",
       "shapes": "Tvary — čára, obdélník, elipsa"
     }
+  },
+  "levelUp": {
+    "kicker": "Posunul ses!",
+    "title": "Level {n}",
+    "opened": "Právě se ti otevřelo:",
+    "nothingYet": "Nové nástroje sem teprve přibudou.",
+    "ok": "Super",
+    "unlocks": {
+      "core": "Kreslení, hádání a všechny obtížnosti",
+      "palette": "Celá paleta barev",
+      "mixer": "Míchání vlastních barev",
+      "shapes": "Tvary — čára, obdélník, elipsa"
+    }
   }
 }
