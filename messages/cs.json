@@ -12,7 +12,8 @@
   "common": {
     "supply": "Zásoba {n}",
     "close": "Zavřít",
-    "credit": "kredit +{n}, po uhodnutí +{bonus}"
+    "credit": "kredit +{n}, po uhodnutí +{bonus}",
+    "loading": "Načítám…"
   },
   "difficulty": {
     "1": "Snadné · ★",

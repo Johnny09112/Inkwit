@@ -12,7 +12,8 @@
   "common": {
     "supply": "Supply {n}",
     "close": "Close",
-    "credit": "credit +{n}, +{bonus} when solved"
+    "credit": "credit +{n}, +{bonus} when solved",
+    "loading": "Loading…"
   },
   "difficulty": {
     "1": "Easy · ★",
