@@ -4,25 +4,27 @@ description: Živý stav projektu inkwit — fáze, milníky, aktuální focus
 type: context
 status: active
 created: 2026-08-18
-updated: 2026-08-19
+updated: 2026-08-20
 ---
 
 # inkwit — živý kontext
 
 > Statické věci (stack, konvence, zákony) jsou v projektovém CLAUDE.md. Tady jen DYNAMICKÉ — co se mění během vývoje. Přepisuj v místě, neapenduj.
 
-## Aktuální stav (2026-08-19)
+## Aktuální stav (2026-08-20)
 
 **Fáze 0 je nasazená a hratelná od začátku do konce.**
 
 - **Živá adresa:** https://inkwit.vercel.app (Vercel, staví se z GitHubu)
 - **Databáze:** Supabase `Inkwit`, ref `iticpkeqirjfwkelhrvl`, region `eu-central-1`, **free plán**
 - **Repo:** https://github.com/Johnny09112/Inkwit — **veřejné**, 32 commitů
-- **Testy:** `npm run test:db` — 136 kontrol, běží na PGlite, nepotřebuje Docker ani síť
-- **Slovník:** 120 konceptů, 240 zadání a sad odpovědí v databázi
+- **Testy:** `npm run test:db` — **202 kontrol** na PGlite (bez Dockeru a sítě)
+  + `npm run test:unit` — **31 unit testů**
+- **Slovník:** **300 konceptů** (100 / 100 / 100), 600 zadání a sad odpovědí
 
 **Hotové bloky:** 0 (UI), A (základ DB), B (slovník), C (kreslení), D (hádání),
-E (vyžádání a upozornění), F (provoz a měření). **G (nasazení) rozpracované.**
+E (vyžádání a upozornění), F (provoz a měření), H (správa), I (kredity),
+J (levely a tvary). **G (nasazení) rozpracované — zbývá SMTP.**
 
 Celý tok ověřený naostro na produkci: registrace pozvánkou → nabídka pojmů →
 kreslení → uložení → hádání → hvězdičky → upozornění autorovi.
@@ -49,15 +51,28 @@ select * from private.metrics_effort;   -- doba a tahy → kalibrace detekce čm
 select * from private.metrics_ab_playback;
 ```
 
-Pohledy jsou jen pro `service_role`, čtou se ze Supabase studia. Administrátorské
-rozhraní se vědomě nestavělo.
+Pohledy jsou jen pro `service_role`. Od bloku H je čte i `/admin`, včetně
+exportu do CSV — do studia se kvůli nim chodit nemusí.
 
 ## Kredity
 
 Od 2026-08-20 se kredity opravdu ukládají (do té doby byl ledger prázdný).
 Základ podle obtížnosti při odeslání, bonus za první uhodnutí, 1 za tip —
-všechno v `game_config`. Utrácí se za odemčení míchání barev (25).
+všechno v `game_config`. **Utrácet se zatím nedá za nic** — nákup míchání barev
+byl zrušen a nahrazen levelem 3, takže zůstatek jen roste. Zůstatek a celkem
+vydělané se počítají odděleně právě proto, aby se sink dal vrátit.
 **Čísla nejsou kalibrovaná daty**, viz `decisions/kredity-a-odmeny.md`.
+
+## Slovník
+
+Od 2026-08-20 je v databázi **300 pojmů ve vyrovnaném poměru 100 / 100 / 100**.
+Nabídka bere jeden pojem od každé obtížnosti, takže se buckety čerpají stejně
+rychle — poměr nakloněný ke snadným si vyrábí alarm na těžkých.
+Viz `decisions/slovnik-vyrovnany-pomer-obtiznosti.md`.
+
+**Tolerance překlepů dostala pojistku:** tip, který je přesnou odpovědí jiného
+pojmu, se neuzná. Do té doby `sleep` uhodlo ovci a `house` myš — jedenáct
+takových dvojic bylo v produkci. Viz `bugs/tolerance-preklepu-uznavala-cizi-pojem.md`.
 
 ## Levely
 
@@ -65,6 +80,11 @@ Od 2026-08-20 má hra levely (prahy v `game_config`, počítají se z celkem
 vydělaných kreditů). **Gatují jen kosmetiku** — jádro hry, vyžádání pojmu
 i přehrání zůstávají od začátku, každé z jiného důvodu.
 Viz `decisions/levely-bez-gati-na-jadro.md`.
+
+**Žebříček má čtyři patra** (`[0, 10, 25, 50]`), ne šest. Na levelu 4 se
+odemykají **tvary** (čára, obdélník, elipsa) — tah o dvou bodech, takže datový
+model zůstává vektorový. **Kbelík se dělat nesmí**, porušuje pravidlo 2.
+Zámek vynucuje `submit_drawing`, ne jen UI.
 
 ## Správa
 
@@ -88,7 +108,6 @@ v SQL**, oba majitelovy účty ho mají. Viz `decisions/spravcovske-rozhrani.md`
 
 ### Známé nedodělky
 
-- **Nahlášené kresby** se řeší ručně ze studia, obrazovka pro to není.
 - **Dva testovací drafty v databázi** — `0e017896-…` (2026-08-19 16:46) a starší
   `84d0f630-…`. V knihovně už nevadí (rozepsané se neukazují), ale v
   `metrics_funnel` se počítají jako drop-off „začal kreslit, neodeslal".

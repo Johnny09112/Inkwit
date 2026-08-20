@@ -4,8 +4,8 @@
 > Plný katalog on-demand záznamů. Always-load vrstvu viz auto-memory/MEMORY.md.
 
 ## Context
-- [[odkud-pokracovat]] — Předávka po vyčerpání kontextu 2026-08-20 — kde přesně pokračovat: slovní zásoba a dopracování systému levelů · active · 2026-08-20
-- [[project-context]] — Živý stav projektu inkwit — fáze, milníky, aktuální focus · active · 2026-08-19
+- [[odkud-pokracovat]] — Kde pokračovat po 2026-08-20 — slova i levely jsou hotové, zbývá vlastní SMTP a rozeslání pozvánek · active · 2026-08-20
+- [[project-context]] — Živý stav projektu inkwit — fáze, milníky, aktuální focus · active · 2026-08-20
 
 ## Decisions
 - [[kredity-a-odmeny]] — Kredity se do 2026-08-20 nikam neukládaly a aplikace slibovala odměnu, která nikdy nepřišla; nový balanc je základ podle obtížnosti plus bonus za první uhodnutí, utrácí se za odemčení míchání barev · active · 2026-08-20
