@@ -98,13 +98,21 @@ sahat na zakládání účtů, což je nejcitlivější místo schématu.
 **Účel:** bez přijímaných tvarů je hra v češtině nehratelná. Není to
 programování, je to kurátorská práce — a je jí víc, než se zdá.
 
-- `[x] B1` **Sada konceptů — odsouhlaseno a nasazeno** (120 konceptů v databázi).
-  120 pojmů v `supabase/seed/concepts.json`: 58 snadných, 40 středních, 22 těžkých,
-  v šesti kategoriích. Jen jednojazyčné: `zámek`, `trapas`, `štěstí`.
-- `[~] B2` **Přijímané tvary CZ** — 437 tvarů v návrhu. Plné skloňování tam
+- `[x] B1` **Sada konceptů — odsouhlaseno a nasazeno** (300 konceptů v databázi).
+  300 pojmů v `supabase/seed/concepts.json`: **100 snadných, 100 středních,
+  100 těžkých** v šesti kategoriích. Jen jednojazyčné: `zámek`, `trapas`,
+  `štěstí`, `raketa`, `list`.
+
+  **Proč vyrovnaný poměr, a ne 50/33/17 z první sady.** `offer_concepts()`
+  nabízí jeden pojem od KAŽDÉ obtížnosti a vylučuje jen to, co ten člověk už
+  kreslil. Buckety se tedy vyčerpávají stejně rychle bez ohledu na svou
+  velikost — při 58/40/22 došly těžké 2,6× dřív než snadné a alarm v `/admin`
+  svítil právě na nich. Ventil pro toho, kdo neumí kreslit, drží struktura
+  nabídky, ne počet snadných pojmů.
+- `[~] B2` **Přijímané tvary CZ** — 983 tvarů. Plné skloňování tam
   VĚDOMĚ není; spoléhá se na normalizaci a fuzzy shodu. *Zbývá kritérium:*
   na vzorku zkusit, co lidé reálně napíšou.
-- `[~] B3` **Přijímané tvary EN** — 268 tvarů v návrhu.
+- `[~] B3` **Přijímané tvary EN** — 695 tvarů.
 - `[x] B4` **Porovnávací funkce** — hotová, bez rozšíření Postgresu. Normalizace diakritiky → lowercase → trim →
   shoda → fuzzy pro překlepy.
 
@@ -114,9 +122,21 @@ programování, je to kurátorská práce — a je jí víc, než se zdá.
   `klíč`/`klid`, `duha`/`duna`, anglicky `cat`/`bat`/`car`, `bear`/`pear`/`fear`,
   `sun`/`run`/`bun`, `book`/`boot`/`bolt`. Levenshtein ≤ 1 by je zaměnil.
 
-  Návrh: **do 4 znaků jen přesná shoda**, 5–7 znaků vzdálenost 1, 8+ vzdálenost 2.
-  *Kritérium:* test, který projede všechny dvojice z `concepts.json` a ověří,
-  že žádná odpověď neuhodne cizí pojem.
+  Platí: **do 4 znaků jen přesná shoda**, 5–7 znaků vzdálenost 1, 8+ vzdálenost 2.
+  Prahy jsou v `game_config` (`fuzzy_exact_below`, `fuzzy_one_below`).
+
+  *Kritérium splněno.* `check-concepts.mjs` projíždí všechny dvojice tvarů
+  ze všech pojmů na skutečné prahy (ne jen krátká slova, jak to dělal do
+  2026-08-20). Na nasazených 120 pojmech našel **jedenáct dvojic, které si hra
+  pletla** — mimo jiné `sheep`/`sleep`, `mouse`/`house`, `clock`/`lock`.
+  U těch tří stojí na obou stranách ZADÁNÍ, takže v datech se opravit nedaly.
+
+  **Pojistka (migrace `20260820160000`):** tolerance překlepů se nepoužije na
+  tip, který je PŘESNOU odpovědí jiného pojmu. Kdo napsal `sleep` na kresbu
+  ovce, se nepřeklepl — napsal jiné slovo, které umí. Přesná shoda se svým
+  pojmem má pořád přednost. Drží to normalizovaný rejstřík
+  `private.answer_index`, který udržuje trigger nad `concept_answers`.
+  Bez toho by každá další stovka pojmů přidávala další takové dvojice.
 
 ## Blok C — Kreslení end-to-end
 
@@ -383,6 +403,11 @@ Kvóty free plánu: 500 MB DB na projekt, **5 GB egress**, 1 GB storage, 50 000 
 ## Log
 
 Sem píšeme, co se změnilo v plánu a proč. Nejnovější nahoře.
+
+- **2026-08-20** — slovník rozšířen na **300 pojmů** ve vyrovnaném poměru
+  100/100/100 (důvod u B1). Kontrola slovníku dostala skutečné prahy tolerance
+  a našla jedenáct dvojic, které si hra pletla; opraveno pojistkou v
+  `answer_matches`, ne v datech (B4).
 
 - **2026-08-18** — plán založen. Blok 0 (UI nad mock daty) hotový z předchozí
   session. Dořešena koruna za slovo (fáze 1+, viz `_claude/memory/decisions/`).

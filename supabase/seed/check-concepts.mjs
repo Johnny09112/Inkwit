@@ -66,23 +66,63 @@ for (const loc of LOCALES) {
   }
 }
 
-// --- past na krátká slova a Levenshtein ---
-for (const loc of LOCALES) {
-  const shorts = [];
-  for (const c of concepts) for (const a of c[loc]?.accepted ?? []) {
-    const n = norm(a);
-    if (n.length <= 4) shorts.push({ n, id: c.id });
+// --- past na překlepovou toleranci ---
+//
+// Prahy musí sedět s private.answer_matches (migrace 20260819040000_matching.sql)
+// a s game_config: pod FUZZY_EXACT znaků přesná shoda, pod FUZZY_ONE vzdálenost 1,
+// od té délky 2. Strop se řídí délkou SPRÁVNÉ odpovědi, ne délkou tipu.
+//
+// Od migrace 20260820160000 tyhle dvojice hru nerozbíjejí: tip, který je
+// PŘESNOU odpovědí jiného pojmu, se přes toleranci neuzná. Zůstává to ale
+// upozornění — dvě slova na vzdálenost jednoho znaku jsou v sadě typicky
+// znamení, že jeden z tvarů je zbytečný, a je levnější ho vyhodit.
+
+const FUZZY_EXACT = 5;
+const FUZZY_ONE = 8;
+const allowance = (n) => (n.length < FUZZY_EXACT ? 0 : n.length < FUZZY_ONE ? 1 : 2);
+
+/** Levenshtein se stropem — stejná sémantika jako private.edit_distance. */
+const editDistance = (a, b, max) => {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = new Array(b.length + 1);
+    cur[0] = i;
+    let best = i;
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      cur[j] = Math.min(cur[j - 1] + 1, prev[j] + 1, prev[j - 1] + cost);
+      if (cur[j] < best) best = cur[j];
+    }
+    if (best > max) return max + 1;
+    prev = cur;
   }
-  for (let i = 0; i < shorts.length; i++)
-    for (let j = i + 1; j < shorts.length; j++) {
-      if (shorts[i].id === shorts[j].id) continue;
-      const [a, b] = [shorts[i].n, shorts[j].n];
-      if (a.length === b.length) {
-        let diff = 0;
-        for (let k = 0; k < a.length; k++) if (a[k] !== b[k]) diff++;
-        if (diff === 1) {
-          warnings.push(`${loc}: „${a}" (${shorts[i].id}) a „${b}" (${shorts[j].id}) se liší jedním znakem — fuzzy shoda je smí splést`);
-        }
+  return prev[b.length];
+};
+
+let shortPairs = 0;
+for (const loc of LOCALES) {
+  const forms = [];
+  for (const c of concepts)
+    for (const a of c[loc]?.accepted ?? []) forms.push({ n: norm(a), raw: a, id: c.id });
+
+  for (let i = 0; i < forms.length; i++)
+    for (let j = i + 1; j < forms.length; j++) {
+      const x = forms[i];
+      const y = forms[j];
+      if (x.id === y.id) continue;
+      const max = Math.max(allowance(x.n), allowance(y.n));
+      if (max === 0) {
+        // Bezpečná zóna: jen doklad pro práh, když se liší jediným znakem.
+        if (x.n.length === y.n.length && editDistance(x.n, y.n, 1) === 1) shortPairs++;
+        continue;
+      }
+      const d = editDistance(x.n, y.n, max);
+      if (d === 0) continue; // shodné tvary hlásí kontrola dvojznačnosti
+      if (d <= allowance(x.n) || d <= allowance(y.n)) {
+        warnings.push(
+          `${loc}: „${x.raw}" (${x.id}) a „${y.raw}" (${y.id}) jsou na vzdálenost ${d} — pojistku to projde, ale je to blízko`,
+        );
       }
     }
 }
@@ -99,6 +139,7 @@ if (!process.argv.includes("--sql")) {
   console.log(`Obtížnost:  ★ ${byDiff[0]}  ★★ ${byDiff[1]}  ★★★ ${byDiff[2]}`);
   console.log(`Kategorie:  ${byCat.join(" · ")}`);
   console.log(`Přijímaných tvarů: cs ${forms[0]} · en ${forms[1]}`);
+  console.log(`Krátkých dvojic na jeden znak (proto přesná shoda do ${FUZZY_EXACT - 1} znaků): ${shortPairs}`);
   console.log(`Jen jednojazyčné: ${noCross.map((c) => c.id).join(", ") || "žádné"}`);
   console.log(`Ne pro školy: ${notSafe.map((c) => c.id).join(", ") || "žádné"}`);
   console.log("");

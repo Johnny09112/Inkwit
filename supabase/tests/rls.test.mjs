@@ -556,6 +556,31 @@ async function main() {
   report(!(await match("pes", "kočka")), "úplně jiné slovo neprojde");
   report(!(await match("pes", "")), "prázdný tip neprojde");
 
+  // Přesná odpověď jiného pojmu není překlep (migrace 20260820160000).
+  // Tyhle dvojice se v datech opravit nedají — „mouse"/"house", „sheep"/"sleep"
+  // i „clock"/"lock" jsou na obou stranách ZADÁNÍ.
+  const matchEn = async (slug, text) =>
+    (
+      await db.query(
+        `select private.answer_matches(c.id, 'en', $1) as ok
+         from public.concepts c where c.slug = $2`,
+        [text, slug],
+      )
+    ).rows[0].ok;
+
+  report(!(await matchEn("ovce", "sleep")), "„sleep“ NEuhodne ovci");
+  report(await matchEn("spanek", "sleep"), "„sleep“ pořád uhodne spánek");
+  report(!(await matchEn("mys", "house")), "„house“ NEuhodne myš");
+  report(await matchEn("dum", "house"), "„house“ pořád uhodne dům");
+  report(!(await matchEn("hodiny", "lock")), "„lock“ NEuhodne hodiny");
+  report(await matchEn("zamek", "lock"), "„lock“ pořád uhodne zámek");
+  report(!(await match("uklid", "klid")), "„klid“ NEuhodne úklid");
+  report(await match("ticho", "klid"), "„klid“ pořád uhodne ticho");
+  report(
+    await match("chobotnice", "chobotnica"),
+    "tolerance překlepů pojistkou nezmizela",
+  );
+
   console.log("\nHádání (kroky D1–D3):\n");
 
   const bobDrawing = LIVE;

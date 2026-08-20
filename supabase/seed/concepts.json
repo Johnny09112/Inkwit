@@ -19,152 +19,6 @@
   ],
   "concepts": [
     {
-      "id": "pes",
-      "difficulty": 1,
-      "category": "zvire",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "pes",
-        "accepted": [
-          "pes",
-          "psa",
-          "psi",
-          "pejsek",
-          "hafan",
-          "štěně",
-          "čokl"
-        ]
-      },
-      "en": {
-        "prompt": "dog",
-        "accepted": [
-          "dog",
-          "doggy",
-          "puppy",
-          "hound"
-        ]
-      }
-    },
-    {
-      "id": "kocka",
-      "difficulty": 1,
-      "category": "zvire",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "kočka",
-        "accepted": [
-          "kočka",
-          "kocour",
-          "kočku",
-          "kočička",
-          "koťátko",
-          "koťe"
-        ]
-      },
-      "en": {
-        "prompt": "cat",
-        "accepted": [
-          "cat",
-          "kitten",
-          "kitty",
-          "tomcat"
-        ]
-      }
-    },
-    {
-      "id": "ryba",
-      "difficulty": 1,
-      "category": "zvire",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "ryba",
-        "accepted": [
-          "ryba",
-          "rybu",
-          "rybka",
-          "kapr"
-        ]
-      },
-      "en": {
-        "prompt": "fish",
-        "accepted": [
-          "fish",
-          "fishy",
-          "carp"
-        ]
-      }
-    },
-    {
-      "id": "ptak",
-      "difficulty": 1,
-      "category": "zvire",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "pták",
-        "accepted": [
-          "pták",
-          "ptáka",
-          "ptáček",
-          "ptáci"
-        ]
-      },
-      "en": {
-        "prompt": "bird",
-        "accepted": [
-          "bird",
-          "birdie"
-        ]
-      }
-    },
-    {
-      "id": "slon",
-      "difficulty": 1,
-      "category": "zvire",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "slon",
-        "accepted": [
-          "slon",
-          "slona",
-          "slonice",
-          "slůně"
-        ]
-      },
-      "en": {
-        "prompt": "elephant",
-        "accepted": [
-          "elephant"
-        ]
-      }
-    },
-    {
-      "id": "motyl",
-      "difficulty": 1,
-      "category": "zvire",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "motýl",
-        "accepted": [
-          "motýl",
-          "motýla",
-          "motýlek"
-        ]
-      },
-      "en": {
-        "prompt": "butterfly",
-        "accepted": [
-          "butterfly",
-          "moth"
-        ]
-      }
-    },
-    {
       "id": "had",
       "difficulty": 1,
       "category": "zvire",
@@ -189,48 +43,144 @@
       }
     },
     {
-      "id": "zaba",
+      "id": "holub",
       "difficulty": 1,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "žába",
+        "prompt": "holub",
         "accepted": [
-          "žába",
-          "žábu",
-          "žabka",
-          "skokan"
+          "holub",
+          "holuba",
+          "holoubek"
         ]
       },
       "en": {
-        "prompt": "frog",
+        "prompt": "pigeon",
         "accepted": [
-          "frog",
-          "toad"
+          "pigeon",
+          "dove"
         ]
       }
     },
     {
-      "id": "mys",
+      "id": "kachna",
       "difficulty": 1,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "myš",
+        "prompt": "kachna",
         "accepted": [
-          "myš",
-          "myšku",
-          "myška",
-          "myši"
+          "kachna",
+          "kachnu",
+          "kachnička",
+          "kačer"
         ]
       },
       "en": {
-        "prompt": "mouse",
+        "prompt": "duck",
         "accepted": [
-          "mouse",
-          "mice"
+          "duck",
+          "duckling",
+          "drake"
+        ]
+      }
+    },
+    {
+      "id": "kocka",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "kočka",
+        "accepted": [
+          "kočka",
+          "kocour",
+          "kočku",
+          "kočička",
+          "koťátko"
+        ]
+      },
+      "en": {
+        "prompt": "cat",
+        "accepted": [
+          "cat",
+          "kitten",
+          "kitty",
+          "tomcat"
+        ]
+      }
+    },
+    {
+      "id": "koza",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "koza",
+        "accepted": [
+          "koza",
+          "kozu",
+          "kozel",
+          "kůzle"
+        ]
+      },
+      "en": {
+        "prompt": "goat",
+        "accepted": [
+          "goat",
+          "billy goat",
+          "nanny goat"
+        ]
+      }
+    },
+    {
+      "id": "krab",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "krab",
+        "accepted": [
+          "krab",
+          "kraba",
+          "rak"
+        ]
+      },
+      "en": {
+        "prompt": "crab",
+        "accepted": [
+          "crab",
+          "crayfish"
+        ]
+      }
+    },
+    {
+      "id": "kralik",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "králík",
+        "accepted": [
+          "králík",
+          "králíka",
+          "zajíc",
+          "zajíček"
+        ]
+      },
+      "en": {
+        "prompt": "rabbit",
+        "accepted": [
+          "rabbit",
+          "bunny",
+          "hare"
         ]
       }
     },
@@ -260,26 +210,167 @@
       }
     },
     {
-      "id": "prase",
+      "id": "kun",
       "difficulty": 1,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "prase",
+        "prompt": "kůň",
         "accepted": [
-          "prase",
-          "prasátko",
-          "čuně",
-          "vepř"
+          "kůň",
+          "koně",
+          "koníček",
+          "hřebec",
+          "klisna",
+          "poník"
         ]
       },
       "en": {
-        "prompt": "pig",
+        "prompt": "horse",
         "accepted": [
-          "pig",
-          "piglet",
-          "hog"
+          "horse",
+          "pony",
+          "stallion",
+          "mare",
+          "foal"
+        ]
+      }
+    },
+    {
+      "id": "lev",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "lev",
+        "accepted": [
+          "lev",
+          "lva",
+          "lvice"
+        ]
+      },
+      "en": {
+        "prompt": "lion",
+        "accepted": [
+          "lion",
+          "lioness"
+        ]
+      }
+    },
+    {
+      "id": "liska",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "liška",
+        "accepted": [
+          "liška",
+          "lišku",
+          "lišák"
+        ]
+      },
+      "en": {
+        "prompt": "fox",
+        "accepted": [
+          "fox",
+          "vixen"
+        ]
+      }
+    },
+    {
+      "id": "medved",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "medvěd",
+        "accepted": [
+          "medvěd",
+          "medvěda",
+          "méďa",
+          "medvídek"
+        ]
+      },
+      "en": {
+        "prompt": "bear",
+        "accepted": [
+          "bear",
+          "teddy bear"
+        ]
+      }
+    },
+    {
+      "id": "motyl",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "motýl",
+        "accepted": [
+          "motýl",
+          "motýla",
+          "motýlek"
+        ]
+      },
+      "en": {
+        "prompt": "butterfly",
+        "accepted": [
+          "butterfly",
+          "moth"
+        ]
+      }
+    },
+    {
+      "id": "mys",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "myš",
+        "accepted": [
+          "myš",
+          "myšku",
+          "myška",
+          "myši"
+        ]
+      },
+      "en": {
+        "prompt": "mouse",
+        "accepted": [
+          "mouse",
+          "mice"
+        ]
+      }
+    },
+    {
+      "id": "opice",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "opice",
+        "accepted": [
+          "opice",
+          "opici",
+          "opička",
+          "šimpanz"
+        ]
+      },
+      "en": {
+        "prompt": "monkey",
+        "accepted": [
+          "monkey",
+          "ape",
+          "chimpanzee",
+          "chimp"
         ]
       }
     },
@@ -308,30 +399,6 @@
       }
     },
     {
-      "id": "vcela",
-      "difficulty": 1,
-      "category": "zvire",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "včela",
-        "accepted": [
-          "včela",
-          "včelu",
-          "včelka",
-          "vosa"
-        ]
-      },
-      "en": {
-        "prompt": "bee",
-        "accepted": [
-          "bee",
-          "honeybee",
-          "wasp"
-        ]
-      }
-    },
-    {
       "id": "pavouk",
       "difficulty": 1,
       "category": "zvire",
@@ -353,49 +420,169 @@
       }
     },
     {
-      "id": "kralik",
+      "id": "pes",
       "difficulty": 1,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "králík",
+        "prompt": "pes",
         "accepted": [
-          "králík",
-          "králíka",
-          "zajíc",
-          "zajíček"
+          "pes",
+          "psa",
+          "psi",
+          "pejsek",
+          "hafan",
+          "štěně",
+          "čokl"
         ]
       },
       "en": {
-        "prompt": "rabbit",
+        "prompt": "dog",
         "accepted": [
-          "rabbit",
-          "bunny",
-          "hare"
+          "dog",
+          "doggy",
+          "puppy",
+          "hound"
         ]
       }
     },
     {
-      "id": "medved",
+      "id": "prase",
       "difficulty": 1,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "medvěd",
+        "prompt": "prase",
         "accepted": [
-          "medvěd",
-          "medvěda",
-          "méďa",
-          "medvídek"
+          "prase",
+          "prasátko",
+          "čuně",
+          "vepř"
         ]
       },
       "en": {
-        "prompt": "bear",
+        "prompt": "pig",
         "accepted": [
-          "bear",
-          "teddy bear"
+          "pig",
+          "piglet",
+          "hog"
+        ]
+      }
+    },
+    {
+      "id": "ptak",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "pták",
+        "accepted": [
+          "pták",
+          "ptáka",
+          "ptáček",
+          "ptáci"
+        ]
+      },
+      "en": {
+        "prompt": "bird",
+        "accepted": [
+          "bird",
+          "birdie"
+        ]
+      }
+    },
+    {
+      "id": "ryba",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "ryba",
+        "accepted": [
+          "ryba",
+          "rybu",
+          "rybka",
+          "kapr"
+        ]
+      },
+      "en": {
+        "prompt": "fish",
+        "accepted": [
+          "fish",
+          "fishy",
+          "carp"
+        ]
+      }
+    },
+    {
+      "id": "slepice",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "slepice",
+        "accepted": [
+          "slepice",
+          "slepici",
+          "kuře",
+          "kuřátko",
+          "kohout"
+        ]
+      },
+      "en": {
+        "prompt": "hen",
+        "accepted": [
+          "hen",
+          "chicken",
+          "chick",
+          "rooster"
+        ]
+      }
+    },
+    {
+      "id": "slon",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "slon",
+        "accepted": [
+          "slon",
+          "slona",
+          "slonice"
+        ]
+      },
+      "en": {
+        "prompt": "elephant",
+        "accepted": [
+          "elephant"
+        ]
+      }
+    },
+    {
+      "id": "sova",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "sova",
+        "accepted": [
+          "sova",
+          "sovu",
+          "výr"
+        ]
+      },
+      "en": {
+        "prompt": "owl",
+        "accepted": [
+          "owl"
         ]
       }
     },
@@ -420,6 +607,117 @@
       }
     },
     {
+      "id": "tygr",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "tygr",
+        "accepted": [
+          "tygr",
+          "tygra",
+          "tygřík"
+        ]
+      },
+      "en": {
+        "prompt": "tiger",
+        "accepted": [
+          "tiger",
+          "tigress"
+        ]
+      }
+    },
+    {
+      "id": "vcela",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "včela",
+        "accepted": [
+          "včela",
+          "včelu",
+          "včelka",
+          "vosa"
+        ]
+      },
+      "en": {
+        "prompt": "bee",
+        "accepted": [
+          "bee",
+          "honeybee",
+          "wasp"
+        ]
+      }
+    },
+    {
+      "id": "vlk",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "vlk",
+        "accepted": [
+          "vlk",
+          "vlka",
+          "vlci"
+        ]
+      },
+      "en": {
+        "prompt": "wolf",
+        "accepted": [
+          "wolf",
+          "wolves"
+        ]
+      }
+    },
+    {
+      "id": "zaba",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "žába",
+        "accepted": [
+          "žába",
+          "žábu",
+          "žabka",
+          "skokan"
+        ]
+      },
+      "en": {
+        "prompt": "frog",
+        "accepted": [
+          "frog",
+          "toad"
+        ]
+      }
+    },
+    {
+      "id": "zebra",
+      "difficulty": 1,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "zebra",
+        "accepted": [
+          "zebra",
+          "zebru"
+        ]
+      },
+      "en": {
+        "prompt": "zebra",
+        "accepted": [
+          "zebra"
+        ]
+      }
+    },
+    {
       "id": "zirafa",
       "difficulty": 1,
       "category": "zvire",
@@ -440,46 +738,85 @@
       }
     },
     {
-      "id": "lev",
+      "id": "zralok",
       "difficulty": 1,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "lev",
+        "prompt": "žralok",
         "accepted": [
-          "lev",
-          "lva",
-          "lvice"
+          "žralok",
+          "žraloka"
         ]
       },
       "en": {
-        "prompt": "lion",
+        "prompt": "shark",
         "accepted": [
-          "lion",
-          "lioness"
+          "shark"
         ]
       }
     },
     {
-      "id": "sova",
-      "difficulty": 1,
+      "id": "beruska",
+      "difficulty": 2,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "sova",
+        "prompt": "beruška",
         "accepted": [
-          "sova",
-          "sovu",
-          "sovička",
-          "výr"
+          "beruška",
+          "berušku",
+          "slunéčko sedmitečné"
         ]
       },
       "en": {
-        "prompt": "owl",
+        "prompt": "ladybug",
         "accepted": [
-          "owl"
+          "ladybug",
+          "ladybird"
+        ]
+      }
+    },
+    {
+      "id": "delfin",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "delfín",
+        "accepted": [
+          "delfín",
+          "delfína"
+        ]
+      },
+      "en": {
+        "prompt": "dolphin",
+        "accepted": [
+          "dolphin"
+        ]
+      }
+    },
+    {
+      "id": "hroch",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hroch",
+        "accepted": [
+          "hroch",
+          "hrocha"
+        ]
+      },
+      "en": {
+        "prompt": "hippo",
+        "accepted": [
+          "hippo",
+          "hippopotamus"
         ]
       }
     },
@@ -507,24 +844,26 @@
       }
     },
     {
-      "id": "velbloud",
+      "id": "jelen",
       "difficulty": 2,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "velbloud",
+        "prompt": "jelen",
         "accepted": [
-          "velbloud",
-          "velblouda",
-          "dromedár"
+          "jelen",
+          "jelena",
+          "srnec",
+          "srna",
+          "paroháč"
         ]
       },
       "en": {
-        "prompt": "camel",
+        "prompt": "deer",
         "accepted": [
-          "camel",
-          "dromedary"
+          "deer",
+          "stag"
         ]
       }
     },
@@ -550,23 +889,23 @@
       }
     },
     {
-      "id": "veverka",
+      "id": "klokan",
       "difficulty": 2,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "veverka",
+        "prompt": "klokan",
         "accepted": [
-          "veverka",
-          "veverku",
-          "veverča"
+          "klokan",
+          "klokana"
         ]
       },
       "en": {
-        "prompt": "squirrel",
+        "prompt": "kangaroo",
         "accepted": [
-          "squirrel"
+          "kangaroo",
+          "roo"
         ]
       }
     },
@@ -594,6 +933,48 @@
       }
     },
     {
+      "id": "meduza",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "medúza",
+        "accepted": [
+          "medúza",
+          "medúzu"
+        ]
+      },
+      "en": {
+        "prompt": "jellyfish",
+        "accepted": [
+          "jellyfish",
+          "jelly fish"
+        ]
+      }
+    },
+    {
+      "id": "mravenec",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "mravenec",
+        "accepted": [
+          "mravenec",
+          "mravence",
+          "mraveneček"
+        ]
+      },
+      "en": {
+        "prompt": "ant",
+        "accepted": [
+          "ant"
+        ]
+      }
+    },
+    {
       "id": "netopyr",
       "difficulty": 2,
       "category": "zvire",
@@ -610,6 +991,133 @@
         "prompt": "bat",
         "accepted": [
           "bat"
+        ]
+      }
+    },
+    {
+      "id": "nosorozec",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "nosorožec",
+        "accepted": [
+          "nosorožec",
+          "nosorožce"
+        ]
+      },
+      "en": {
+        "prompt": "rhino",
+        "accepted": [
+          "rhino",
+          "rhinoceros"
+        ]
+      }
+    },
+    {
+      "id": "orel",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "orel",
+        "accepted": [
+          "orel",
+          "orla",
+          "orlice"
+        ]
+      },
+      "en": {
+        "prompt": "eagle",
+        "accepted": [
+          "eagle",
+          "hawk"
+        ]
+      }
+    },
+    {
+      "id": "panda",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "panda",
+        "accepted": [
+          "panda",
+          "pandu",
+          "medvídek panda"
+        ]
+      },
+      "en": {
+        "prompt": "panda",
+        "accepted": [
+          "panda",
+          "giant panda"
+        ]
+      }
+    },
+    {
+      "id": "papousek",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "papoušek",
+        "accepted": [
+          "papoušek",
+          "papouška",
+          "ara"
+        ]
+      },
+      "en": {
+        "prompt": "parrot",
+        "accepted": [
+          "parrot",
+          "macaw"
+        ]
+      }
+    },
+    {
+      "id": "plamenak",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "plameňák",
+        "accepted": [
+          "plameňák",
+          "plameňáka"
+        ]
+      },
+      "en": {
+        "prompt": "flamingo",
+        "accepted": [
+          "flamingo"
+        ]
+      }
+    },
+    {
+      "id": "pstros",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "pštros",
+        "accepted": [
+          "pštros",
+          "pštrosa"
+        ]
+      },
+      "en": {
+        "prompt": "ostrich",
+        "accepted": [
+          "ostrich"
         ]
       }
     },
@@ -637,64 +1145,131 @@
       }
     },
     {
-      "id": "mravenec",
+      "id": "tulen",
       "difficulty": 2,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "mravenec",
+        "prompt": "tuleň",
         "accepted": [
-          "mravenec",
-          "mravence",
-          "mraveneček"
+          "tuleň",
+          "tuleně",
+          "lachtan"
         ]
       },
       "en": {
-        "prompt": "ant",
+        "prompt": "seal",
         "accepted": [
-          "ant"
+          "seal",
+          "sea lion"
         ]
       }
     },
     {
-      "id": "delfin",
+      "id": "vazka",
       "difficulty": 2,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "delfín",
+        "prompt": "vážka",
         "accepted": [
-          "delfín",
-          "delfína"
+          "vážka",
+          "vážku"
         ]
       },
       "en": {
-        "prompt": "dolphin",
+        "prompt": "dragonfly",
         "accepted": [
-          "dolphin"
+          "dragonfly"
         ]
       }
     },
     {
-      "id": "klokan",
+      "id": "velbloud",
       "difficulty": 2,
       "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "klokan",
+        "prompt": "velbloud",
         "accepted": [
-          "klokan",
-          "klokana"
+          "velbloud",
+          "velblouda",
+          "dromedár"
         ]
       },
       "en": {
-        "prompt": "kangaroo",
+        "prompt": "camel",
         "accepted": [
-          "kangaroo",
-          "roo"
+          "camel",
+          "dromedary"
+        ]
+      }
+    },
+    {
+      "id": "velryba",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "velryba",
+        "accepted": [
+          "velryba",
+          "velrybu",
+          "kytovec"
+        ]
+      },
+      "en": {
+        "prompt": "whale",
+        "accepted": [
+          "whale",
+          "humpback"
+        ]
+      }
+    },
+    {
+      "id": "veverka",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "veverka",
+        "accepted": [
+          "veverka",
+          "veverku",
+          "veverča"
+        ]
+      },
+      "en": {
+        "prompt": "squirrel",
+        "accepted": [
+          "squirrel"
+        ]
+      }
+    },
+    {
+      "id": "zelva",
+      "difficulty": 2,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "želva",
+        "accepted": [
+          "želva",
+          "želvu",
+          "želvička"
+        ]
+      },
+      "en": {
+        "prompt": "turtle",
+        "accepted": [
+          "turtle",
+          "tortoise"
         ]
       }
     },
@@ -739,27 +1314,64 @@
       }
     },
     {
-      "id": "dum",
-      "difficulty": 1,
-      "category": "predmet",
+      "id": "ptakopysk",
+      "difficulty": 3,
+      "category": "zvire",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "dům",
+        "prompt": "ptakopysk",
         "accepted": [
-          "dům",
-          "domu",
-          "domek",
-          "chalupa",
-          "barák"
+          "ptakopysk",
+          "ptakopyska"
         ]
       },
       "en": {
-        "prompt": "house",
+        "prompt": "platypus",
         "accepted": [
-          "house",
-          "home",
-          "cottage"
+          "platypus",
+          "duck-billed platypus"
+        ]
+      }
+    },
+    {
+      "id": "surikata",
+      "difficulty": 3,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "surikata",
+        "accepted": [
+          "surikata",
+          "surikatu"
+        ]
+      },
+      "en": {
+        "prompt": "meerkat",
+        "accepted": [
+          "meerkat",
+          "suricate"
+        ]
+      }
+    },
+    {
+      "id": "tapir",
+      "difficulty": 3,
+      "category": "zvire",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "tapír",
+        "accepted": [
+          "tapír",
+          "tapíra"
+        ]
+      },
+      "en": {
+        "prompt": "tapir",
+        "accepted": [
+          "tapir"
         ]
       }
     },
@@ -784,119 +1396,6 @@
           "car",
           "automobile",
           "vehicle"
-        ]
-      }
-    },
-    {
-      "id": "mic",
-      "difficulty": 1,
-      "category": "predmet",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "míč",
-        "accepted": [
-          "míč",
-          "míče",
-          "balón",
-          "míček"
-        ]
-      },
-      "en": {
-        "prompt": "ball",
-        "accepted": [
-          "ball",
-          "balloon"
-        ]
-      }
-    },
-    {
-      "id": "kniha",
-      "difficulty": 1,
-      "category": "predmet",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "kniha",
-        "accepted": [
-          "kniha",
-          "knihu",
-          "knížka",
-          "kniška"
-        ]
-      },
-      "en": {
-        "prompt": "book",
-        "accepted": [
-          "book"
-        ]
-      }
-    },
-    {
-      "id": "zidle",
-      "difficulty": 1,
-      "category": "predmet",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "židle",
-        "accepted": [
-          "židle",
-          "židli",
-          "křeslo",
-          "stolička"
-        ]
-      },
-      "en": {
-        "prompt": "chair",
-        "accepted": [
-          "chair",
-          "stool",
-          "seat"
-        ]
-      }
-    },
-    {
-      "id": "hodiny",
-      "difficulty": 1,
-      "category": "predmet",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "hodiny",
-        "accepted": [
-          "hodiny",
-          "hodinky",
-          "ciferník"
-        ]
-      },
-      "en": {
-        "prompt": "clock",
-        "accepted": [
-          "clock",
-          "watch"
-        ]
-      }
-    },
-    {
-      "id": "klic",
-      "difficulty": 1,
-      "category": "predmet",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "klíč",
-        "accepted": [
-          "klíč",
-          "klíče",
-          "klíček"
-        ]
-      },
-      "en": {
-        "prompt": "key",
-        "accepted": [
-          "key",
-          "keys"
         ]
       }
     },
@@ -951,6 +1450,30 @@
       }
     },
     {
+      "id": "darek",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "dárek",
+        "accepted": [
+          "dárek",
+          "dárku",
+          "dáreček",
+          "balíček"
+        ]
+      },
+      "en": {
+        "prompt": "gift",
+        "accepted": [
+          "gift",
+          "present",
+          "parcel"
+        ]
+      }
+    },
+    {
       "id": "destnik",
       "difficulty": 1,
       "category": "predmet",
@@ -969,6 +1492,440 @@
         "accepted": [
           "umbrella",
           "parasol"
+        ]
+      }
+    },
+    {
+      "id": "dum",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "dům",
+        "accepted": [
+          "dům",
+          "domu",
+          "domek",
+          "chalupa",
+          "barák"
+        ]
+      },
+      "en": {
+        "prompt": "house",
+        "accepted": [
+          "house",
+          "home",
+          "cottage"
+        ]
+      }
+    },
+    {
+      "id": "dvere",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "dveře",
+        "accepted": [
+          "dveře",
+          "dveří",
+          "vrata"
+        ]
+      },
+      "en": {
+        "prompt": "door",
+        "accepted": [
+          "door",
+          "doors",
+          "gate"
+        ]
+      }
+    },
+    {
+      "id": "hodiny",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hodiny",
+        "accepted": [
+          "hodiny",
+          "hodinky",
+          "ciferník"
+        ]
+      },
+      "en": {
+        "prompt": "clock",
+        "accepted": [
+          "clock",
+          "watch"
+        ]
+      }
+    },
+    {
+      "id": "hrnek",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hrnek",
+        "accepted": [
+          "hrnek",
+          "hrnku",
+          "šálek",
+          "hrneček"
+        ]
+      },
+      "en": {
+        "prompt": "mug",
+        "accepted": [
+          "mug",
+          "cup"
+        ]
+      }
+    },
+    {
+      "id": "klic",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "klíč",
+        "accepted": [
+          "klíč",
+          "klíče",
+          "klíček"
+        ]
+      },
+      "en": {
+        "prompt": "key",
+        "accepted": [
+          "key",
+          "keys"
+        ]
+      }
+    },
+    {
+      "id": "klobouk",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "klobouk",
+        "accepted": [
+          "klobouk",
+          "klobouku",
+          "čepice",
+          "cylindr"
+        ]
+      },
+      "en": {
+        "prompt": "hat",
+        "accepted": [
+          "hat",
+          "cap",
+          "top hat"
+        ]
+      }
+    },
+    {
+      "id": "kniha",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "kniha",
+        "accepted": [
+          "kniha",
+          "knihu",
+          "knížka",
+          "kniška"
+        ]
+      },
+      "en": {
+        "prompt": "book",
+        "accepted": [
+          "book"
+        ]
+      }
+    },
+    {
+      "id": "kolo",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "kolo",
+        "accepted": [
+          "kolo",
+          "bicykl",
+          "jízdní kolo",
+          "bike"
+        ]
+      },
+      "en": {
+        "prompt": "bicycle",
+        "accepted": [
+          "bicycle",
+          "bike",
+          "cycle"
+        ]
+      }
+    },
+    {
+      "id": "koste",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "koště",
+        "accepted": [
+          "koště",
+          "smeták",
+          "metla"
+        ]
+      },
+      "en": {
+        "prompt": "broom",
+        "accepted": [
+          "broom",
+          "broomstick"
+        ]
+      }
+    },
+    {
+      "id": "kytara",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "kytara",
+        "accepted": [
+          "kytara",
+          "kytaru",
+          "elektrická kytara"
+        ]
+      },
+      "en": {
+        "prompt": "guitar",
+        "accepted": [
+          "guitar",
+          "electric guitar"
+        ]
+      }
+    },
+    {
+      "id": "lampa",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "lampa",
+        "accepted": [
+          "lampa",
+          "lampu",
+          "lampička",
+          "svítilna"
+        ]
+      },
+      "en": {
+        "prompt": "lamp",
+        "accepted": [
+          "lamp",
+          "light"
+        ]
+      }
+    },
+    {
+      "id": "letadlo",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "letadlo",
+        "accepted": [
+          "letadlo",
+          "letadla",
+          "letoun"
+        ]
+      },
+      "en": {
+        "prompt": "airplane",
+        "accepted": [
+          "airplane",
+          "plane",
+          "aeroplane",
+          "aircraft"
+        ]
+      }
+    },
+    {
+      "id": "lod",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "loď",
+        "accepted": [
+          "loď",
+          "lodě",
+          "lodička",
+          "plachetnice"
+        ]
+      },
+      "en": {
+        "prompt": "boat",
+        "accepted": [
+          "boat",
+          "ship",
+          "sailboat"
+        ]
+      }
+    },
+    {
+      "id": "mic",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "míč",
+        "accepted": [
+          "míč",
+          "míče",
+          "balón",
+          "míček"
+        ]
+      },
+      "en": {
+        "prompt": "ball",
+        "accepted": [
+          "ball",
+          "balloon"
+        ]
+      }
+    },
+    {
+      "id": "nuzky",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "nůžky",
+        "accepted": [
+          "nůžky",
+          "nůžek"
+        ]
+      },
+      "en": {
+        "prompt": "scissors",
+        "accepted": [
+          "scissors"
+        ]
+      }
+    },
+    {
+      "id": "panev",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "pánev",
+        "accepted": [
+          "pánev",
+          "pánvička",
+          "pekáč"
+        ]
+      },
+      "en": {
+        "prompt": "pan",
+        "accepted": [
+          "pan",
+          "frying pan",
+          "skillet"
+        ]
+      }
+    },
+    {
+      "id": "postel",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "postel",
+        "accepted": [
+          "postel",
+          "postele",
+          "lůžko",
+          "peřina"
+        ]
+      },
+      "en": {
+        "prompt": "bed",
+        "accepted": [
+          "bed"
+        ]
+      }
+    },
+    {
+      "id": "stul",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "stůl",
+        "accepted": [
+          "stůl",
+          "stolu",
+          "psací stůl",
+          "jídelní stůl"
+        ]
+      },
+      "en": {
+        "prompt": "table",
+        "accepted": [
+          "table",
+          "desk",
+          "dining table"
+        ]
+      }
+    },
+    {
+      "id": "svicka",
+      "difficulty": 1,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "svíčka",
+        "accepted": [
+          "svíčka",
+          "svíčku",
+          "svíce"
+        ]
+      },
+      "en": {
+        "prompt": "candle",
+        "accepted": [
+          "candle",
+          "candles"
         ]
       }
     },
@@ -998,137 +1955,296 @@
       }
     },
     {
-      "id": "nuzky",
+      "id": "tuzka",
       "difficulty": 1,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "nůžky",
+        "prompt": "tužka",
         "accepted": [
-          "nůžky",
-          "nůžek"
+          "tužka",
+          "tužku",
+          "pastelka",
+          "propiska"
         ]
       },
       "en": {
-        "prompt": "scissors",
+        "prompt": "pencil",
         "accepted": [
-          "scissors"
+          "pencil",
+          "pen",
+          "crayon"
         ]
       }
     },
     {
-      "id": "kolo",
+      "id": "vlak",
       "difficulty": 1,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "kolo",
+        "prompt": "vlak",
         "accepted": [
-          "kolo",
-          "bicykl",
-          "jízdní kolo",
-          "bike"
+          "vlak",
+          "vlaku",
+          "lokomotiva",
+          "mašinka"
         ]
       },
       "en": {
-        "prompt": "bicycle",
+        "prompt": "train",
         "accepted": [
-          "bicycle",
-          "bike",
-          "cycle"
+          "train",
+          "locomotive",
+          "steam train"
         ]
       }
     },
     {
-      "id": "lampa",
+      "id": "zarovka",
       "difficulty": 1,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "lampa",
+        "prompt": "žárovka",
         "accepted": [
-          "lampa",
-          "lampu",
-          "lampička",
-          "svítilna"
+          "žárovka",
+          "žárovku",
+          "elektrická žárovka"
         ]
       },
       "en": {
-        "prompt": "lamp",
+        "prompt": "light bulb",
         "accepted": [
-          "lamp",
-          "light"
+          "light bulb",
+          "bulb",
+          "lightbulb"
         ]
       }
     },
     {
-      "id": "hrnek",
+      "id": "zidle",
       "difficulty": 1,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "hrnek",
+        "prompt": "židle",
         "accepted": [
-          "hrnek",
-          "hrnku",
-          "šálek",
-          "hrneček"
+          "židle",
+          "židli",
+          "křeslo",
+          "stolička"
         ]
       },
       "en": {
-        "prompt": "mug",
+        "prompt": "chair",
         "accepted": [
-          "mug",
-          "cup"
+          "chair",
+          "stool",
+          "seat"
         ]
       }
     },
     {
-      "id": "postel",
-      "difficulty": 1,
+      "id": "buben",
+      "difficulty": 2,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "postel",
+        "prompt": "buben",
         "accepted": [
-          "postel",
-          "postele",
-          "lůžko",
-          "peřina"
+          "buben",
+          "bubny",
+          "bubínek",
+          "bicí"
         ]
       },
       "en": {
-        "prompt": "bed",
+        "prompt": "drum",
         "accepted": [
-          "bed"
+          "drum",
+          "drums",
+          "drum kit"
         ]
       }
     },
     {
-      "id": "dvere",
-      "difficulty": 1,
+      "id": "budik",
+      "difficulty": 2,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "dveře",
+        "prompt": "budík",
         "accepted": [
-          "dveře",
-          "dveří",
-          "vrata"
+          "budík",
+          "budíku",
+          "budíček"
         ]
       },
       "en": {
-        "prompt": "door",
+        "prompt": "alarm clock",
         "accepted": [
-          "door",
-          "doors",
-          "gate"
+          "alarm clock",
+          "alarm"
+        ]
+      }
+    },
+    {
+      "id": "dalekohled",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "dalekohled",
+        "accepted": [
+          "dalekohled",
+          "dalekohledu",
+          "triedr"
+        ]
+      },
+      "en": {
+        "prompt": "telescope",
+        "accepted": [
+          "telescope",
+          "binoculars",
+          "spyglass"
+        ]
+      }
+    },
+    {
+      "id": "fotoaparat",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "fotoaparát",
+        "accepted": [
+          "fotoaparát",
+          "foťák",
+          "kamera",
+          "aparát"
+        ]
+      },
+      "en": {
+        "prompt": "camera",
+        "accepted": [
+          "camera",
+          "photo camera"
+        ]
+      }
+    },
+    {
+      "id": "globus",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "glóbus",
+        "accepted": [
+          "glóbus",
+          "zeměkoule"
+        ]
+      },
+      "en": {
+        "prompt": "globe",
+        "accepted": [
+          "globe"
+        ]
+      }
+    },
+    {
+      "id": "harmonika",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "harmonika",
+        "accepted": [
+          "harmonika",
+          "harmoniku",
+          "akordeon",
+          "tahací harmonika"
+        ]
+      },
+      "en": {
+        "prompt": "accordion",
+        "accepted": [
+          "accordion",
+          "harmonica"
+        ]
+      }
+    },
+    {
+      "id": "houpacka",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "houpačka",
+        "accepted": [
+          "houpačka",
+          "houpačku",
+          "houpání"
+        ]
+      },
+      "en": {
+        "prompt": "swing",
+        "accepted": [
+          "swing",
+          "swings"
+        ]
+      }
+    },
+    {
+      "id": "housle",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "housle",
+        "accepted": [
+          "housle",
+          "housličky"
+        ]
+      },
+      "en": {
+        "prompt": "violin",
+        "accepted": [
+          "violin",
+          "fiddle"
+        ]
+      }
+    },
+    {
+      "id": "kolobezka",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "koloběžka",
+        "accepted": [
+          "koloběžka",
+          "koloběžku"
+        ]
+      },
+      "en": {
+        "prompt": "scooter",
+        "accepted": [
+          "scooter",
+          "kick scooter"
         ]
       }
     },
@@ -1156,44 +2272,23 @@
       }
     },
     {
-      "id": "majak",
+      "id": "kompas",
       "difficulty": 2,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "maják",
+        "prompt": "kompas",
         "accepted": [
-          "maják",
-          "majáku"
+          "kompas",
+          "kompasu",
+          "buzola"
         ]
       },
       "en": {
-        "prompt": "lighthouse",
+        "prompt": "compass",
         "accepted": [
-          "lighthouse"
-        ]
-      }
-    },
-    {
-      "id": "zebrik",
-      "difficulty": 2,
-      "category": "predmet",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "žebřík",
-        "accepted": [
-          "žebřík",
-          "žebříku",
-          "štafle"
-        ]
-      },
-      "en": {
-        "prompt": "ladder",
-        "accepted": [
-          "ladder",
-          "stepladder"
+          "compass"
         ]
       }
     },
@@ -1214,28 +2309,6 @@
         "prompt": "anchor",
         "accepted": [
           "anchor"
-        ]
-      }
-    },
-    {
-      "id": "budik",
-      "difficulty": 2,
-      "category": "predmet",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "budík",
-        "accepted": [
-          "budík",
-          "budíku",
-          "budíček"
-        ]
-      },
-      "en": {
-        "prompt": "alarm clock",
-        "accepted": [
-          "alarm clock",
-          "alarm"
         ]
       }
     },
@@ -1264,47 +2337,22 @@
       }
     },
     {
-      "id": "vrtulnik",
+      "id": "majak",
       "difficulty": 2,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "vrtulník",
+        "prompt": "maják",
         "accepted": [
-          "vrtulník",
-          "helikoptéra",
-          "vrtulníku"
+          "maják",
+          "majáku"
         ]
       },
       "en": {
-        "prompt": "helicopter",
+        "prompt": "lighthouse",
         "accepted": [
-          "helicopter",
-          "chopper"
-        ]
-      }
-    },
-    {
-      "id": "harmonika",
-      "difficulty": 2,
-      "category": "predmet",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "harmonika",
-        "accepted": [
-          "harmonika",
-          "harmoniku",
-          "akordeon",
-          "tahací harmonika"
-        ]
-      },
-      "en": {
-        "prompt": "accordion",
-        "accepted": [
-          "accordion",
-          "harmonica"
+          "lighthouse"
         ]
       }
     },
@@ -1329,43 +2377,23 @@
       }
     },
     {
-      "id": "globus",
+      "id": "most",
       "difficulty": 2,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "glóbus",
+        "prompt": "most",
         "accepted": [
-          "glóbus",
-          "zeměkoule"
+          "most",
+          "mostu",
+          "můstek"
         ]
       },
       "en": {
-        "prompt": "globe",
+        "prompt": "bridge",
         "accepted": [
-          "globe"
-        ]
-      }
-    },
-    {
-      "id": "kompas",
-      "difficulty": 2,
-      "category": "predmet",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "kompas",
-        "accepted": [
-          "kompas",
-          "kompasu",
-          "buzola"
-        ]
-      },
-      "en": {
-        "prompt": "compass",
-        "accepted": [
-          "compass"
+          "bridge"
         ]
       }
     },
@@ -1393,45 +2421,221 @@
       }
     },
     {
-      "id": "metronom",
-      "difficulty": 3,
+      "id": "psaci-stroj",
+      "difficulty": 2,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "metronom",
+        "prompt": "psací stroj",
         "accepted": [
-          "metronom",
-          "metronomu"
+          "psací stroj",
+          "stroj na psaní"
         ]
       },
       "en": {
-        "prompt": "metronome",
+        "prompt": "typewriter",
         "accepted": [
-          "metronome"
+          "typewriter"
         ]
       }
     },
     {
-      "id": "gramofon",
-      "difficulty": 3,
+      "id": "raketa",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": false,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "raketa",
+        "accepted": [
+          "raketa",
+          "raketu",
+          "vesmírná raketa"
+        ]
+      },
+      "en": {
+        "prompt": "rocket",
+        "accepted": [
+          "rocket",
+          "spaceship"
+        ]
+      }
+    },
+    {
+      "id": "sici-stroj",
+      "difficulty": 2,
       "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "gramofon",
+        "prompt": "šicí stroj",
         "accepted": [
-          "gramofon",
-          "gramofonu",
-          "gramec"
+          "šicí stroj",
+          "šicí stroje"
         ]
       },
       "en": {
-        "prompt": "record player",
+        "prompt": "sewing machine",
         "accepted": [
-          "record player",
-          "turntable",
-          "gramophone"
+          "sewing machine"
+        ]
+      }
+    },
+    {
+      "id": "stan",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "stan",
+        "accepted": [
+          "stan",
+          "stanu",
+          "kemp"
+        ]
+      },
+      "en": {
+        "prompt": "tent",
+        "accepted": [
+          "tent",
+          "camping tent"
+        ]
+      }
+    },
+    {
+      "id": "studna",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "studna",
+        "accepted": [
+          "studna",
+          "studnu",
+          "studánka"
+        ]
+      },
+      "en": {
+        "prompt": "well",
+        "accepted": [
+          "well",
+          "water well",
+          "wishing well"
+        ]
+      }
+    },
+    {
+      "id": "trumpeta",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "trumpeta",
+        "accepted": [
+          "trumpeta",
+          "trumpetu",
+          "trubka",
+          "polnice"
+        ]
+      },
+      "en": {
+        "prompt": "trumpet",
+        "accepted": [
+          "trumpet",
+          "bugle"
+        ]
+      }
+    },
+    {
+      "id": "vahy",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "váhy",
+        "accepted": [
+          "váhy",
+          "váha",
+          "kuchyňská váha",
+          "závaží"
+        ]
+      },
+      "en": {
+        "prompt": "scales",
+        "accepted": [
+          "scales",
+          "weighing scales"
+        ]
+      }
+    },
+    {
+      "id": "vetrny-mlyn",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "větrný mlýn",
+        "accepted": [
+          "větrný mlýn",
+          "mlýn",
+          "mlýnské kolo"
+        ]
+      },
+      "en": {
+        "prompt": "windmill",
+        "accepted": [
+          "windmill",
+          "mill"
+        ]
+      }
+    },
+    {
+      "id": "vrtulnik",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "vrtulník",
+        "accepted": [
+          "vrtulník",
+          "helikoptéra",
+          "vrtulníku"
+        ]
+      },
+      "en": {
+        "prompt": "helicopter",
+        "accepted": [
+          "helicopter",
+          "chopper"
+        ]
+      }
+    },
+    {
+      "id": "vzducholod",
+      "difficulty": 2,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "vzducholoď",
+        "accepted": [
+          "vzducholoď",
+          "vzducholodě",
+          "zeppelin"
+        ]
+      },
+      "en": {
+        "prompt": "airship",
+        "accepted": [
+          "airship",
+          "blimp"
         ]
       }
     },
@@ -1459,71 +2663,171 @@
       }
     },
     {
-      "id": "strom",
-      "difficulty": 1,
-      "category": "priroda",
+      "id": "zebrik",
+      "difficulty": 2,
+      "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "strom",
+        "prompt": "žebřík",
         "accepted": [
-          "strom",
-          "stromu",
-          "stromek",
-          "dub",
-          "smrk"
+          "žebřík",
+          "žebříku",
+          "štafle"
         ]
       },
       "en": {
-        "prompt": "tree",
+        "prompt": "ladder",
         "accepted": [
-          "tree"
+          "ladder",
+          "stepladder"
         ]
       }
     },
     {
-      "id": "slunce",
-      "difficulty": 1,
-      "category": "priroda",
+      "id": "gramofon",
+      "difficulty": 3,
+      "category": "predmet",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "slunce",
+        "prompt": "gramofon",
         "accepted": [
-          "slunce",
-          "sluníčko",
-          "slunko"
+          "gramofon",
+          "gramofonu",
+          "gramec"
         ]
       },
       "en": {
-        "prompt": "sun",
+        "prompt": "record player",
         "accepted": [
-          "sun",
-          "sunshine"
+          "record player",
+          "turntable",
+          "gramophone"
         ]
       }
     },
     {
-      "id": "kvetina",
+      "id": "hlavolam",
+      "difficulty": 3,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hlavolam",
+        "accepted": [
+          "hlavolam",
+          "hlavolamu",
+          "puzzle"
+        ]
+      },
+      "en": {
+        "prompt": "puzzle",
+        "accepted": [
+          "puzzle",
+          "brain teaser"
+        ]
+      }
+    },
+    {
+      "id": "kaleidoskop",
+      "difficulty": 3,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "kaleidoskop",
+        "accepted": [
+          "kaleidoskop",
+          "kaleidoskopu"
+        ]
+      },
+      "en": {
+        "prompt": "kaleidoscope",
+        "accepted": [
+          "kaleidoscope"
+        ]
+      }
+    },
+    {
+      "id": "metronom",
+      "difficulty": 3,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "metronom",
+        "accepted": [
+          "metronom",
+          "metronomu"
+        ]
+      },
+      "en": {
+        "prompt": "metronome",
+        "accepted": [
+          "metronome"
+        ]
+      }
+    },
+    {
+      "id": "sextant",
+      "difficulty": 3,
+      "category": "predmet",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "sextant",
+        "accepted": [
+          "sextant",
+          "sextantu"
+        ]
+      },
+      "en": {
+        "prompt": "sextant",
+        "accepted": [
+          "sextant"
+        ]
+      }
+    },
+    {
+      "id": "dest",
       "difficulty": 1,
       "category": "priroda",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "květina",
+        "prompt": "déšť",
         "accepted": [
-          "květina",
-          "květinu",
-          "kytka",
-          "kytička",
-          "květ"
+          "déšť",
+          "déště",
+          "prší"
         ]
       },
       "en": {
-        "prompt": "flower",
+        "prompt": "rain",
         "accepted": [
-          "flower",
-          "blossom"
+          "rain",
+          "raining"
+        ]
+      }
+    },
+    {
+      "id": "duha",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "duha",
+        "accepted": [
+          "duha",
+          "duhu"
+        ]
+      },
+      "en": {
+        "prompt": "rainbow",
+        "accepted": [
+          "rainbow"
         ]
       }
     },
@@ -1553,6 +2857,189 @@
       }
     },
     {
+      "id": "hvezda",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hvězda",
+        "accepted": [
+          "hvězda",
+          "hvězdu",
+          "hvězdička",
+          "hvězdy"
+        ]
+      },
+      "en": {
+        "prompt": "star",
+        "accepted": [
+          "star",
+          "stars"
+        ]
+      }
+    },
+    {
+      "id": "jezero",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "jezero",
+        "accepted": [
+          "jezero",
+          "jezera",
+          "rybník"
+        ]
+      },
+      "en": {
+        "prompt": "lake",
+        "accepted": [
+          "lake",
+          "pond"
+        ]
+      }
+    },
+    {
+      "id": "kamen",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "kámen",
+        "accepted": [
+          "kámen",
+          "kameny",
+          "balvan",
+          "kamínek"
+        ]
+      },
+      "en": {
+        "prompt": "stone",
+        "accepted": [
+          "stone",
+          "rock",
+          "boulder"
+        ]
+      }
+    },
+    {
+      "id": "kvetina",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "květina",
+        "accepted": [
+          "květina",
+          "květinu",
+          "kytka",
+          "kytička",
+          "květ"
+        ]
+      },
+      "en": {
+        "prompt": "flower",
+        "accepted": [
+          "flower",
+          "blossom"
+        ]
+      }
+    },
+    {
+      "id": "les",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "les",
+        "accepted": [
+          "les",
+          "lesa",
+          "lesík",
+          "hvozd"
+        ]
+      },
+      "en": {
+        "prompt": "forest",
+        "accepted": [
+          "forest",
+          "woods"
+        ]
+      }
+    },
+    {
+      "id": "list",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": false,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "list",
+        "accepted": [
+          "list",
+          "listí",
+          "lístek"
+        ]
+      },
+      "en": {
+        "prompt": "leaf",
+        "accepted": [
+          "leaf",
+          "leaves"
+        ]
+      }
+    },
+    {
+      "id": "mesic",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "měsíc",
+        "accepted": [
+          "měsíc",
+          "měsíce",
+          "úplněk",
+          "půlměsíc"
+        ]
+      },
+      "en": {
+        "prompt": "moon",
+        "accepted": [
+          "moon",
+          "crescent"
+        ]
+      }
+    },
+    {
+      "id": "more",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "moře",
+        "accepted": [
+          "moře",
+          "mořem",
+          "oceán"
+        ]
+      },
+      "en": {
+        "prompt": "sea",
+        "accepted": [
+          "sea",
+          "ocean"
+        ]
+      }
+    },
+    {
       "id": "mrak",
       "difficulty": 1,
       "category": "priroda",
@@ -1572,53 +3059,6 @@
         "accepted": [
           "cloud",
           "clouds"
-        ]
-      }
-    },
-    {
-      "id": "dest",
-      "difficulty": 1,
-      "category": "priroda",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "déšť",
-        "accepted": [
-          "déšť",
-          "déště",
-          "prší"
-        ]
-      },
-      "en": {
-        "prompt": "rain",
-        "accepted": [
-          "rain",
-          "raining"
-        ]
-      }
-    },
-    {
-      "id": "snih",
-      "difficulty": 1,
-      "category": "priroda",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "sníh",
-        "accepted": [
-          "sníh",
-          "sněhu",
-          "sněží",
-          "vločka",
-          "sněhulák"
-        ]
-      },
-      "en": {
-        "prompt": "snow",
-        "accepted": [
-          "snow",
-          "snowing",
-          "snowflake"
         ]
       }
     },
@@ -1648,133 +3088,164 @@
       }
     },
     {
-      "id": "mesic",
+      "id": "palma",
       "difficulty": 1,
       "category": "priroda",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "měsíc",
+        "prompt": "palma",
         "accepted": [
-          "měsíc",
-          "měsíce",
-          "úplněk",
-          "půlměsíc"
+          "palma",
+          "palmu",
+          "kokosová palma"
         ]
       },
       "en": {
-        "prompt": "moon",
+        "prompt": "palm tree",
         "accepted": [
-          "moon",
-          "crescent"
+          "palm tree",
+          "palm",
+          "coconut tree"
         ]
       }
     },
     {
-      "id": "hvezda",
+      "id": "plaz",
       "difficulty": 1,
       "category": "priroda",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "hvězda",
+        "prompt": "pláž",
         "accepted": [
-          "hvězda",
-          "hvězdu",
-          "hvězdička",
-          "hvězdy"
+          "pláž",
+          "pláže",
+          "břeh"
         ]
       },
       "en": {
-        "prompt": "star",
+        "prompt": "beach",
         "accepted": [
-          "star",
-          "stars"
+          "beach",
+          "shore",
+          "seaside"
         ]
       }
     },
     {
-      "id": "duha",
+      "id": "reka",
       "difficulty": 1,
       "category": "priroda",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "duha",
+        "prompt": "řeka",
         "accepted": [
-          "duha",
-          "duhu"
+          "řeka",
+          "řeku",
+          "potok"
         ]
       },
       "en": {
-        "prompt": "rainbow",
+        "prompt": "river",
         "accepted": [
-          "rainbow"
+          "river",
+          "stream",
+          "creek"
         ]
       }
     },
     {
-      "id": "sopka",
+      "id": "slunce",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "slunce",
+        "accepted": [
+          "slunce",
+          "sluníčko",
+          "slunko"
+        ]
+      },
+      "en": {
+        "prompt": "sun",
+        "accepted": [
+          "sun",
+          "sunshine"
+        ]
+      }
+    },
+    {
+      "id": "snih",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "sníh",
+        "accepted": [
+          "sníh",
+          "sněhu",
+          "sněží",
+          "vločka",
+          "sněhulák"
+        ]
+      },
+      "en": {
+        "prompt": "snow",
+        "accepted": [
+          "snow",
+          "snowing",
+          "snowflake"
+        ]
+      }
+    },
+    {
+      "id": "strom",
+      "difficulty": 1,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "strom",
+        "accepted": [
+          "strom",
+          "stromu",
+          "stromek",
+          "dub",
+          "smrk"
+        ]
+      },
+      "en": {
+        "prompt": "tree",
+        "accepted": [
+          "tree"
+        ]
+      }
+    },
+    {
+      "id": "bazina",
       "difficulty": 2,
       "category": "priroda",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "sopka",
+        "prompt": "bažina",
         "accepted": [
-          "sopka",
-          "sopku",
-          "vulkán"
+          "bažina",
+          "bažinu",
+          "močál"
         ]
       },
       "en": {
-        "prompt": "volcano",
+        "prompt": "swamp",
         "accepted": [
-          "volcano"
-        ]
-      }
-    },
-    {
-      "id": "vodopad",
-      "difficulty": 2,
-      "category": "priroda",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "vodopád",
-        "accepted": [
-          "vodopád",
-          "vodopádu",
-          "vodopády"
-        ]
-      },
-      "en": {
-        "prompt": "waterfall",
-        "accepted": [
-          "waterfall",
-          "falls"
-        ]
-      }
-    },
-    {
-      "id": "ostrov",
-      "difficulty": 2,
-      "category": "priroda",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "ostrov",
-        "accepted": [
-          "ostrov",
-          "ostrova",
-          "ostrůvek"
-        ]
-      },
-      "en": {
-        "prompt": "island",
-        "accepted": [
-          "island",
-          "isle"
+          "swamp",
+          "marsh",
+          "bog"
         ]
       }
     },
@@ -1803,26 +3274,153 @@
       }
     },
     {
-      "id": "tornado",
+      "id": "gejzir",
       "difficulty": 2,
       "category": "priroda",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "tornádo",
+        "prompt": "gejzír",
         "accepted": [
-          "tornádo",
-          "tornáda",
-          "vichřice",
-          "smršť"
+          "gejzír",
+          "gejzíru"
         ]
       },
       "en": {
-        "prompt": "tornado",
+        "prompt": "geyser",
         "accepted": [
-          "tornado",
-          "twister",
-          "whirlwind"
+          "geyser"
+        ]
+      }
+    },
+    {
+      "id": "jeskyne",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "jeskyně",
+        "accepted": [
+          "jeskyně",
+          "jeskyni",
+          "sluj"
+        ]
+      },
+      "en": {
+        "prompt": "cave",
+        "accepted": [
+          "cave",
+          "cavern"
+        ]
+      }
+    },
+    {
+      "id": "lavina",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "lavina",
+        "accepted": [
+          "lavina",
+          "lavinu",
+          "sesuv"
+        ]
+      },
+      "en": {
+        "prompt": "avalanche",
+        "accepted": [
+          "avalanche",
+          "landslide"
+        ]
+      }
+    },
+    {
+      "id": "ledovec",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "ledovec",
+        "accepted": [
+          "ledovec",
+          "ledovce",
+          "ledová kra"
+        ]
+      },
+      "en": {
+        "prompt": "iceberg",
+        "accepted": [
+          "iceberg",
+          "glacier"
+        ]
+      }
+    },
+    {
+      "id": "mlha",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "mlha",
+        "accepted": [
+          "mlha",
+          "mlhu",
+          "opar"
+        ]
+      },
+      "en": {
+        "prompt": "fog",
+        "accepted": [
+          "fog",
+          "mist",
+          "haze"
+        ]
+      }
+    },
+    {
+      "id": "oaza",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "oáza",
+        "accepted": [
+          "oáza",
+          "oázu"
+        ]
+      },
+      "en": {
+        "prompt": "oasis",
+        "accepted": [
+          "oasis"
+        ]
+      }
+    },
+    {
+      "id": "ostrov",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "ostrov",
+        "accepted": [
+          "ostrov",
+          "ostrova",
+          "ostrůvek"
+        ]
+      },
+      "en": {
+        "prompt": "island",
+        "accepted": [
+          "island",
+          "isle"
         ]
       }
     },
@@ -1850,23 +3448,133 @@
       }
     },
     {
-      "id": "jablko",
-      "difficulty": 1,
-      "category": "jidlo",
+      "id": "sopka",
+      "difficulty": 2,
+      "category": "priroda",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "jablko",
+        "prompt": "sopka",
         "accepted": [
-          "jablko",
-          "jablka",
-          "jablíčko"
+          "sopka",
+          "sopku",
+          "vulkán"
         ]
       },
       "en": {
-        "prompt": "apple",
+        "prompt": "volcano",
         "accepted": [
-          "apple"
+          "volcano"
+        ]
+      }
+    },
+    {
+      "id": "souhvezdi",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "souhvězdí",
+        "accepted": [
+          "souhvězdí",
+          "hvězdokupa"
+        ]
+      },
+      "en": {
+        "prompt": "constellation",
+        "accepted": [
+          "constellation"
+        ]
+      }
+    },
+    {
+      "id": "tornado",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "tornádo",
+        "accepted": [
+          "tornádo",
+          "tornáda",
+          "vichřice",
+          "smršť"
+        ]
+      },
+      "en": {
+        "prompt": "tornado",
+        "accepted": [
+          "tornado",
+          "twister",
+          "whirlwind"
+        ]
+      }
+    },
+    {
+      "id": "utes",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "útes",
+        "accepted": [
+          "útes",
+          "útesu",
+          "skála"
+        ]
+      },
+      "en": {
+        "prompt": "cliff",
+        "accepted": [
+          "cliff",
+          "rock face"
+        ]
+      }
+    },
+    {
+      "id": "vodopad",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "vodopád",
+        "accepted": [
+          "vodopád",
+          "vodopádu",
+          "vodopády"
+        ]
+      },
+      "en": {
+        "prompt": "waterfall",
+        "accepted": [
+          "waterfall",
+          "falls"
+        ]
+      }
+    },
+    {
+      "id": "zatmeni",
+      "difficulty": 2,
+      "category": "priroda",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "zatmění",
+        "accepted": [
+          "zatmění",
+          "zatmění slunce",
+          "eklipsa"
+        ]
+      },
+      "en": {
+        "prompt": "eclipse",
+        "accepted": [
+          "eclipse",
+          "solar eclipse"
         ]
       }
     },
@@ -1892,6 +3600,138 @@
       }
     },
     {
+      "id": "citron",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "citron",
+        "accepted": [
+          "citron",
+          "citronu"
+        ]
+      },
+      "en": {
+        "prompt": "lemon",
+        "accepted": [
+          "lemon"
+        ]
+      }
+    },
+    {
+      "id": "cokolada",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "čokoláda",
+        "accepted": [
+          "čokoláda",
+          "čokoládu",
+          "tabulka čokolády"
+        ]
+      },
+      "en": {
+        "prompt": "chocolate",
+        "accepted": [
+          "chocolate",
+          "chocolate bar"
+        ]
+      }
+    },
+    {
+      "id": "dort",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "dort",
+        "accepted": [
+          "dort",
+          "dortu",
+          "koláč",
+          "narozeninový dort"
+        ]
+      },
+      "en": {
+        "prompt": "cake",
+        "accepted": [
+          "cake",
+          "birthday cake"
+        ]
+      }
+    },
+    {
+      "id": "hamburger",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hamburger",
+        "accepted": [
+          "hamburger",
+          "burger",
+          "cheeseburger"
+        ]
+      },
+      "en": {
+        "prompt": "burger",
+        "accepted": [
+          "burger",
+          "hamburger",
+          "cheeseburger"
+        ]
+      }
+    },
+    {
+      "id": "hrozny",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hrozny",
+        "accepted": [
+          "hrozny",
+          "hrozen",
+          "hroznové víno"
+        ]
+      },
+      "en": {
+        "prompt": "grapes",
+        "accepted": [
+          "grapes",
+          "grape",
+          "bunch of grapes"
+        ]
+      }
+    },
+    {
+      "id": "hruska",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hruška",
+        "accepted": [
+          "hruška",
+          "hrušku",
+          "hrušky"
+        ]
+      },
+      "en": {
+        "prompt": "pear",
+        "accepted": [
+          "pear"
+        ]
+      }
+    },
+    {
       "id": "chleba",
       "difficulty": 1,
       "category": "jidlo",
@@ -1903,8 +3743,7 @@
           "chleba",
           "chléb",
           "chlebík",
-          "bochník",
-          "houska"
+          "bochník"
         ]
       },
       "en": {
@@ -1913,6 +3752,202 @@
           "bread",
           "loaf",
           "bun"
+        ]
+      }
+    },
+    {
+      "id": "jablko",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "jablko",
+        "accepted": [
+          "jablko",
+          "jablka",
+          "jablíčko"
+        ]
+      },
+      "en": {
+        "prompt": "apple",
+        "accepted": [
+          "apple"
+        ]
+      }
+    },
+    {
+      "id": "jahoda",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "jahoda",
+        "accepted": [
+          "jahoda",
+          "jahodu",
+          "jahody"
+        ]
+      },
+      "en": {
+        "prompt": "strawberry",
+        "accepted": [
+          "strawberry",
+          "strawberries"
+        ]
+      }
+    },
+    {
+      "id": "kobliha",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "kobliha",
+        "accepted": [
+          "kobliha",
+          "koblihu",
+          "donut"
+        ]
+      },
+      "en": {
+        "prompt": "donut",
+        "accepted": [
+          "donut",
+          "doughnut"
+        ]
+      }
+    },
+    {
+      "id": "kukurice",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "kukuřice",
+        "accepted": [
+          "kukuřice",
+          "kukuřici",
+          "klas kukuřice"
+        ]
+      },
+      "en": {
+        "prompt": "corn",
+        "accepted": [
+          "corn",
+          "sweetcorn",
+          "corn on the cob"
+        ]
+      }
+    },
+    {
+      "id": "mrkev",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "mrkev",
+        "accepted": [
+          "mrkev",
+          "mrkve",
+          "karotka"
+        ]
+      },
+      "en": {
+        "prompt": "carrot",
+        "accepted": [
+          "carrot"
+        ]
+      }
+    },
+    {
+      "id": "pizza",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "pizza",
+        "accepted": [
+          "pizza",
+          "pizzu",
+          "pizza slice"
+        ]
+      },
+      "en": {
+        "prompt": "pizza",
+        "accepted": [
+          "pizza"
+        ]
+      }
+    },
+    {
+      "id": "popcorn",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "popcorn",
+        "accepted": [
+          "popcorn",
+          "popkorn",
+          "pukance"
+        ]
+      },
+      "en": {
+        "prompt": "popcorn",
+        "accepted": [
+          "popcorn"
+        ]
+      }
+    },
+    {
+      "id": "rajce",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "rajče",
+        "accepted": [
+          "rajče",
+          "rajčata",
+          "rajské jablíčko"
+        ]
+      },
+      "en": {
+        "prompt": "tomato",
+        "accepted": [
+          "tomato",
+          "tomatoes"
+        ]
+      }
+    },
+    {
+      "id": "susenka",
+      "difficulty": 1,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "sušenka",
+        "accepted": [
+          "sušenka",
+          "sušenky",
+          "keks"
+        ]
+      },
+      "en": {
+        "prompt": "cookie",
+        "accepted": [
+          "cookie",
+          "biscuit",
+          "cookies"
         ]
       }
     },
@@ -1949,8 +3984,7 @@
         "accepted": [
           "vejce",
           "vajíčko",
-          "vajec",
-          "vajce"
+          "vajec"
         ]
       },
       "en": {
@@ -1958,50 +3992,6 @@
         "accepted": [
           "egg",
           "eggs"
-        ]
-      }
-    },
-    {
-      "id": "mrkev",
-      "difficulty": 1,
-      "category": "jidlo",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "mrkev",
-        "accepted": [
-          "mrkev",
-          "mrkve",
-          "karotka"
-        ]
-      },
-      "en": {
-        "prompt": "carrot",
-        "accepted": [
-          "carrot"
-        ]
-      }
-    },
-    {
-      "id": "dort",
-      "difficulty": 1,
-      "category": "jidlo",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "dort",
-        "accepted": [
-          "dort",
-          "dortu",
-          "koláč",
-          "narozeninový dort"
-        ]
-      },
-      "en": {
-        "prompt": "cake",
-        "accepted": [
-          "cake",
-          "birthday cake"
         ]
       }
     },
@@ -2030,48 +4020,6 @@
       }
     },
     {
-      "id": "pizza",
-      "difficulty": 1,
-      "category": "jidlo",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "pizza",
-        "accepted": [
-          "pizza",
-          "pizzu",
-          "pizza slice"
-        ]
-      },
-      "en": {
-        "prompt": "pizza",
-        "accepted": [
-          "pizza"
-        ]
-      }
-    },
-    {
-      "id": "hruska",
-      "difficulty": 1,
-      "category": "jidlo",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "hruška",
-        "accepted": [
-          "hruška",
-          "hrušku",
-          "hrušky"
-        ]
-      },
-      "en": {
-        "prompt": "pear",
-        "accepted": [
-          "pear"
-        ]
-      }
-    },
-    {
       "id": "ananas",
       "difficulty": 2,
       "category": "jidlo",
@@ -2092,48 +4040,23 @@
       }
     },
     {
-      "id": "palacinka",
+      "id": "croissant",
       "difficulty": 2,
       "category": "jidlo",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "palačinka",
+        "prompt": "croissant",
         "accepted": [
-          "palačinka",
-          "palačinku",
-          "lívanec",
-          "palačinky"
+          "croissant",
+          "croissanty",
+          "loupák"
         ]
       },
       "en": {
-        "prompt": "pancake",
+        "prompt": "croissant",
         "accepted": [
-          "pancake",
-          "pancakes",
-          "crepe"
-        ]
-      }
-    },
-    {
-      "id": "meloun",
-      "difficulty": 2,
-      "category": "jidlo",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "meloun",
-        "accepted": [
-          "meloun",
-          "melounu",
-          "vodní meloun"
-        ]
-      },
-      "en": {
-        "prompt": "watermelon",
-        "accepted": [
-          "watermelon",
-          "melon"
+          "croissant"
         ]
       }
     },
@@ -2162,77 +4085,201 @@
       }
     },
     {
-      "id": "spanek",
+      "id": "knedliky",
       "difficulty": 2,
-      "category": "cinnost",
+      "category": "jidlo",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "spánek",
+        "prompt": "knedlíky",
         "accepted": [
-          "spánek",
-          "spaní",
-          "spí",
-          "spát",
-          "chrápání"
+          "knedlíky",
+          "knedlík",
+          "houskový knedlík"
         ]
       },
       "en": {
-        "prompt": "sleep",
+        "prompt": "dumplings",
         "accepted": [
-          "sleep",
-          "sleeping",
-          "nap",
-          "snoring"
+          "dumplings",
+          "dumpling"
         ]
       }
     },
     {
-      "id": "plavani",
+      "id": "meloun",
       "difficulty": 2,
-      "category": "cinnost",
+      "category": "jidlo",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "plavání",
+        "prompt": "meloun",
         "accepted": [
-          "plavání",
-          "plavat",
-          "plave",
-          "plavec"
+          "meloun",
+          "melounu",
+          "vodní meloun"
         ]
       },
       "en": {
-        "prompt": "swimming",
+        "prompt": "watermelon",
         "accepted": [
-          "swimming",
-          "swim",
-          "swimmer"
+          "watermelon",
+          "melon"
         ]
       }
     },
     {
-      "id": "tanec",
+      "id": "muffin",
       "difficulty": 2,
-      "category": "cinnost",
+      "category": "jidlo",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "tanec",
+        "prompt": "muffin",
         "accepted": [
-          "tanec",
-          "tancování",
-          "tančí",
-          "tanečník",
-          "tancovat"
+          "muffin",
+          "muffiny",
+          "košíček"
         ]
       },
       "en": {
-        "prompt": "dancing",
+        "prompt": "muffin",
         "accepted": [
-          "dancing",
-          "dance",
-          "dancer"
+          "muffin",
+          "cupcake"
+        ]
+      }
+    },
+    {
+      "id": "palacinka",
+      "difficulty": 2,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "palačinka",
+        "accepted": [
+          "palačinka",
+          "palačinku",
+          "lívanec",
+          "palačinky"
+        ]
+      },
+      "en": {
+        "prompt": "pancake",
+        "accepted": [
+          "pancake",
+          "pancakes",
+          "crepe"
+        ]
+      }
+    },
+    {
+      "id": "polevka",
+      "difficulty": 2,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "polévka",
+        "accepted": [
+          "polévka",
+          "polévku",
+          "vývar"
+        ]
+      },
+      "en": {
+        "prompt": "soup",
+        "accepted": [
+          "soup",
+          "bowl of soup"
+        ]
+      }
+    },
+    {
+      "id": "salat",
+      "difficulty": 2,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "salát",
+        "accepted": [
+          "salát",
+          "salátu",
+          "míchaný salát"
+        ]
+      },
+      "en": {
+        "prompt": "salad",
+        "accepted": [
+          "salad",
+          "lettuce"
+        ]
+      }
+    },
+    {
+      "id": "sendvic",
+      "difficulty": 2,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "sendvič",
+        "accepted": [
+          "sendvič",
+          "sendviče",
+          "obložený chléb"
+        ]
+      },
+      "en": {
+        "prompt": "sandwich",
+        "accepted": [
+          "sandwich"
+        ]
+      }
+    },
+    {
+      "id": "spagety",
+      "difficulty": 2,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "špagety",
+        "accepted": [
+          "špagety",
+          "špaget",
+          "těstoviny"
+        ]
+      },
+      "en": {
+        "prompt": "spaghetti",
+        "accepted": [
+          "spaghetti",
+          "pasta",
+          "noodles"
+        ]
+      }
+    },
+    {
+      "id": "sushi",
+      "difficulty": 2,
+      "category": "jidlo",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "sushi",
+        "accepted": [
+          "sushi",
+          "suši"
+        ]
+      },
+      "en": {
+        "prompt": "sushi",
+        "accepted": [
+          "sushi",
+          "sushi roll"
         ]
       }
     },
@@ -2259,6 +4306,267 @@
           "run",
           "runner",
           "jogging"
+        ]
+      }
+    },
+    {
+      "id": "brusleni",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "bruslení",
+        "accepted": [
+          "bruslení",
+          "bruslit",
+          "brusle",
+          "bruslař"
+        ]
+      },
+      "en": {
+        "prompt": "skating",
+        "accepted": [
+          "skating",
+          "ice skating",
+          "skater"
+        ]
+      }
+    },
+    {
+      "id": "cteni",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "čtení",
+        "accepted": [
+          "čtení",
+          "číst",
+          "čtenář",
+          "čte si"
+        ]
+      },
+      "en": {
+        "prompt": "reading",
+        "accepted": [
+          "reading",
+          "read",
+          "reader"
+        ]
+      }
+    },
+    {
+      "id": "fotbal",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "fotbal",
+        "accepted": [
+          "fotbal",
+          "fotbálek",
+          "kopaná"
+        ]
+      },
+      "en": {
+        "prompt": "football",
+        "accepted": [
+          "football",
+          "soccer",
+          "playing football"
+        ]
+      }
+    },
+    {
+      "id": "lezeni",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "lezení",
+        "accepted": [
+          "lezení",
+          "lézt",
+          "šplhání",
+          "horolezec"
+        ]
+      },
+      "en": {
+        "prompt": "climbing",
+        "accepted": [
+          "climbing",
+          "climb",
+          "climber"
+        ]
+      }
+    },
+    {
+      "id": "lyzovani",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "lyžování",
+        "accepted": [
+          "lyžování",
+          "lyžovat",
+          "lyžař",
+          "lyže"
+        ]
+      },
+      "en": {
+        "prompt": "skiing",
+        "accepted": [
+          "skiing",
+          "ski",
+          "skier"
+        ]
+      }
+    },
+    {
+      "id": "malovani",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "malování",
+        "accepted": [
+          "malování",
+          "malovat",
+          "maluje",
+          "malíř"
+        ]
+      },
+      "en": {
+        "prompt": "painting",
+        "accepted": [
+          "painting",
+          "paint",
+          "painter"
+        ]
+      }
+    },
+    {
+      "id": "objeti",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "objetí",
+        "accepted": [
+          "objetí",
+          "obejmutí",
+          "obejmout",
+          "objímání"
+        ]
+      },
+      "en": {
+        "prompt": "hug",
+        "accepted": [
+          "hug",
+          "hugging",
+          "embrace"
+        ]
+      }
+    },
+    {
+      "id": "plac",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "pláč",
+        "accepted": [
+          "pláč",
+          "brekot",
+          "pláče",
+          "slzy"
+        ]
+      },
+      "en": {
+        "prompt": "crying",
+        "accepted": [
+          "crying",
+          "cry",
+          "tears",
+          "weeping"
+        ]
+      }
+    },
+    {
+      "id": "plavani",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "plavání",
+        "accepted": [
+          "plavání",
+          "plavat",
+          "plavec"
+        ]
+      },
+      "en": {
+        "prompt": "swimming",
+        "accepted": [
+          "swimming",
+          "swim",
+          "swimmer"
+        ]
+      }
+    },
+    {
+      "id": "potapeni",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "potápění",
+        "accepted": [
+          "potápění",
+          "potápět se",
+          "potápěč"
+        ]
+      },
+      "en": {
+        "prompt": "diving",
+        "accepted": [
+          "diving",
+          "scuba diving",
+          "dive"
+        ]
+      }
+    },
+    {
+      "id": "rybareni",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "rybaření",
+        "accepted": [
+          "rybaření",
+          "rybařit",
+          "rybář",
+          "chytání ryb"
+        ]
+      },
+      "en": {
+        "prompt": "fishing",
+        "accepted": [
+          "fishing",
+          "fisherman"
         ]
       }
     },
@@ -2311,28 +4619,289 @@
       }
     },
     {
-      "id": "plac",
+      "id": "spanek",
       "difficulty": 2,
       "category": "cinnost",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "pláč",
+        "prompt": "spánek",
         "accepted": [
-          "pláč",
-          "brekot",
-          "pláče",
-          "slzy",
-          "plakat"
+          "spánek",
+          "spaní",
+          "spí",
+          "spát",
+          "chrápání"
         ]
       },
       "en": {
-        "prompt": "crying",
+        "prompt": "sleep",
         "accepted": [
-          "crying",
-          "cry",
-          "tears",
-          "weeping"
+          "sleep",
+          "sleeping",
+          "nap",
+          "snoring"
+        ]
+      }
+    },
+    {
+      "id": "tanec",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "tanec",
+        "accepted": [
+          "tanec",
+          "tancování",
+          "tančí",
+          "tanečník",
+          "tancovat"
+        ]
+      },
+      "en": {
+        "prompt": "dancing",
+        "accepted": [
+          "dancing",
+          "dance",
+          "dancer"
+        ]
+      }
+    },
+    {
+      "id": "uklid",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "úklid",
+        "accepted": [
+          "úklid",
+          "uklízení",
+          "uklízet"
+        ]
+      },
+      "en": {
+        "prompt": "cleaning",
+        "accepted": [
+          "cleaning",
+          "tidying up",
+          "cleaning up"
+        ]
+      }
+    },
+    {
+      "id": "vareni",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "vaření",
+        "accepted": [
+          "vaření",
+          "vařit",
+          "vaří",
+          "kuchař"
+        ]
+      },
+      "en": {
+        "prompt": "cooking",
+        "accepted": [
+          "cooking",
+          "cook",
+          "chef"
+        ]
+      }
+    },
+    {
+      "id": "zpev",
+      "difficulty": 2,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "zpěv",
+        "accepted": [
+          "zpěv",
+          "zpívání",
+          "zpívá",
+          "zpěvák"
+        ]
+      },
+      "en": {
+        "prompt": "singing",
+        "accepted": [
+          "singing",
+          "sing",
+          "singer",
+          "song"
+        ]
+      }
+    },
+    {
+      "id": "balancovani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "balancování",
+        "accepted": [
+          "balancování",
+          "balancovat",
+          "rovnováha"
+        ]
+      },
+      "en": {
+        "prompt": "balancing",
+        "accepted": [
+          "balancing",
+          "keeping balance"
+        ]
+      }
+    },
+    {
+      "id": "bloudeni",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "bloudění",
+        "accepted": [
+          "bloudění",
+          "zabloudit",
+          "ztratit se",
+          "bloudí"
+        ]
+      },
+      "en": {
+        "prompt": "getting lost",
+        "accepted": [
+          "getting lost",
+          "lost",
+          "wandering"
+        ]
+      }
+    },
+    {
+      "id": "cestovani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "cestování",
+        "accepted": [
+          "cestování",
+          "cestovat",
+          "výlet"
+        ]
+      },
+      "en": {
+        "prompt": "travelling",
+        "accepted": [
+          "travelling",
+          "traveling",
+          "travel"
+        ]
+      }
+    },
+    {
+      "id": "hadka",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hádka",
+        "accepted": [
+          "hádka",
+          "hádku",
+          "spor",
+          "hádání se"
+        ]
+      },
+      "en": {
+        "prompt": "argument",
+        "accepted": [
+          "argument",
+          "quarrel",
+          "arguing"
+        ]
+      }
+    },
+    {
+      "id": "hledani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hledání",
+        "accepted": [
+          "hledání",
+          "hledat",
+          "hledá",
+          "pátrání"
+        ]
+      },
+      "en": {
+        "prompt": "searching",
+        "accepted": [
+          "searching",
+          "looking for",
+          "search"
+        ]
+      }
+    },
+    {
+      "id": "honicka",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "honička",
+        "accepted": [
+          "honička",
+          "honěná",
+          "pronásledování"
+        ]
+      },
+      "en": {
+        "prompt": "chase",
+        "accepted": [
+          "chase",
+          "chasing",
+          "tag"
+        ]
+      }
+    },
+    {
+      "id": "krik",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "křik",
+        "accepted": [
+          "křik",
+          "křičení",
+          "křičí",
+          "řev"
+        ]
+      },
+      "en": {
+        "prompt": "shouting",
+        "accepted": [
+          "shouting",
+          "scream",
+          "yelling"
         ]
       }
     },
@@ -2360,6 +4929,454 @@
       }
     },
     {
+      "id": "lechtani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "lechtání",
+        "accepted": [
+          "lechtání",
+          "lechtat",
+          "lechtá"
+        ]
+      },
+      "en": {
+        "prompt": "tickling",
+        "accepted": [
+          "tickling",
+          "tickle"
+        ]
+      }
+    },
+    {
+      "id": "louceni",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "loučení",
+        "accepted": [
+          "loučení",
+          "rozloučení",
+          "sbohem"
+        ]
+      },
+      "en": {
+        "prompt": "farewell",
+        "accepted": [
+          "farewell",
+          "goodbye",
+          "saying goodbye"
+        ]
+      }
+    },
+    {
+      "id": "mavani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "mávání",
+        "accepted": [
+          "mávání",
+          "mávat",
+          "mává"
+        ]
+      },
+      "en": {
+        "prompt": "waving",
+        "accepted": [
+          "waving",
+          "wave goodbye"
+        ]
+      }
+    },
+    {
+      "id": "mrknuti",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "mrknutí",
+        "accepted": [
+          "mrknutí",
+          "mrknout",
+          "mrkání"
+        ]
+      },
+      "en": {
+        "prompt": "wink",
+        "accepted": [
+          "wink",
+          "winking"
+        ]
+      }
+    },
+    {
+      "id": "nakupovani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "nakupování",
+        "accepted": [
+          "nakupování",
+          "nakupovat",
+          "nákup"
+        ]
+      },
+      "en": {
+        "prompt": "shopping",
+        "accepted": [
+          "shopping",
+          "buying groceries"
+        ]
+      }
+    },
+    {
+      "id": "odpocitavani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "odpočítávání",
+        "accepted": [
+          "odpočítávání",
+          "odpočet",
+          "počítání do startu"
+        ]
+      },
+      "en": {
+        "prompt": "countdown",
+        "accepted": [
+          "countdown",
+          "counting down"
+        ]
+      }
+    },
+    {
+      "id": "oslava",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "oslava",
+        "accepted": [
+          "oslava",
+          "oslavu",
+          "večírek",
+          "párty"
+        ]
+      },
+      "en": {
+        "prompt": "celebration",
+        "accepted": [
+          "celebration",
+          "party",
+          "celebrating"
+        ]
+      }
+    },
+    {
+      "id": "plazeni",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "plazení",
+        "accepted": [
+          "plazení",
+          "plazit se",
+          "lezení po břiše"
+        ]
+      },
+      "en": {
+        "prompt": "crawling",
+        "accepted": [
+          "crawling",
+          "crawl"
+        ]
+      }
+    },
+    {
+      "id": "podani-ruky",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "podání ruky",
+        "accepted": [
+          "podání ruky",
+          "potřesení rukou"
+        ]
+      },
+      "en": {
+        "prompt": "handshake",
+        "accepted": [
+          "handshake",
+          "shaking hands"
+        ]
+      }
+    },
+    {
+      "id": "potlesk",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "potlesk",
+        "accepted": [
+          "potlesk",
+          "tleskání",
+          "tleská",
+          "aplaus"
+        ]
+      },
+      "en": {
+        "prompt": "applause",
+        "accepted": [
+          "applause",
+          "clapping",
+          "applauding"
+        ]
+      }
+    },
+    {
+      "id": "pristani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "přistání",
+        "accepted": [
+          "přistání",
+          "přistát",
+          "přistání letadla"
+        ]
+      },
+      "en": {
+        "prompt": "landing",
+        "accepted": [
+          "landing",
+          "touchdown"
+        ]
+      }
+    },
+    {
+      "id": "probuzeni",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "probuzení",
+        "accepted": [
+          "probuzení",
+          "probudit se",
+          "vstávání"
+        ]
+      },
+      "en": {
+        "prompt": "waking up",
+        "accepted": [
+          "waking up",
+          "wake up"
+        ]
+      }
+    },
+    {
+      "id": "schovavana",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "schovávaná",
+        "accepted": [
+          "schovávaná",
+          "schovka",
+          "hra na schovávanou"
+        ]
+      },
+      "en": {
+        "prompt": "hide and seek",
+        "accepted": [
+          "hide and seek",
+          "hiding"
+        ]
+      }
+    },
+    {
+      "id": "skytavka",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "škytavka",
+        "accepted": [
+          "škytavka",
+          "škytání",
+          "škytá"
+        ]
+      },
+      "en": {
+        "prompt": "hiccups",
+        "accepted": [
+          "hiccups",
+          "hiccup"
+        ]
+      }
+    },
+    {
+      "id": "stehovani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "stěhování",
+        "accepted": [
+          "stěhování",
+          "stěhovat se",
+          "stěhováci"
+        ]
+      },
+      "en": {
+        "prompt": "moving",
+        "accepted": [
+          "moving",
+          "moving house",
+          "moving out"
+        ]
+      }
+    },
+    {
+      "id": "uklouznuti",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "uklouznutí",
+        "accepted": [
+          "uklouznutí",
+          "uklouznout",
+          "podklouznutí"
+        ]
+      },
+      "en": {
+        "prompt": "slipping",
+        "accepted": [
+          "slipping",
+          "slip"
+        ]
+      }
+    },
+    {
+      "id": "usmireni",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "usmíření",
+        "accepted": [
+          "usmíření",
+          "smír",
+          "udobření"
+        ]
+      },
+      "en": {
+        "prompt": "making up",
+        "accepted": [
+          "making up",
+          "reconciliation",
+          "peace"
+        ]
+      }
+    },
+    {
+      "id": "utek",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "útěk",
+        "accepted": [
+          "útěk",
+          "utéct",
+          "uprchnout"
+        ]
+      },
+      "en": {
+        "prompt": "escape",
+        "accepted": [
+          "escape",
+          "escaping",
+          "getaway"
+        ]
+      }
+    },
+    {
+      "id": "zakopnuti",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "zakopnutí",
+        "accepted": [
+          "zakopnutí",
+          "zakopnout",
+          "klopýtnutí"
+        ]
+      },
+      "en": {
+        "prompt": "tripping",
+        "accepted": [
+          "tripping",
+          "stumbling",
+          "trip"
+        ]
+      }
+    },
+    {
+      "id": "zaspani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "zaspání",
+        "accepted": [
+          "zaspání",
+          "zaspat",
+          "zaspal"
+        ]
+      },
+      "en": {
+        "prompt": "oversleeping",
+        "accepted": [
+          "oversleeping",
+          "overslept"
+        ]
+      }
+    },
+    {
       "id": "zivani",
       "difficulty": 3,
       "category": "cinnost",
@@ -2379,6 +5396,963 @@
         "accepted": [
           "yawning",
           "yawn"
+        ]
+      }
+    },
+    {
+      "id": "zonglovani",
+      "difficulty": 3,
+      "category": "cinnost",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "žonglování",
+        "accepted": [
+          "žonglování",
+          "žonglovat",
+          "žonglér"
+        ]
+      },
+      "en": {
+        "prompt": "juggling",
+        "accepted": [
+          "juggling",
+          "juggler"
+        ]
+      }
+    },
+    {
+      "id": "bolest",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "bolest",
+        "accepted": [
+          "bolest",
+          "bolí",
+          "bolestí"
+        ]
+      },
+      "en": {
+        "prompt": "pain",
+        "accepted": [
+          "pain",
+          "ache",
+          "hurt"
+        ]
+      }
+    },
+    {
+      "id": "cas",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "čas",
+        "accepted": [
+          "čas",
+          "času",
+          "plynutí času"
+        ]
+      },
+      "en": {
+        "prompt": "time",
+        "accepted": [
+          "time",
+          "passing time"
+        ]
+      }
+    },
+    {
+      "id": "cekani",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "čekání",
+        "accepted": [
+          "čekání",
+          "čeká",
+          "čekat",
+          "fronta"
+        ]
+      },
+      "en": {
+        "prompt": "waiting",
+        "accepted": [
+          "waiting",
+          "wait",
+          "queue"
+        ]
+      }
+    },
+    {
+      "id": "detstvi",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "dětství",
+        "accepted": [
+          "dětství",
+          "dětstvím",
+          "dítě"
+        ]
+      },
+      "en": {
+        "prompt": "childhood",
+        "accepted": [
+          "childhood",
+          "being a child"
+        ]
+      }
+    },
+    {
+      "id": "duvera",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "důvěra",
+        "accepted": [
+          "důvěra",
+          "důvěřovat",
+          "spolehnutí"
+        ]
+      },
+      "en": {
+        "prompt": "trust",
+        "accepted": [
+          "trust",
+          "trusting",
+          "faith"
+        ]
+      }
+    },
+    {
+      "id": "gravitace",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "gravitace",
+        "accepted": [
+          "gravitace",
+          "přitažlivost",
+          "tíhová síla"
+        ]
+      },
+      "en": {
+        "prompt": "gravity",
+        "accepted": [
+          "gravity",
+          "falling down"
+        ]
+      }
+    },
+    {
+      "id": "hlad",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hlad",
+        "accepted": [
+          "hlad",
+          "hladový",
+          "hladovění"
+        ]
+      },
+      "en": {
+        "prompt": "hunger",
+        "accepted": [
+          "hunger",
+          "hungry",
+          "starving"
+        ]
+      }
+    },
+    {
+      "id": "hluk",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hluk",
+        "accepted": [
+          "hluk",
+          "hlučnost",
+          "rámus"
+        ]
+      },
+      "en": {
+        "prompt": "noise",
+        "accepted": [
+          "noise",
+          "noisy",
+          "loudness"
+        ]
+      }
+    },
+    {
+      "id": "hnev",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hněv",
+        "accepted": [
+          "hněv",
+          "vztek",
+          "zlost",
+          "naštvání"
+        ]
+      },
+      "en": {
+        "prompt": "anger",
+        "accepted": [
+          "anger",
+          "angry",
+          "rage",
+          "fury"
+        ]
+      }
+    },
+    {
+      "id": "hrdost",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hrdost",
+        "accepted": [
+          "hrdost",
+          "hrdý",
+          "pýcha"
+        ]
+      },
+      "en": {
+        "prompt": "pride",
+        "accepted": [
+          "pride",
+          "proud"
+        ]
+      }
+    },
+    {
+      "id": "hudba",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "hudba",
+        "accepted": [
+          "hudba",
+          "hudbu",
+          "muzika",
+          "melodie"
+        ]
+      },
+      "en": {
+        "prompt": "music",
+        "accepted": [
+          "music",
+          "melody"
+        ]
+      }
+    },
+    {
+      "id": "chaos",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "chaos",
+        "accepted": [
+          "chaos",
+          "chaosu",
+          "zmatek",
+          "nepořádek",
+          "bordel"
+        ]
+      },
+      "en": {
+        "prompt": "chaos",
+        "accepted": [
+          "chaos",
+          "mess",
+          "confusion"
+        ]
+      }
+    },
+    {
+      "id": "konec",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "konec",
+        "accepted": [
+          "konec",
+          "konce",
+          "finiš"
+        ]
+      },
+      "en": {
+        "prompt": "end",
+        "accepted": [
+          "end",
+          "the end",
+          "ending"
+        ]
+      }
+    },
+    {
+      "id": "laska",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "láska",
+        "accepted": [
+          "láska",
+          "lásku",
+          "zamilovanost",
+          "zamilovaný"
+        ]
+      },
+      "en": {
+        "prompt": "love",
+        "accepted": [
+          "love",
+          "in love",
+          "romance"
+        ]
+      }
+    },
+    {
+      "id": "lenost",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "lenost",
+        "accepted": [
+          "lenost",
+          "lenošení"
+        ]
+      },
+      "en": {
+        "prompt": "laziness",
+        "accepted": [
+          "laziness",
+          "lazy",
+          "being lazy"
+        ]
+      }
+    },
+    {
+      "id": "lhani",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "lhaní",
+        "accepted": [
+          "lhaní",
+          "lež",
+          "lhát"
+        ]
+      },
+      "en": {
+        "prompt": "lying",
+        "accepted": [
+          "lying",
+          "lie",
+          "telling a lie"
+        ]
+      }
+    },
+    {
+      "id": "litost",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "lítost",
+        "accepted": [
+          "lítost",
+          "litovat",
+          "výčitky"
+        ]
+      },
+      "en": {
+        "prompt": "regret",
+        "accepted": [
+          "regret",
+          "remorse"
+        ]
+      }
+    },
+    {
+      "id": "nadeje",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "naděje",
+        "accepted": [
+          "naděje",
+          "naději",
+          "doufání"
+        ]
+      },
+      "en": {
+        "prompt": "hope",
+        "accepted": [
+          "hope",
+          "hopeful"
+        ]
+      }
+    },
+    {
+      "id": "napad",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "nápad",
+        "accepted": [
+          "nápad",
+          "nápadu",
+          "myšlenka"
+        ]
+      },
+      "en": {
+        "prompt": "idea",
+        "accepted": [
+          "idea",
+          "inspiration"
+        ]
+      }
+    },
+    {
+      "id": "narozeniny",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "narozeniny",
+        "accepted": [
+          "narozeniny",
+          "oslava narozenin"
+        ]
+      },
+      "en": {
+        "prompt": "birthday",
+        "accepted": [
+          "birthday",
+          "birthday party"
+        ]
+      }
+    },
+    {
+      "id": "nekonecno",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "nekonečno",
+        "accepted": [
+          "nekonečno",
+          "nekonečna"
+        ]
+      },
+      "en": {
+        "prompt": "infinity",
+        "accepted": [
+          "infinity",
+          "endless",
+          "eternity"
+        ]
+      }
+    },
+    {
+      "id": "nocni-mura",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "noční můra",
+        "accepted": [
+          "noční můra",
+          "noční můru",
+          "zlý sen"
+        ]
+      },
+      "en": {
+        "prompt": "nightmare",
+        "accepted": [
+          "nightmare",
+          "bad dream"
+        ]
+      }
+    },
+    {
+      "id": "nostalgie",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "nostalgie",
+        "accepted": [
+          "nostalgie",
+          "nostalgii",
+          "stesk",
+          "vzpomínání"
+        ]
+      },
+      "en": {
+        "prompt": "nostalgia",
+        "accepted": [
+          "nostalgia",
+          "longing",
+          "reminiscing"
+        ]
+      }
+    },
+    {
+      "id": "nuda",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "nuda",
+        "accepted": [
+          "nuda",
+          "nudu",
+          "nudí se",
+          "otrava"
+        ]
+      },
+      "en": {
+        "prompt": "boredom",
+        "accepted": [
+          "boredom",
+          "bored",
+          "boring"
+        ]
+      }
+    },
+    {
+      "id": "odpusteni",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "odpuštění",
+        "accepted": [
+          "odpuštění",
+          "odpustit",
+          "prominutí"
+        ]
+      },
+      "en": {
+        "prompt": "forgiveness",
+        "accepted": [
+          "forgiveness",
+          "forgiving",
+          "sorry"
+        ]
+      }
+    },
+    {
+      "id": "odvaha",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "odvaha",
+        "accepted": [
+          "odvaha",
+          "statečnost",
+          "kuráž"
+        ]
+      },
+      "en": {
+        "prompt": "courage",
+        "accepted": [
+          "courage",
+          "bravery",
+          "brave"
+        ]
+      }
+    },
+    {
+      "id": "ozvena",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "ozvěna",
+        "accepted": [
+          "ozvěna",
+          "ozvěnu",
+          "echo"
+        ]
+      },
+      "en": {
+        "prompt": "echo",
+        "accepted": [
+          "echo",
+          "echoing"
+        ]
+      }
+    },
+    {
+      "id": "pamet",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "paměť",
+        "accepted": [
+          "paměť",
+          "vzpomínka",
+          "pamatování"
+        ]
+      },
+      "en": {
+        "prompt": "memory",
+        "accepted": [
+          "memory",
+          "remembering",
+          "recollection"
+        ]
+      }
+    },
+    {
+      "id": "pochybnost",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "pochybnost",
+        "accepted": [
+          "pochybnost",
+          "pochyby",
+          "nejistota"
+        ]
+      },
+      "en": {
+        "prompt": "doubt",
+        "accepted": [
+          "doubt",
+          "uncertainty",
+          "doubting"
+        ]
+      }
+    },
+    {
+      "id": "pratelstvi",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "přátelství",
+        "accepted": [
+          "přátelství",
+          "kamarádství",
+          "přátelé"
+        ]
+      },
+      "en": {
+        "prompt": "friendship",
+        "accepted": [
+          "friendship",
+          "friends",
+          "friend"
+        ]
+      }
+    },
+    {
+      "id": "pravda",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "pravda",
+        "accepted": [
+          "pravda",
+          "pravdu",
+          "pravdivost"
+        ]
+      },
+      "en": {
+        "prompt": "truth",
+        "accepted": [
+          "truth",
+          "the truth"
+        ]
+      }
+    },
+    {
+      "id": "prekvapeni",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "překvapení",
+        "accepted": [
+          "překvapení",
+          "překvapený",
+          "úžas"
+        ]
+      },
+      "en": {
+        "prompt": "surprise",
+        "accepted": [
+          "surprise",
+          "surprised",
+          "astonishment"
+        ]
+      }
+    },
+    {
+      "id": "prohra",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "prohra",
+        "accepted": [
+          "prohra",
+          "prohru",
+          "porážka"
+        ]
+      },
+      "en": {
+        "prompt": "defeat",
+        "accepted": [
+          "defeat",
+          "losing"
+        ]
+      }
+    },
+    {
+      "id": "rodina",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "rodina",
+        "accepted": [
+          "rodina",
+          "rodinu",
+          "rodiče"
+        ]
+      },
+      "en": {
+        "prompt": "family",
+        "accepted": [
+          "family",
+          "parents"
+        ]
+      }
+    },
+    {
+      "id": "rozhodnuti",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "rozhodnutí",
+        "accepted": [
+          "rozhodnutí",
+          "rozhodování",
+          "volba"
+        ]
+      },
+      "en": {
+        "prompt": "decision",
+        "accepted": [
+          "decision",
+          "choice",
+          "deciding"
+        ]
+      }
+    },
+    {
+      "id": "rust",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "růst",
+        "accepted": [
+          "růst",
+          "růstu",
+          "vyrůstání"
+        ]
+      },
+      "en": {
+        "prompt": "growth",
+        "accepted": [
+          "growth",
+          "growing",
+          "grow"
+        ]
+      }
+    },
+    {
+      "id": "samota",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "samota",
+        "accepted": [
+          "samota",
+          "osamělost",
+          "sám"
+        ]
+      },
+      "en": {
+        "prompt": "loneliness",
+        "accepted": [
+          "loneliness",
+          "lonely",
+          "solitude"
+        ]
+      }
+    },
+    {
+      "id": "sen",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "sen",
+        "accepted": [
+          "sen",
+          "sny",
+          "snění"
+        ]
+      },
+      "en": {
+        "prompt": "dream",
+        "accepted": [
+          "dream",
+          "dreaming",
+          "dreams"
+        ]
+      }
+    },
+    {
+      "id": "smula",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "smůla",
+        "accepted": [
+          "smůla",
+          "smůlu",
+          "nešťastná náhoda"
+        ]
+      },
+      "en": {
+        "prompt": "bad luck",
+        "accepted": [
+          "bad luck",
+          "misfortune",
+          "unlucky"
+        ]
+      }
+    },
+    {
+      "id": "smutek",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "smutek",
+        "accepted": [
+          "smutek",
+          "smutný",
+          "zármutek"
+        ]
+      },
+      "en": {
+        "prompt": "sadness",
+        "accepted": [
+          "sadness",
+          "sad",
+          "sorrow"
+        ]
+      }
+    },
+    {
+      "id": "soutez",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "soutěž",
+        "accepted": [
+          "soutěž",
+          "soutěžení",
+          "závod"
+        ]
+      },
+      "en": {
+        "prompt": "competition",
+        "accepted": [
+          "competition",
+          "contest",
+          "race"
         ]
       }
     },
@@ -2408,50 +6382,70 @@
       }
     },
     {
-      "id": "cekani",
+      "id": "spravedlnost",
       "difficulty": 3,
       "category": "abstraktni",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "čekání",
+        "prompt": "spravedlnost",
         "accepted": [
-          "čekání",
-          "čeká",
-          "čekat",
-          "fronta"
+          "spravedlnost",
+          "spravedlivost",
+          "právo"
         ]
       },
       "en": {
-        "prompt": "waiting",
+        "prompt": "justice",
         "accepted": [
-          "waiting",
-          "wait",
-          "queue"
+          "justice",
+          "fairness"
         ]
       }
     },
     {
-      "id": "nostalgie",
+      "id": "stari",
       "difficulty": 3,
       "category": "abstraktni",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "nostalgie",
+        "prompt": "stáří",
         "accepted": [
-          "nostalgie",
-          "nostalgii",
-          "stesk",
-          "vzpomínání"
+          "stáří",
+          "stárnutí",
+          "stařec"
         ]
       },
       "en": {
-        "prompt": "nostalgia",
+        "prompt": "old age",
         "accepted": [
-          "nostalgia",
-          "longing",
-          "reminiscing"
+          "old age",
+          "ageing",
+          "aging"
+        ]
+      }
+    },
+    {
+      "id": "stesti",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": false,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "štěstí",
+        "accepted": [
+          "štěstí",
+          "štěstíčko",
+          "radost"
+        ]
+      },
+      "en": {
+        "prompt": "happiness",
+        "accepted": [
+          "happiness",
+          "happy",
+          "joy"
         ]
       }
     },
@@ -2482,95 +6476,24 @@
       }
     },
     {
-      "id": "laska",
+      "id": "svoboda",
       "difficulty": 3,
       "category": "abstraktni",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "láska",
+        "prompt": "svoboda",
         "accepted": [
-          "láska",
-          "lásku",
-          "zamilovanost",
-          "zamilovaný"
+          "svoboda",
+          "svobodu",
+          "volnost"
         ]
       },
       "en": {
-        "prompt": "love",
+        "prompt": "freedom",
         "accepted": [
-          "love",
-          "in love",
-          "romance"
-        ]
-      }
-    },
-    {
-      "id": "zvedavost",
-      "difficulty": 3,
-      "category": "abstraktni",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "zvědavost",
-        "accepted": [
-          "zvědavost",
-          "zvědavý",
-          "zvídavost"
-        ]
-      },
-      "en": {
-        "prompt": "curiosity",
-        "accepted": [
-          "curiosity",
-          "curious"
-        ]
-      }
-    },
-    {
-      "id": "nuda",
-      "difficulty": 3,
-      "category": "abstraktni",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "nuda",
-        "accepted": [
-          "nuda",
-          "nudu",
-          "nudí se",
-          "otrava"
-        ]
-      },
-      "en": {
-        "prompt": "boredom",
-        "accepted": [
-          "boredom",
-          "bored",
-          "boring"
-        ]
-      }
-    },
-    {
-      "id": "prekvapeni",
-      "difficulty": 3,
-      "category": "abstraktni",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "překvapení",
-        "accepted": [
-          "překvapení",
-          "překvapený",
-          "úžas"
-        ]
-      },
-      "en": {
-        "prompt": "surprise",
-        "accepted": [
-          "surprise",
-          "surprised",
-          "astonishment"
+          "freedom",
+          "liberty"
         ]
       }
     },
@@ -2598,24 +6521,24 @@
       }
     },
     {
-      "id": "svoboda",
+      "id": "tiha",
       "difficulty": 3,
       "category": "abstraktni",
       "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "svoboda",
+        "prompt": "tíha",
         "accepted": [
-          "svoboda",
-          "svobodu",
-          "volnost"
+          "tíha",
+          "tíže",
+          "břemeno"
         ]
       },
       "en": {
-        "prompt": "freedom",
+        "prompt": "burden",
         "accepted": [
-          "freedom",
-          "liberty"
+          "burden",
+          "heaviness"
         ]
       }
     },
@@ -2640,53 +6563,6 @@
           "silence",
           "quiet",
           "hush"
-        ]
-      }
-    },
-    {
-      "id": "chaos",
-      "difficulty": 3,
-      "category": "abstraktni",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "chaos",
-        "accepted": [
-          "chaos",
-          "chaosu",
-          "zmatek",
-          "nepořádek",
-          "bordel"
-        ]
-      },
-      "en": {
-        "prompt": "chaos",
-        "accepted": [
-          "chaos",
-          "mess",
-          "confusion"
-        ]
-      }
-    },
-    {
-      "id": "nadeje",
-      "difficulty": 3,
-      "category": "abstraktni",
-      "crossLanguage": true,
-      "schoolSafe": true,
-      "cs": {
-        "prompt": "naděje",
-        "accepted": [
-          "naděje",
-          "naději",
-          "doufání"
-        ]
-      },
-      "en": {
-        "prompt": "hope",
-        "accepted": [
-          "hope",
-          "hopeful"
         ]
       }
     },
@@ -2717,26 +6593,117 @@
       }
     },
     {
-      "id": "stesti",
+      "id": "trpelivost",
       "difficulty": 3,
       "category": "abstraktni",
-      "crossLanguage": false,
+      "crossLanguage": true,
       "schoolSafe": true,
       "cs": {
-        "prompt": "štěstí",
+        "prompt": "trpělivost",
         "accepted": [
-          "štěstí",
-          "štěstíčko",
-          "radost",
-          "smůla naopak"
+          "trpělivost",
+          "trpělivý"
         ]
       },
       "en": {
-        "prompt": "happiness",
+        "prompt": "patience",
         "accepted": [
-          "happiness",
-          "happy",
-          "joy"
+          "patience",
+          "patient"
+        ]
+      }
+    },
+    {
+      "id": "unava",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "únava",
+        "accepted": [
+          "únava",
+          "únavu",
+          "vyčerpání",
+          "ospalost"
+        ]
+      },
+      "en": {
+        "prompt": "tiredness",
+        "accepted": [
+          "tiredness",
+          "fatigue",
+          "exhaustion"
+        ]
+      }
+    },
+    {
+      "id": "vdecnost",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "vděčnost",
+        "accepted": [
+          "vděčnost",
+          "vděk",
+          "poděkování"
+        ]
+      },
+      "en": {
+        "prompt": "gratitude",
+        "accepted": [
+          "gratitude",
+          "thankfulness",
+          "thank you"
+        ]
+      }
+    },
+    {
+      "id": "vitezstvi",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "vítězství",
+        "accepted": [
+          "vítězství",
+          "výhra",
+          "vyhrát"
+        ]
+      },
+      "en": {
+        "prompt": "victory",
+        "accepted": [
+          "victory",
+          "winning",
+          "win"
+        ]
+      }
+    },
+    {
+      "id": "vune",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "vůně",
+        "accepted": [
+          "vůně",
+          "vonět",
+          "voní",
+          "aroma"
+        ]
+      },
+      "en": {
+        "prompt": "smell",
+        "accepted": [
+          "smell",
+          "scent",
+          "aroma"
         ]
       }
     },
@@ -2760,6 +6727,72 @@
           "jealousy",
           "jealous",
           "envy"
+        ]
+      }
+    },
+    {
+      "id": "zizen",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "žízeň",
+        "accepted": [
+          "žízeň",
+          "žízní",
+          "žíznivý"
+        ]
+      },
+      "en": {
+        "prompt": "thirst",
+        "accepted": [
+          "thirst",
+          "thirsty"
+        ]
+      }
+    },
+    {
+      "id": "zmena",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "změna",
+        "accepted": [
+          "změna",
+          "změnu",
+          "proměna"
+        ]
+      },
+      "en": {
+        "prompt": "change",
+        "accepted": [
+          "change",
+          "transformation"
+        ]
+      }
+    },
+    {
+      "id": "zvedavost",
+      "difficulty": 3,
+      "category": "abstraktni",
+      "crossLanguage": true,
+      "schoolSafe": true,
+      "cs": {
+        "prompt": "zvědavost",
+        "accepted": [
+          "zvědavost",
+          "zvědavý",
+          "zvídavost"
+        ]
+      },
+      "en": {
+        "prompt": "curiosity",
+        "accepted": [
+          "curiosity",
+          "curious"
         ]
       }
     }
