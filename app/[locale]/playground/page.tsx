@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ColorSheet } from "@/components/draw/ColorSheet";
 import { DrawingCanvas } from "@/components/draw/DrawingCanvas";
 import { ShapePicker } from "@/components/draw/ShapePicker";
-import { RECENT_COLORS } from "@/lib/mock";
+import { BASE_COLORS } from "@/lib/mock";
 import type { Stroke, Tool } from "@/lib/strokes";
 
 /**
@@ -24,9 +24,9 @@ export default function PlaygroundPage() {
 
   const [strokes, setStrokes] = useState<Stroke[]>([]);
   const [tool, setTool] = useState<Tool>("brush");
-  const [color, setColor] = useState(RECENT_COLORS[0]);
+  const [color, setColor] = useState(BASE_COLORS[0]);
   const [size, setSize] = useState(14);
-  const [recent, setRecent] = useState<string[]>([...RECENT_COLORS]);
+  const [recent, setRecent] = useState<string[]>([...BASE_COLORS]);
   const [sheetOpen, setSheetOpen] = useState(false);
 
   return (
@@ -57,6 +57,29 @@ export default function PlaygroundPage() {
           aria-label="velikost"
           onChange={(e) => setSize(Number(e.target.value))}
         />
+      </div>
+
+      {/* Pevná paleta ve stejném obalu jako na kreslicí obrazovce — včetně
+          `overflow: hidden`, protože právě ten usekával prstenec u vybrané
+          barvy. Bez toho by se tady chyba nedala reprodukovat. */}
+      <div className="draw-toolcard">
+        <div className="swatch-row">
+          <div className="swatch-row-colors">
+            {BASE_COLORS.map((c) => (
+              <button
+                key={c}
+                type="button"
+                className={`swatch${c === color && tool === "brush" ? " is-active" : ""}`}
+                style={{ background: c }}
+                aria-label={c}
+                onClick={() => {
+                  setColor(c);
+                  setTool("brush");
+                }}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="draw-canvas-wrap">

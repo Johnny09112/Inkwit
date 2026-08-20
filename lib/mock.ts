@@ -116,7 +116,14 @@ export const PROFILE = {
 };
 
 /** Barvy kreslení z wireframů — paleta pro kreslíře, ne UI barvy. */
-export const RECENT_COLORS = [
+/**
+ * Základní paleta pod plátnem. **Pevná** — barvy jsou vždycky na stejném místě.
+ *
+ * Do 2026-08-20 se jmenovala RECENT_COLORS a řada se po každém výběru
+ * přerovnávala, takže barvy skákaly pod prstem. Paleta je nábytek, ne historie:
+ * ruka si pamatuje, kde co je.
+ */
+export const BASE_COLORS = [
   "#2B261F",
   "#B5462F",
   "#E9B44C",

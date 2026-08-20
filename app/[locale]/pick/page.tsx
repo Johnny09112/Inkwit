@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, Hand, Loader2 } from "lucide-react";
+import { Check, Coins, Hand, Lightbulb, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/shell/AppShell";
@@ -98,15 +98,32 @@ export default function PickPage() {
                   na obou obrazovkách stejně, ať ji člověk pozná bez čtení. */}
               <span className="pick-card-tags">
                 <Badge tone="accent">{tDifficulty(String(concept.difficulty))}</Badge>
-                <span className="t-label-sm">
-                  {tCommon("credit", {
+                {/* Odměna graficky, ne větou. Věta „kredit +3, po uhodnutí +5"
+                    se štítkem a šipkou nevešla na jeden řádek od šířky 360 px
+                    níž (změřeno). Čtečce se pošle celá — mince a žárovka samy
+                    o sobě nic neřeknou. */}
+                <span
+                  className="pick-reward"
+                  aria-label={tCommon("credit", {
                     n: rewards?.base[String(concept.difficulty)] ?? concept.difficulty,
                     bonus: rewards?.bonus[String(concept.difficulty)] ?? 0,
                   })}
+                >
+                  <span className="pick-reward-part" aria-hidden="true">
+                    <Coins size={13} /> +{rewards?.base[String(concept.difficulty)] ?? concept.difficulty}
+                  </span>
+                  <span className="pick-reward-part is-bonus" aria-hidden="true">
+                    <Lightbulb size={13} /> +{rewards?.bonus[String(concept.difficulty)] ?? 0}
+                  </span>
                 </span>
               </span>
             </span>
-            <ChevronRight size={22} />
+            {/* Šipka byla lež — neposouvala dál, jen označovala. Fajfka se
+                ukáže až u vybraného pojmu, ale místo si drží pořád, aby
+                karta při výběru neposkočila. */}
+            <span className="pick-card-mark" aria-hidden="true">
+              {selected === concept.conceptId && <Check size={20} />}
+            </span>
           </button>
         ))}
 

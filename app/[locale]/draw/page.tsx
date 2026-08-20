@@ -28,7 +28,7 @@ import {
   SubmitError,
   type Draft,
 } from "@/lib/game";
-import { RECENT_COLORS } from "@/lib/mock";
+import { BASE_COLORS } from "@/lib/mock";
 import { looksRushed, type ShapeTool, type Stroke, type Tool } from "@/lib/strokes";
 import { ShapePicker } from "@/components/draw/ShapePicker";
 import { useHand } from "@/lib/prefs";
@@ -64,9 +64,14 @@ export default function DrawPage({
   // Historie pro undo — snapshoty polí tahů (smazání všeho je taky krok zpět)
   const [history, setHistory] = useState<Stroke[][]>([]);
   const [tool, setTool] = useState<Tool>("brush");
-  const [color, setColor] = useState(RECENT_COLORS[0]);
+  const [color, setColor] = useState(BASE_COLORS[0]);
   const [size, setSize] = useState(14);
-  const [recent, setRecent] = useState<string[]>([...RECENT_COLORS]);
+  /**
+   * Naposledy použité barvy. Žijí UŽ JEN v panelu barev — řada pod plátnem je
+   * pevná (`BASE_COLORS`). Do 2026-08-20 to byl jeden seznam a přerovnával se,
+   * takže se paleta míchala pod rukou.
+   */
+  const [recent, setRecent] = useState<string[]>([...BASE_COLORS]);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
   const [mode, setMode] = useState<Mode>("draw");
@@ -157,8 +162,15 @@ export default function DrawPage({
   const pickColor = (c: string) => {
     setColor(c);
     setTool("brush");
+    // Pořadí se mění jen v seznamu pro panel barev, ne v paletě pod plátnem.
     setRecent((r) => [c, ...r.filter((x) => x !== c)].slice(0, 8));
   };
+
+  /**
+   * Vlastní barva z panelu není v pevné paletě, takže by po jejím výběru
+   * nevypadalo vybraně nic. Ukáže se proto na tlačítku palety.
+   */
+  const customColor = tool === "brush" && !BASE_COLORS.includes(color) ? color : null;
 
   const selectTool = (next: Tool) => setTool(next);
 
@@ -297,7 +309,8 @@ export default function DrawPage({
   const paletteButton = (
     <button
       type="button"
-      className="swatch swatch-add"
+      className={`swatch swatch-add${customColor ? " is-custom is-active" : ""}`}
+      style={customColor ? { borderColor: customColor } : undefined}
       aria-label={t("tools.palette")}
       onClick={() => setSheetOpen(true)}
     >
@@ -385,7 +398,7 @@ export default function DrawPage({
             {trashButton(24)}
             <span className="float-pill-divider" style={{ height: 40 }} />
             <div style={{ display: "flex", gap: 10 }}>
-              {swatches(recent.slice(0, 6), 34)}
+              {swatches(BASE_COLORS.slice(0, 6), 34)}
               {paletteButton}
             </div>
             <span className="float-pill-divider" style={{ height: 40 }} />
@@ -407,7 +420,7 @@ export default function DrawPage({
         <div className={`draw-rail draw-rail-${hand}`}>
           {toolButtons(22, true)}
           <div className="draw-toolcard-divider" />
-          <div className="draw-rail-swatches">{swatches(recent.slice(0, 6))}</div>
+          <div className="draw-rail-swatches">{swatches(BASE_COLORS.slice(0, 6))}</div>
           {paletteButton}
           <div className="draw-toolcard-divider" />
           {trashButton(22)}
@@ -492,7 +505,7 @@ export default function DrawPage({
           <div className="draw-toolcard">
             <div className="swatch-row">
               {paletteButton}
-              <div className="swatch-row-colors">{swatches(recent)}</div>
+              <div className="swatch-row-colors">{swatches(BASE_COLORS)}</div>
             </div>
             <div className="draw-toolcard-divider" />
             <div className="stroke-row">
