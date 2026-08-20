@@ -5,20 +5,43 @@
 
 ## Feedback (always-load pravidla chování)
 
-<!-- AUTO:feedback — jeden řádek na soubor z auto-memory/feedback/*.md; formát: - [[slug]] — háček -->
-<!-- /AUTO:feedback -->
+## ⇢ ODKUD POKRAČOVAT (2026-08-20)
 
-## Kde projekt stojí (2026-08-19)
+**Přečti `memory/context/odkud-pokracovat.md` jako první.** Majitel řekl: až
+napíše „pokračujeme", jde se na **slova a jednotlivé levely** — v tomhle pořadí.
+
+**Slova hoří:** při třech hráčích zbývá 26 snadných, 13 středních a jen
+**16 těžkých** nenakreslených pojmů. Alarm v `/admin` už svítí. Recept na tvorbu
+je v `patterns/jak-tvorit-slovni-zasobu.md`.
+
+**Levely mají zatím jen dvě reálná odemčení** (paleta na L2, míchání barev na L3),
+levely 4–6 jsou prázdné. Prahy `level_thresholds` v `game_config`.
+
+### Čtyři věci, které se NESMÍ gatovat levelem
+
+Každá padla z jiného důvodu a při další úvaze o levelech se vrátí jako pokušení:
+
+1. **Hádání** — vynucené kreslení zabije metriku 1 z `CLAUDE.md`.
+2. **Obtížnosti** — s prodejem levelů je to pay-to-win (pravidlo 3), těžký pojem dá 4× víc.
+3. **Vyžádání pojmu** — nese hlavní hypotézu fáze 0 (`docs/plan.md`, blok E).
+4. **Přehrání kresby** — běží pod ním A/B test kroku F4.
+
+**Levely se nedají koupit.** Prodává se kosmetika, ne postup.
+Podrobně: `decisions/levely-bez-gati-na-jadro.md`, `decisions/kredity-a-odmeny.md`.
+
+## Kde projekt stojí (2026-08-20)
 
 Fáze 0 **nasazená a hratelná**: https://inkwit.vercel.app · Supabase
-`iticpkeqirjfwkelhrvl` (eu-central-1, free) · 136 testů (`npm run test:db`).
-Bloky 0–F hotové, G rozpracované. Zbývá **vlastní SMTP** (krok G4) a rozeslat
-pozvánky. Podrobnosti a otevřené body: `memory/context/project-context.md`.
+`iticpkeqirjfwkelhrvl` (eu-central-1, free) · **186 testů DB** (`npm run test:db`)
++ **26 unit** (`npm run test:unit`).
+
+Hotové bloky 0–F, **G rozpracovaný**, **H správa** (`/admin`), **I kredity**,
+levely. Zbývá **vlastní SMTP (G4)** a rozeslat pozvánky.
 
 **Tři věci, které se nedají uhodnout z kódu:**
 - Migrace pouští Claude sám (`npx supabase db push`), destruktivní ukazuje předem.
 - Zadání konceptu je tajemství — klient nečte `concepts` ani `drawings` napřímo.
-- `revoke update (sloupec)` v Postgresu nefunguje; u chráněných sloupců musí být test zápisu.
+- `revoke update (sloupec)` v Postgresu nefunguje; práva se udělují po sloupcích.
 
 ## Jak používat tuto paměť
 

@@ -4,6 +4,7 @@
 > Plný katalog on-demand záznamů. Always-load vrstvu viz auto-memory/MEMORY.md.
 
 ## Context
+- [[odkud-pokracovat]] — Předávka po vyčerpání kontextu 2026-08-20 — kde přesně pokračovat: slovní zásoba a dopracování systému levelů · active · 2026-08-20
 - [[project-context]] — Živý stav projektu inkwit — fáze, milníky, aktuální focus · active · 2026-08-19
 
 ## Decisions
