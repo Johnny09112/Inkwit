@@ -7,15 +7,11 @@
 
 ## ⇢ ODKUD POKRAČOVAT (2026-08-20)
 
-**Přečti `memory/context/odkud-pokracovat.md` jako první.** Majitel řekl: až
-napíše „pokračujeme", jde se na **slova a jednotlivé levely** — v tomhle pořadí.
+**Přečti `memory/context/odkud-pokracovat.md` jako první.**
 
-**Slova hoří:** při třech hráčích zbývá 26 snadných, 13 středních a jen
-**16 těžkých** nenakreslených pojmů. Alarm v `/admin` už svítí. Recept na tvorbu
-je v `patterns/jak-tvorit-slovni-zasobu.md`.
-
-**Levely mají zatím jen dvě reálná odemčení** (paleta na L2, míchání barev na L3),
-levely 4–6 jsou prázdné. Prahy `level_thresholds` v `game_config`.
+Slova i levely jsou **hotové a nasazené**. Zbývá **vlastní SMTP (krok G4)** —
+jediná technická věc, která brání rozeslání padesáti pozvánek. Vestavěný
+odesílatel zvládne dvě zprávy za hodinu na všech plánech.
 
 ### Čtyři věci, které se NESMÍ gatovat levelem
 
@@ -27,21 +23,27 @@ Každá padla z jiného důvodu a při další úvaze o levelech se vrátí jako
 4. **Přehrání kresby** — běží pod ním A/B test kroku F4.
 
 **Levely se nedají koupit.** Prodává se kosmetika, ne postup.
+A **kbelík (plošná výplň) se dělat nesmí** — porušuje pravidlo 2.
 Podrobně: `decisions/levely-bez-gati-na-jadro.md`, `decisions/kredity-a-odmeny.md`.
 
 ## Kde projekt stojí (2026-08-20)
 
 Fáze 0 **nasazená a hratelná**: https://inkwit.vercel.app · Supabase
-`iticpkeqirjfwkelhrvl` (eu-central-1, free) · **186 testů DB** (`npm run test:db`)
-+ **26 unit** (`npm run test:unit`).
+`iticpkeqirjfwkelhrvl` (eu-central-1, free) · **202 testů DB**
+(`npm run test:db`) + **31 unit** (`npm run test:unit`).
 
-Hotové bloky 0–F, **G rozpracovaný**, **H správa** (`/admin`), **I kredity**,
-levely. Zbývá **vlastní SMTP (G4)** a rozeslat pozvánky.
+Hotové bloky 0–F, **H** správa (`/admin`), **I** kredity, **J** levely a tvary.
+Rozpracovaný **G** — zbývá SMTP a rozeslat pozvánky.
 
-**Tři věci, které se nedají uhodnout z kódu:**
+**Slovník má 300 pojmů** ve vyrovnaném poměru 100 / 100 / 100. Alarm zásoby
+zhasl. **Levely mají čtyři patra**, na čtvrtém se odemykají tvary.
+
+**Čtyři věci, které se nedají uhodnout z kódu:**
 - Migrace pouští Claude sám (`npx supabase db push`), destruktivní ukazuje předem.
 - Zadání konceptu je tajemství — klient nečte `concepts` ani `drawings` napřímo.
 - `revoke update (sloupec)` v Postgresu nefunguje; práva se udělují po sloupcích.
+- Ve vývoji **service worker servíruje starý kód** — změna, která „se neprojevila",
+  bývá tohle, ne chyba. Odregistrovat SW a smazat cache.
 
 ## Jak používat tuto paměť
 
