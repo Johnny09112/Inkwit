@@ -46,6 +46,7 @@
 ## Bugs
 - [[heslo-skoncilo-v-poli-pro-jmeno]] — Účet měl jako veřejnou přezdívku vlastní heslo; kód ho tam nedal, přišlo z formuláře — pole pro jméno leželo hned za heslem a e-mail neměl kotvu username · resolved · 2026-08-20
 - [[kresba-se-roztahovala-podle-plochy]] — Body se mapovaly na každou osu zvlášť, takže kresba měnila tvar podle plochy — v náhledu byla dvakrát širší než při kreslení; kresba si teď nese poměr a všude se do něj vepisuje · resolved · 2026-08-20
+- [[prepnuti-zalozky-zamrzlo-bez-hranice-nacitani]] — Přepnutí záložky se na půl vteřiny až dvě zaseklo — App Router drží starou obrazovku, dokud nemá payload nové, když u ní není loading.tsx · resolved · 2026-08-20
 - [[tolerance-preklepu-uznavala-cizi-pojem]] — Kontrola slovníku hlídala jen dvojice do čtyř znaků, což je bezpečná zóna; od pěti znaků výš hra uznávala tip patřící jinému pojmu — „sleep" uhodlo ovci · resolved · 2026-08-20
 - [[revoke-na-sloupec-nefunguje]] — revoke update (sloupec) nedělá nic, když má role právo na celou tabulku — uživatel si mohl přepsat tenant_id a obejít izolaci školního tenantu · resolved · 2026-08-19
 - [[strop-bodu-se-pocital-tretinovy]] — submit_drawing porovnávala délku plochého pole se stropem počtu bodů, takže platil limit 20 000 místo 60 000; na 120Hz tabletu se dal potkat a odeslání skončilo obecným "nepovedlo se" · resolved · 2026-08-19
