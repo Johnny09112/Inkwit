@@ -216,7 +216,8 @@
       "nameHint": "At least three characters. Others see it on your drawings.",
       "nameChecking": "Checking availability…",
       "nameTaken": "That name is taken.",
-      "nameFree": "Available."
+      "nameFree": "Available.",
+      "nameIsPassword": "That is your password, not a name"
     },
     "actions": {
       "signin": "Sign in",
@@ -237,7 +238,8 @@
       "emailInvalid": "Supabase rejects this email address. Try another — test domains like example.com will not pass.",
       "signupsClosed": "Account creation is closed right now.",
       "nameTaken": "Someone took that name in the meantime. Pick another — your invite code is still valid.",
-      "needEmail": "Enter the email we should send the link to."
+      "needEmail": "Enter the email we should send the link to.",
+      "nameIsPassword": "Your password ended up in the name field. Other players see your name — pick a nickname."
     },
     "resetSent": "We emailed you a link. Open it on this device — the link is tied to the browser you asked from."
   },

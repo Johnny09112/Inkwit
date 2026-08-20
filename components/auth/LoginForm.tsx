@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRouter } from "@/i18n/navigation";
+import { nameMatchesPassword } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/client";
 
 type Mode = "signin" | "signup";
@@ -54,6 +55,12 @@ export function LoginForm() {
 
   const trimmedName = name.trim();
   const nameLongEnough = trimmedName.length >= 3;
+  /**
+   * Heslo v poli pro jméno. Stalo se to doopravdy (2026-08-20) a nešlo zjistit,
+   * jestli ho tam vložil člověk, nebo správce hesel — proto se to hlídá, ať už
+   * je příčina jakákoli. Jméno vidí ostatní hráči, heslo do něj nepatří.
+   */
+  const nameIsPassword = nameMatchesPassword(name, password);
   const [nameTaken, setNameTaken] = useState<boolean | null>(null);
   const [checkingName, setCheckingName] = useState(false);
 
@@ -142,6 +149,10 @@ export function LoginForm() {
           setError(t("errors.missingInvite"));
           return;
         }
+        if (nameIsPassword) {
+          setError(t("errors.nameIsPassword"));
+          return;
+        }
 
         const { data, error: err } = await supabase.auth.signUp({
           email: email.trim(),
@@ -216,26 +227,10 @@ export function LoginForm() {
             id="email"
             className="input"
             type="email"
-            autoComplete="email"
+            autoComplete="username"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-
-        <div className="auth-field">
-          <label className="t-label" htmlFor="password">
-            {t("fields.password")}
-          </label>
-          <input
-            id="password"
-            className="input"
-            type="password"
-            autoComplete={mode === "signup" ? "new-password" : "current-password"}
-            required
-            minLength={6}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
@@ -257,14 +252,19 @@ export function LoginForm() {
               onChange={(e) => setName(e.target.value)}
             />
             <span id="name-hint" className="auth-hint" aria-live="polite">
-              {!nameLongEnough && t("fields.nameHint")}
-              {nameLongEnough && checkingName && t("fields.nameChecking")}
-              {nameLongEnough && !checkingName && nameTaken === true && (
+              {nameIsPassword && (
+                <span className="auth-hint-taken">
+                  <X size={13} aria-hidden="true" /> {t("fields.nameIsPassword")}
+                </span>
+              )}
+              {!nameIsPassword && !nameLongEnough && t("fields.nameHint")}
+              {!nameIsPassword && nameLongEnough && checkingName && t("fields.nameChecking")}
+              {!nameIsPassword && nameLongEnough && !checkingName && nameTaken === true && (
                 <span className="auth-hint-taken">
                   <X size={13} aria-hidden="true" /> {t("fields.nameTaken")}
                 </span>
               )}
-              {nameLongEnough && !checkingName && nameTaken === false && (
+              {!nameIsPassword && nameLongEnough && !checkingName && nameTaken === false && (
                 <span className="auth-hint-free">
                   <Check size={13} aria-hidden="true" /> {t("fields.nameFree")}
                 </span>
@@ -301,6 +301,27 @@ export function LoginForm() {
             </span>
           </div>
         )}
+        {/* Heslo je schválně POSLEDNÍ pole.
+            Do 2026-08-20 leželo mezi e-mailem a jménem, tedy přesně tam, po čem
+            správci hesel hledají „heslo znovu" — a v jednom případě skončilo
+            heslo v poli pro jméno. Za heslem už teď žádné textové pole není,
+            takže není co splést. V přihlášení se pořadí nemění: tam se jméno
+            ani kód nevykreslují. */}
+        <div className="auth-field">
+          <label className="t-label" htmlFor="password">
+            {t("fields.password")}
+          </label>
+          <input
+            id="password"
+            className="input"
+            type="password"
+            autoComplete={mode === "signup" ? "new-password" : "current-password"}
+            required
+            minLength={6}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
       </div>
 
       {error && (
@@ -320,7 +341,7 @@ export function LoginForm() {
       <button
         type="submit"
         className="btn btn-primary btn-lg"
-        disabled={busy || (mode === "signup" && nameTaken === true)}
+        disabled={busy || (mode === "signup" && (nameTaken === true || nameIsPassword))}
       >
         {busy && <Loader2 size={17} className="spin" aria-hidden="true" />}
         {mode === "signup" ? t("actions.signup") : t("actions.signin")}

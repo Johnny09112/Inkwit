@@ -216,7 +216,8 @@
       "nameHint": "Aspoň tři znaky. Uvidí ho ostatní u tvých kreseb.",
       "nameChecking": "Zjišťuju, jestli je volné…",
       "nameTaken": "Tohle jméno už někdo má.",
-      "nameFree": "Volné."
+      "nameFree": "Volné.",
+      "nameIsPassword": "Tohle je tvoje heslo, ne jméno"
     },
     "actions": {
       "signin": "Přihlásit se",
@@ -237,7 +238,8 @@
       "emailInvalid": "Tuhle e-mailovou adresu Supabase odmítá. Zkus jinou — testovací domény jako example.com neprojdou.",
       "signupsClosed": "Zakládání účtů je právě zavřené.",
       "nameTaken": "Tohle jméno mezitím někdo obsadil. Zvol jiné — kód pozvánky ti zůstal.",
-      "needEmail": "Nejdřív vyplň e-mail, na který ti máme odkaz poslat."
+      "needEmail": "Nejdřív vyplň e-mail, na který ti máme odkaz poslat.",
+      "nameIsPassword": "Do jména se dostalo heslo. Jméno vidí ostatní hráči — vyplň přezdívku."
     },
     "resetSent": "Poslali jsme ti odkaz na e-mail. Otevři ho na tomhle zařízení — odkaz je vázaný na prohlížeč, ze kterého jsi o něj požádal."
   },

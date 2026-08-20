@@ -43,6 +43,7 @@
 - [[supabase-chyby-podle-kodu]] — Chyby ze Supabase Auth mapovat podle err.code, ne podle textu; zamítnutá pozvánka z triggeru dorazí jako 23514 a fallback nesmí svalovat všechno na pozvánku · active · 2026-08-18
 
 ## Bugs
+- [[heslo-skoncilo-v-poli-pro-jmeno]] — Účet měl jako veřejnou přezdívku vlastní heslo; kód ho tam nedal, přišlo z formuláře — pole pro jméno leželo hned za heslem a e-mail neměl kotvu username · resolved · 2026-08-20
 - [[kresba-se-roztahovala-podle-plochy]] — Body se mapovaly na každou osu zvlášť, takže kresba měnila tvar podle plochy — v náhledu byla dvakrát širší než při kreslení; kresba si teď nese poměr a všude se do něj vepisuje · resolved · 2026-08-20
 - [[tolerance-preklepu-uznavala-cizi-pojem]] — Kontrola slovníku hlídala jen dvojice do čtyř znaků, což je bezpečná zóna; od pěti znaků výš hra uznávala tip patřící jinému pojmu — „sleep" uhodlo ovci · resolved · 2026-08-20
 - [[revoke-na-sloupec-nefunguje]] — revoke update (sloupec) nedělá nic, když má role právo na celou tabulku — uživatel si mohl přepsat tenant_id a obejít izolaci školního tenantu · resolved · 2026-08-19
