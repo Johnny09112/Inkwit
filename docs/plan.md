@@ -550,10 +550,24 @@ Každá padla z jiného důvodu a při další úvaze o levelech se vrátí jako
 
 ### Co zbývá
 
-- `[ ] J4` **Sink pro kredity.** Zůstatek jen roste — nákup míchání barev byl
-  zrušen a nahrazen levelem. Zůstatek a celkem vydělané se počítají odděleně
-  právě proto, aby se sink dal vrátit (palety, sady barev). Nespěchá: nic se
-  neztrácí a meta-vrstva se podle `CLAUDE.md` nemá stavět dřív, než je ověřeno,
-  že lidé dobrovolně kreslí.
+- `[x] J4` **Sink pro kredity — přeskočení kresby.** Zůstatek do teď jen rostl.
+
+  **Tlačítko „Přeskočit" přitom nedělalo nic:** `next_drawing()` vybírá
+  deterministicky a vylučuje jen kresby, na které člověk tipoval, takže druhé
+  volání vrátilo tutéž kresbu. Cena proto nebyla jen ekonomika — bez záznamu
+  v `public.skips` by neměla co omezovat.
+
+  **První přeskočení za den zdarma, další za kredit** (obojí v `game_config`).
+  Bez volného přeskočení by hráč s nulou kreditů nemohl dál, a kdo nemůže dál,
+  odejde. Cenu říká tlačítko dopředu (`skip_price()`).
+
+  **Co cena neuhlídá:** nabídka vylučuje i kresbu, na kterou člověk napsal
+  nesmysl, takže projít dál zadarmo jde pořád. Škoda není v ekonomice, ale
+  v datech — nesmyslné tipy kazí obrazovku „Pojmy, které nikdo neuhodl". Kdyby
+  se to začalo dít, řeší se to tam.
+
+  *Ověřeno:* deset testů DB včetně toho, který drží starou chybu („bez
+  přeskočení vrací nabídka tutéž kresbu"), a testu, že si přeskočení nikdo
+  nezapíše napřímo.
 - `[ ] J5` **Kalibrace prahů.** `[0, 10, 25, 50]` je odhad. Po pozvánkách se
   uvidí, jak rychle lidé postupují.

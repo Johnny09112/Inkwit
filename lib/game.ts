@@ -430,3 +430,25 @@ export async function setAvatar(strokes: readonly Stroke[]): Promise<void> {
   });
   if (error) throw error;
 }
+
+/**
+ * Přeskočí kresbu a vrátí, kolik to stálo (0 = volné přeskočení dne).
+ *
+ * Do 2026-08-20 tlačítko jen znovu volalo `next_drawing()`, která vybírá
+ * deterministicky — takže vrátilo tutéž kresbu a přeskočit vlastně nešlo.
+ * Teprve záznam v `skips` ji z nabídky vyřadí.
+ */
+export async function skipDrawing(drawingId: string): Promise<number> {
+  const { data, error } = await createClient().rpc("skip_drawing", {
+    p_drawing_id: drawingId,
+  });
+  if (error) throw error;
+  return (data as number) ?? 0;
+}
+
+/** Kolik bude stát příští přeskočení. Tlačítko to musí říct dopředu. */
+export async function fetchSkipPrice(): Promise<number> {
+  const { data, error } = await createClient().rpc("skip_price");
+  if (error) throw error;
+  return (data as number) ?? 0;
+}

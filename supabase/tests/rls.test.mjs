@@ -1183,6 +1183,99 @@ async function main() {
       `${JSON.stringify(sAvatarem.avatar_strokes)?.slice(0, 40)}…`,
     );
 
+    // --- Přeskočení kresby ----------------------------------------------------
+    //
+    // Tlačítko dřív nedělalo NIC: next_drawing() vybírá deterministicky
+    // (order by solved_count, published_at limit 1) a přeskočení se nikam
+    // nezapisovalo, takže druhé volání vrátilo tutéž kresbu.
+
+    await db.exec("savepoint skoky");
+
+    // Alice má k hádání jen jedinou Bobovu kresbu. Tenhle blok potřebuje tři:
+    // jednu na volné přeskočení, druhou na placené a třetí na to, co se stane
+    // bez kreditů.
+    await db.exec(`select set_config('request.jwt.claim.sub', '${BOB}', true);`);
+    for (const koncept of [conceptZaba, conceptPes]) {
+      const id = (await db.query(`select public.start_drawing('${koncept}') id`)).rows[0].id;
+      await db.query(`select public.submit_drawing('${id}', 'mouse', 0, $1::jsonb, 0.68)`, [tah]);
+    }
+    await db.exec(`select set_config('request.jwt.claim.sub', '${ALICE}', true);`);
+
+    const dalsi = async () => {
+      const r = await db.query("select * from public.next_drawing()");
+      return r.rows[0]?.drawing_id ?? null;
+    };
+
+    const prvni = await dalsi();
+    report(prvni !== null, "hádač dostane kresbu");
+    report((await dalsi()) === prvni, "bez přeskočení vrací nabídka tutéž kresbu");
+
+    const cenaPredem = (await db.query("select public.skip_price() c")).rows[0].c;
+    report(cenaPredem === 0, "cena se dá zjistit předem, první je zdarma", `${cenaPredem}`);
+
+    const cena1 = (await db.query("select public.skip_drawing($1) as c", [prvni])).rows[0].c;
+    report(cena1 === 0, "první přeskočení za den je zdarma", `cena ${cena1}`);
+    report(
+      (await db.query("select public.skip_price() c")).rows[0].c === 1,
+      "po volném přeskočení hlásí cena kredit",
+    );
+
+    const druha = await dalsi();
+    report(druha !== null && druha !== prvni, "přeskočená kresba se nevrátí");
+
+    const pred = (await db.query("select public.my_credits() c")).rows[0].c;
+    const cena2 = (await db.query("select public.skip_drawing($1) as c", [druha])).rows[0].c;
+    const po = (await db.query("select public.my_credits() c")).rows[0].c;
+    report(cena2 === 1, "druhé přeskočení téhož dne stojí kredit", `cena ${cena2}`);
+    report(po === pred - 1, "kredit se opravdu strhl", `${pred} → ${po}`);
+
+    // Dvojklik ani obnovení stránky nesmí stát dvakrát.
+    const cenaZnovu = (await db.query("select public.skip_drawing($1) as c", [druha])).rows[0].c;
+    const poZnovu = (await db.query("select public.my_credits() c")).rows[0].c;
+    report(cenaZnovu === 0 && poZnovu === po, "opakované přeskočení téže kresby je zdarma");
+
+    // Zápis jen přes RPC — jinak by šla obejít cena i denní počet.
+    let primySkip = "prošlo";
+    await db.exec("savepoint skoky_primo");
+    try {
+      await db.query(`insert into public.skips (user_id, drawing_id) values ('${ALICE}', '${LIVE}')`);
+    } catch {
+      primySkip = "odmítnuto";
+    }
+    await db.exec("rollback to savepoint skoky_primo");
+    report(primySkip === "odmítnuto", "uživatel si nezapíše přeskočení napřímo, jen přes RPC");
+
+    // Bez kreditů a po vyčerpání volného přeskočení se odmítne.
+    await db.exec("reset role");
+    await db.exec(
+      `insert into public.ledger (user_id, delta, reason) values ('${ALICE}', -(select private.balance('${ALICE}')), 'test')`,
+    );
+    await db.exec(
+      `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+    );
+    const treti = await dalsi();
+    const zustatek = (await db.query("select public.my_credits() c")).rows[0].c;
+    let bezKreditu = "prošlo";
+    if (treti) {
+      // Savepoint je nutný: odmítnuté volání nechá transakci v chybovém stavu
+      // a každý další dotaz by spadl na 25P02, i když ho JS chytil.
+      await db.exec("savepoint skoky_chudy");
+      try {
+        await db.query("select public.skip_drawing($1)", [treti]);
+      } catch {
+        bezKreditu = "odmítnuto";
+      }
+      await db.exec("rollback to savepoint skoky_chudy");
+    }
+    report(
+      treti !== null && bezKreditu === "odmítnuto",
+      "bez kreditů se další přeskočení odmítne",
+      `zůstatek ${zustatek}`,
+    );
+
+    await db.exec("rollback to savepoint skoky");
+    await db.exec(`select set_config('request.jwt.claim.sub', '${ALICE}', true);`);
+
     await db.exec("rollback");
   }
   console.log("\nSprávcovské rozhraní (blok H):\n");

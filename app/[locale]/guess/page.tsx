@@ -26,6 +26,8 @@ import {
   giveThumb,
   reportDrawing,
   requestConcept,
+  fetchSkipPrice,
+  skipDrawing,
   submitGuess,
   type ConceptOffer,
   type FeedDrawing,
@@ -79,6 +81,13 @@ export default function GuessPage() {
    * stahuje stejně kvůli A/B skupině přehrání — request navíc to není.
    */
   const [level, setLevel] = useState<number | null>(null);
+  /**
+   * Cena příštího přeskočení. Tlačítko ji říká dopředu — strhnout kredit
+   * a oznámit to až potom je přesně ten druh překvapení, kvůli kterému lidé
+   * přestanou tlačítkům věřit.
+   */
+  const [skipPrice, setSkipPrice] = useState(0);
+  const [skipping, setSkipping] = useState(false);
 
   useEffect(() => {
     fetchProfile()
@@ -87,7 +96,29 @@ export default function GuessPage() {
         setLevel(p?.level ?? null);
       })
       .catch(() => setShowPlayback(true));
+    fetchSkipPrice().then(setSkipPrice).catch(() => setSkipPrice(0));
   }, []);
+
+  /**
+   * Přeskočení. Nejdřív se zapíše na serveru — bez toho by nabídka vrátila
+   * tutéž kresbu, protože vybírá deterministicky a vylučuje jen to, na co
+   * člověk tipoval.
+   */
+  async function preskoc() {
+    if (!drawing || skipping) return;
+    setSkipping(true);
+    setFeedback(null);
+    try {
+      await skipDrawing(drawing.drawingId);
+      setSkipPrice(await fetchSkipPrice().catch(() => skipPrice));
+      await load();
+    } catch (err) {
+      const code = (err as { code?: string })?.code;
+      setFeedback(code === "55000" ? t("skipNoCredits") : t("skipFailed"));
+    } finally {
+      setSkipping(false);
+    }
+  }
 
   const load = useCallback(async () => {
     setDrawing(undefined);
@@ -325,8 +356,13 @@ export default function GuessPage() {
           )}
 
           {phase === "guessing" && (
-            <button type="button" className="btn btn-ghost" onClick={() => void load()}>
-              {t("skip")}
+            <button
+              type="button"
+              className="btn btn-ghost"
+              disabled={skipping}
+              onClick={() => void preskoc()}
+            >
+              {skipPrice > 0 ? t("skipPaid", { n: skipPrice }) : t("skip")}
             </button>
           )}
         </div>

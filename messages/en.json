@@ -106,7 +106,10 @@
     "sendFailed": "Could not send your guess. Try again.",
     "next": "Next drawing",
     "wrongWithHint": "Not it. Starts with {hint}. {left, plural, one {One attempt left.} other {# attempts left.}}",
-    "reported": "Reported. The owner will take a look."
+    "reported": "Reported. The owner will take a look.",
+    "skipPaid": "Skip · −{n, plural, one {# credit} other {# credits}}",
+    "skipNoCredits": "Not enough credits to skip. Guess a drawing or draw one.",
+    "skipFailed": "Could not skip. Try again."
   },
   "solved": {
     "chip": "Solved · {stars}",

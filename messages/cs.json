@@ -106,7 +106,10 @@
     "sendFailed": "Tip se nepodařilo odeslat. Zkus to znovu.",
     "next": "Další kresba",
     "wrongWithHint": "Mimo. Začíná na {hint}. {left, plural, one {Ještě jeden pokus.} few {Ještě # pokusy.} other {Ještě # pokusů.}}",
-    "reported": "Nahlášeno. Majitel se na to podívá."
+    "reported": "Nahlášeno. Majitel se na to podívá.",
+    "skipPaid": "Přeskočit · −{n, plural, one {# kredit} few {# kredity} other {# kreditů}}",
+    "skipNoCredits": "Na přeskočení nemáš kredit. Uhoď nějakou kresbu nebo něco nakresli.",
+    "skipFailed": "Přeskočení se nepovedlo. Zkus to znovu."
   },
   "solved": {
     "chip": "Uhodnuto · {stars}",

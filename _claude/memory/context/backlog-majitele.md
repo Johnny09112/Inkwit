@@ -30,8 +30,10 @@ nechal ve veřejné hře.
 - **Vlna 3 hotová:** roadmapa levelů, oslava postupu, vlastní kreslený avatar.
   Avatar zatím vidí jen majitel účtu — ukázat ho ostatním znamená vyřešit
   moderaci (pravidlo 8 platí i na něj).
-- **Pak:** přeskočení za kredit (a s ním sink), denní výzva, dětský režim,
-  výplň uzavřených tvarů, achievementy, metriky v žebříčcích.
+- **Hotovo i přeskočení za kredit** — a s ním první sink. Ukázalo se přitom,
+  že tlačítko dosud nedělalo nic; viz [[preskoceni-vracelo-tutez-kresbu]].
+- **Pak:** denní výzva, dětský režim, výplň uzavřených tvarů, achievementy,
+  metriky v žebříčcích.
 
 ## Chyby
 
