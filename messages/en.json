@@ -329,5 +329,12 @@
     "remove": "Remove avatar",
     "edit": "Change avatar",
     "failed": "Could not save the avatar. Try again."
+  },
+  "daily": {
+    "title": "Daily challenge",
+    "draw": "Draw a hard concept",
+    "guess": "Solve someone else's hard drawing",
+    "prize": "Both on the same day: {n} extra credits",
+    "done": "Done — {n} credits added"
   }
 }

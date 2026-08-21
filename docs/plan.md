@@ -548,8 +548,6 @@ Každá padla z jiného důvodu a při další úvaze o levelech se vrátí jako
   rozšířit `next_drawing()` a hlavně vyřešit moderaci — avatar je veřejný
   obsah a pravidlo 8 na něj platí stejně jako na kresby.
 
-### Co zbývá
-
 - `[x] J4` **Sink pro kredity — přeskočení kresby.** Zůstatek do teď jen rostl.
 
   **Tlačítko „Přeskočit" přitom nedělalo nic:** `next_drawing()` vybírá
@@ -569,5 +567,25 @@ Každá padla z jiného důvodu a při další úvaze o levelech se vrátí jako
   *Ověřeno:* deset testů DB včetně toho, který drží starou chybu („bez
   přeskočení vrací nabídka tutéž kresbu"), a testu, že si přeskočení nikdo
   nezapíše napřímo.
+
+- `[x] J10` **Denní výzva.** Nakresli jednu těžkou a uhodni jednu těžkou
+  tentýž den → bonus 15 kreditů. Bez cronu a bez obsluhy: stav se počítá
+  dotazem nad dneškem a bonus se připíše, jakmile jsou obě půlky hotové.
+  `ref_id` odvozený z data plus `ledger_once_idx` zaručí **nejvýš jeden bonus
+  na člověka a den** i při opakovaném volání.
+
+  **Pojem dne NENÍ společný pro všechny.** Znělo to lákavě, ale zadání konceptu
+  je tajemství hry — kdyby všichni věděli, že dnešní slovo je „nostalgie",
+  hádání dnešních kreseb by nebylo hádání. Výzva je proto obtížnost, ne slovo.
+
+  **Čtvrté patro obtížnosti se nezavádí.** `offer_concepts()` bere jeden pojem
+  od každé úrovně a je to ventil pro toho, kdo kreslit neumí; čtvrté patro by
+  ho rozředilo. Skutečné „super-těžké" je navíc obsahová práce (nové pojmy),
+  ne programování — až budou, změní se jediný klíč v `game_config`.
+
+  *Ověřeno:* osm testů DB, mezi nimi ten, že opakované volání bonus nezopakuje.
+
+### Co zbývá
+
 - `[ ] J5` **Kalibrace prahů.** `[0, 10, 25, 50]` je odhad. Po pozvánkách se
   uvidí, jak rychle lidé postupují.

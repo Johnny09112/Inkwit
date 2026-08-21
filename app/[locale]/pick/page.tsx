@@ -5,8 +5,10 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/shell/AppShell";
 import { Badge, Button, difficultyTone } from "@/components/ui";
+import { DailyChallenge } from "@/components/DailyChallenge";
 import { useRouter } from "@/i18n/navigation";
-import { fetchOffer, fetchRewards, startDrawing, type ConceptOffer } from "@/lib/game";
+import { fetchDailyChallenge,
+  fetchOffer, fetchRewards, startDrawing, type ConceptOffer } from "@/lib/game";
 
 /**
  * Výběr pojmu (wireframe 6). Tři obtížnosti jako ventil pro slabé kreslíře,
@@ -28,10 +30,14 @@ export default function PickPage() {
   // ukazovala jiná čísla, než jaká se opravdu připíší (pravidlo 6).
   const [rewards, setRewards] = useState<{ base: Record<string, number>; bonus: Record<string, number> } | null>(null);
   const [starting, setStarting] = useState(false);
+  const [daily, setDaily] = useState<Awaited<ReturnType<typeof fetchDailyChallenge>>>(null);
 
   useEffect(() => {
     let alive = true;
     fetchRewards().then((r) => alive && setRewards(r)).catch(() => {});
+    // Volání zároveň připíše bonus, když jsou obě půlky hotové — proto se
+    // stav tahá i tady, ne jen na obrazovce, kde se výzva zobrazuje.
+    fetchDailyChallenge().then((d) => alive && setDaily(d)).catch(() => {});
     fetchOffer()
       .then((rows) => {
         if (!alive) return;
@@ -83,6 +89,8 @@ export default function PickPage() {
 
   return (
     <AppShell title={t("title")}>
+      {daily && <DailyChallenge stav={daily} />}
+
       <div className="pick-list">
         {offer.map((concept) => (
           <button

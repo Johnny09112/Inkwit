@@ -9,6 +9,7 @@
 - [[project-context]] — Živý stav projektu inkwit — fáze, milníky, aktuální focus · active · 2026-08-20
 
 ## Decisions
+- [[cmaranice-odebrani-kreditu]] — Majitelův návrh trestu za čmáranice — potvrzení při odeslání, varování a odebrání kreditů, když kresbu nikdo třikrát neuhodne; schváleno se třemi výhradami, zatím nepostaveno · pending · 2026-08-20
 - [[kredity-a-odmeny]] — Kredity se do 2026-08-20 nikam neukládaly a aplikace slibovala odměnu, která nikdy nepřišla; nový balanc je základ podle obtížnosti plus bonus za první uhodnutí, utrácí se za odemčení míchání barev · active · 2026-08-20
 - [[levely-bez-gati-na-jadro]] — Level roste z celkem vydělaných kreditů a odemyká jen kosmetiku; gatování hádání, obtížností a vyžádání pojmu padlo, protože každé z nich rozbíjí měření fáze 0 nebo pravidlo 3 · active · 2026-08-20
 - [[slovnik-vyrovnany-pomer-obtiznosti]] — Slovník má 300 pojmů ve vyrovnaném poměru 100/100/100, protože nabídka bere jeden pojem od každé obtížnosti a buckety se čerpají stejně rychle bez ohledu na svou velikost · active · 2026-08-20

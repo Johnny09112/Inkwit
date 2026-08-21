@@ -1276,6 +1276,64 @@ async function main() {
     await db.exec("rollback to savepoint skoky");
     await db.exec(`select set_config('request.jwt.claim.sub', '${ALICE}', true);`);
 
+    // --- Denní výzva ----------------------------------------------------------
+    //
+    // Výzva je OBTÍŽNOST, ne konkrétní slovo. Společný pojem dne by prozradil
+    // odpověď všem hádajícím — zadání konceptu je tajemství hry.
+
+    await db.exec("savepoint vyzva");
+
+    const vyzva = async () => (await db.query("select * from public.daily_challenge()")).rows[0];
+
+    const v0 = await vyzva();
+    report(v0.difficulty === 3 && v0.bonus === 15, "výzva jede na těžké obtížnosti za 15", `${v0.difficulty} / ${v0.bonus}`);
+    report(v0.drawn === false && v0.guessed === false && v0.awarded === false, "nesplněná výzva nic nepřipisuje");
+
+    // Pojem i jeho zadání se čtou MIMO roli authenticated — tabulka concepts
+    // je tajemství hry a uživatel do ní nevidí (a je dobře, že to test potvrdí).
+    await db.exec("reset role");
+    const tezky = (await db.query(
+      "select id from public.concepts where difficulty = 3 and status = 'active' order by slug limit 1",
+    )).rows[0].id;
+    const slovo = (await db.query(
+      `select cl.prompt from public.concept_locales cl where cl.concept_id = '${tezky}' and cl.locale = 'cs'`,
+    )).rows[0].prompt;
+    await db.exec(
+      `set local role authenticated; select set_config('request.jwt.claim.sub', '${ALICE}', true);`,
+    );
+
+    // Alice nakreslí těžký pojem. Půlka splněná, bonus pořád ne.
+    const vyzvaKresba = (await db.query(`select public.start_drawing('${tezky}') id`)).rows[0].id;
+    await db.query(`select public.submit_drawing('${vyzvaKresba}', 'mouse', 0, $1::jsonb, 0.68)`, [tah]);
+
+    const v1 = await vyzva();
+    report(v1.drawn === true && v1.guessed === false, "nakreslená těžká je půlka výzvy");
+    report(v1.awarded === false, "za půlku se bonus nepřipíše");
+
+    // Bob nakreslí těžký pojem, Alice ho uhodne — druhá půlka.
+    await db.exec(`select set_config('request.jwt.claim.sub', '${BOB}', true);`);
+    const bobTezky = (await db.query(`select public.start_drawing('${tezky}') id`)).rows[0].id;
+    await db.query(`select public.submit_drawing('${bobTezky}', 'mouse', 0, $1::jsonb, 0.68)`, [tah]);
+
+    await db.exec(`select set_config('request.jwt.claim.sub', '${ALICE}', true);`);
+    const tip = await db.query(`select * from public.submit_guess('${bobTezky}', $1)`, [slovo]);
+    report(tip.rows[0].correct === true, "tip na těžký pojem prošel", slovo);
+
+    const predBonusem = (await db.query("select public.my_credits() c")).rows[0].c;
+    const v2 = await vyzva();
+    const poBonusu = (await db.query("select public.my_credits() c")).rows[0].c;
+    report(v2.drawn && v2.guessed && v2.awarded, "obě půlky téhož dne výzvu splní");
+    report(poBonusu === predBonusem + 15, "bonus se připsal", `${predBonusem} → ${poBonusu}`);
+
+    // Nejdůležitější: opakované volání nesmí platit znovu.
+    await vyzva();
+    await vyzva();
+    const poTrikrat = (await db.query("select public.my_credits() c")).rows[0].c;
+    report(poTrikrat === poBonusu, "opakované volání bonus nezopakuje", `${poBonusu} → ${poTrikrat}`);
+
+    await db.exec("rollback to savepoint vyzva");
+    await db.exec(`select set_config('request.jwt.claim.sub', '${ALICE}', true);`);
+
     await db.exec("rollback");
   }
   console.log("\nSprávcovské rozhraní (blok H):\n");

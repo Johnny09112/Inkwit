@@ -32,8 +32,11 @@ nechal ve veřejné hře.
   moderaci (pravidlo 8 platí i na něj).
 - **Hotovo i přeskočení za kredit** — a s ním první sink. Ukázalo se přitom,
   že tlačítko dosud nedělalo nic; viz [[preskoceni-vracelo-tutez-kresbu]].
-- **Pak:** denní výzva, dětský režim, výplň uzavřených tvarů, achievementy,
-  metriky v žebříčcích.
+- **Hotová i denní výzva** — jako obtížnost, ne společné slovo; společný pojem
+  dne by prozradil odpověď všem hádajícím.
+- **Zbývá:** dětský režim, výplň uzavřených tvarů, achievementy, metriky
+  v žebříčcích. A trest za čmáranice — schválený v principu, se třemi
+  výhradami, viz [[cmaranice-odebrani-kreditu]].
 
 ## Chyby
 

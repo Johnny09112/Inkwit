@@ -452,3 +452,33 @@ export async function fetchSkipPrice(): Promise<number> {
   if (error) throw error;
   return (data as number) ?? 0;
 }
+
+export interface DailyChallenge {
+  /** Která obtížnost se do výzvy počítá. Ze serveru, ne konstanta. */
+  difficulty: number;
+  drawn: boolean;
+  guessed: boolean;
+  bonus: number;
+  awarded: boolean;
+}
+
+/**
+ * Stav denní výzvy — a připsání bonusu, když jsou obě půlky hotové.
+ *
+ * Volání je zároveň zápis (proto `volatile` na serveru): stav se tím sám
+ * dorovná i tomu, kdo druhou půlku splnil na jiné obrazovce. Opakované volání
+ * bonus nezopakuje, hlídá to unikátní index nad ledgerem.
+ */
+export async function fetchDailyChallenge(): Promise<DailyChallenge | null> {
+  const { data, error } = await createClient().rpc("daily_challenge");
+  if (error) throw error;
+  const r = (data as Record<string, unknown>[])?.[0];
+  if (!r) return null;
+  return {
+    difficulty: (r.difficulty as number) ?? 3,
+    drawn: Boolean(r.drawn),
+    guessed: Boolean(r.guessed),
+    bonus: (r.bonus as number) ?? 0,
+    awarded: Boolean(r.awarded),
+  };
+}

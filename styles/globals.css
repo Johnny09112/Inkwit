@@ -3096,3 +3096,95 @@ textarea,
   flex-wrap: wrap;
   gap: 6px;
 }
+
+/* ---------------------------------------------------------------------------
+   Denní výzva
+   ---------------------------------------------------------------------------
+   Karta neukazuje, KTERÝ pojem to má být — jen že má být těžký. Společný pojem
+   dne by prozradil odpověď všem hádajícím. */
+
+.daily {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Splněná výzva se odliší lemem, ne jinou barvou pozadí — karta zůstane
+   čitelná a nekřičí přes zbytek obrazovky. */
+.daily.is-done {
+  border-color: var(--action-primary);
+}
+
+.daily-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.daily-tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.daily-tasks li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--text-secondary);
+}
+
+.daily-tasks li.is-done {
+  color: var(--text-primary);
+}
+
+.daily-tasks svg {
+  flex: none;
+  color: var(--text-muted);
+}
+
+.daily-tasks li.is-done svg {
+  color: var(--action-primary);
+}
+
+/* Kolečko drží místo fajfce, aby se řádek při splnění neposunul. */
+.daily-mark {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+}
+
+.daily-tasks li.is-done .daily-mark {
+  background: var(--action-primary);
+  border-color: var(--action-primary);
+  color: var(--text-on-action);
+}
+
+.daily-tasks li.is-done .daily-mark svg {
+  color: var(--text-on-action);
+}
+
+.daily-prize {
+  margin: 0;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-label-sm);
+  color: var(--text-secondary);
+}
+
+.daily.is-done .daily-prize {
+  color: var(--action-primary);
+}

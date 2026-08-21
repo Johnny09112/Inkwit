@@ -329,5 +329,12 @@
     "remove": "Smazat avatar",
     "edit": "Změnit avatar",
     "failed": "Avatar se nepodařilo uložit. Zkus to znovu."
+  },
+  "daily": {
+    "title": "Denní výzva",
+    "draw": "Nakresli těžký pojem",
+    "guess": "Uhodni cizí těžkou kresbu",
+    "prize": "Za obojí tentýž den {n} kreditů navíc",
+    "done": "Splněno — {n} kreditů připsáno"
   }
 }
