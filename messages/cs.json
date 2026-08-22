@@ -39,7 +39,8 @@
       "palette": "Další barvy",
       "size": "Velikost stopy",
       "clearConfirm": "Opravdu smazat?",
-      "resetZoom": "Zpět na celou kresbu"
+      "resetZoom": "Zpět na celou kresbu",
+      "fill": "Výplň"
     },
     "colors": {
       "title": "Barvy",

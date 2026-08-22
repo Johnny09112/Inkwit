@@ -34,9 +34,14 @@ nechal ve veřejné hře.
   že tlačítko dosud nedělalo nic; viz [[preskoceni-vracelo-tutez-kresbu]].
 - **Hotová i denní výzva** — jako obtížnost, ne společné slovo; společný pojem
   dne by prozradil odpověď všem hádajícím.
-- **Zbývá:** dětský režim, výplň uzavřených tvarů, achievementy, metriky
-  v žebříčcích. A trest za čmáranice — schválený v principu, se třemi
-  výhradami, viz [[cmaranice-odebrani-kreditu]].
+- **Hotová i výplň uzavřených tvarů** — obdélník a elipsa, kbelík ne a nebude.
+- **Zbývá:** dětský režim, achievementy, metriky v žebříčcích. A trest za
+  čmáranice — schválený v principu, se třemi výhradami, viz
+  [[cmaranice-odebrani-kreditu]].
+
+**Připraveno k doprogramování je z toho jen trest za čmáranice.** Dětský režim
+má nevyřešenou bezpečnostní otázku (pravidlo 8 a věková brána), achievementy
+chtěl majitel řešit samostatně a metriky v žebříčcích nemají zadání.
 
 ## Chyby
 

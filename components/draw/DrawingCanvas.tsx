@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import {
   BASE_WIDTH,
   deviceTypeFrom,
+  canFill,
   fitBox,
   isShapeTool,
   renderStrokes,
@@ -38,6 +39,8 @@ interface DrawingCanvasProps {
   tool: Tool;
   color: string;
   size: number;
+  /** Vyplnit uzavřený tvar — platí jen pro obdélník a elipsu. */
+  filled?: boolean;
   /** Náhled a potvrzovací krok: kreslení vypnuté. */
   inputDisabled?: boolean;
   onStrokeEnd: (stroke: Stroke) => void;
@@ -53,6 +56,7 @@ export function DrawingCanvas({
   tool,
   color,
   size,
+  filled = false,
   inputDisabled = false,
   onStrokeEnd,
   onAspectChange,
@@ -243,6 +247,7 @@ export function DrawingCanvas({
         ).width * viewRef.current.scale),
       device: deviceTypeFrom(e.pointerType),
       startedAt: Date.now(),
+      filled: filled && canFill(tool),
       // Tvar má od začátku dva body — začátek a konec. Konec se pak tažením
       // přepisuje, takže tah zůstane dvoubodový bez ohledu na to, jak dlouho
       // se táhne. Štětec naopak body přidává.

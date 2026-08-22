@@ -39,7 +39,8 @@
       "palette": "More colors",
       "size": "Stroke size",
       "clearConfirm": "Clear everything?",
-      "resetZoom": "Fit whole drawing"
+      "resetZoom": "Fit whole drawing",
+      "fill": "Fill"
     },
     "colors": {
       "title": "Colors",

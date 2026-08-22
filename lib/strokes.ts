@@ -40,6 +40,11 @@ export function isShapeTool(tool: Tool): tool is ShapeTool {
   return (SHAPE_TOOLS as readonly string[]).includes(tool);
 }
 
+/** Vyplnit jde jen uzavřený tvar. Čára uzavřená není. */
+export function canFill(tool: Tool): boolean {
+  return tool === "rect" || tool === "ellipse";
+}
+
 const TOOLS: readonly Tool[] = ["brush", "eraser", ...SHAPE_TOOLS];
 
 /** Typ zařízení z PointerEvent.pointerType — metadata od prvního dne. */
@@ -53,6 +58,14 @@ export interface Stroke {
   device: DeviceType;
   /** Unix ms začátku tahu — pro detekci čmáranic (rychlost, pauzy). */
   startedAt: number;
+  /**
+   * Vyplněný uzavřený tvar. Jen u `rect` a `ellipse` — u čáry a štětce
+   * nedává smysl a server to stejně přepíše na false.
+   *
+   * Je to vlastnost tahu, ne nový formát: pravidlo 2 platí dál, kresba
+   * zůstává vektorová a přehrání i export z ní vyjdou beze změny.
+   */
+  filled?: boolean;
   points: StrokePoint[];
 }
 
@@ -152,6 +165,12 @@ export function renderStrokes(
           Math.PI * 2,
         );
       }
+      // Výplň jde pod obrys, ne místo něj — samotná plocha bez okraje splyne
+      // se sousedním tvarem téže barvy.
+      if (stroke.filled && canFill(stroke.tool)) {
+        ctx.fillStyle = stroke.color;
+        ctx.fill();
+      }
       ctx.stroke();
       continue;
     }
@@ -209,6 +228,9 @@ export function strokeToPayload(stroke: Stroke) {
     tool: stroke.tool,
     color: stroke.color,
     width: stroke.size,
+    // Posílá se jen když je co posílat — u drtivé většiny tahů je to false
+    // a klíč navíc by jen nafukoval payload.
+    ...(stroke.filled && canFill(stroke.tool) ? { filled: true } : {}),
     points,
   };
 }
@@ -222,6 +244,7 @@ export function strokeFromPayload(row: {
   tool: string;
   color: string;
   width: number;
+  filled?: boolean;
   points: number[];
 }): Stroke {
   const points: StrokePoint[] = [];
@@ -230,6 +253,7 @@ export function strokeFromPayload(row: {
   }
   return {
     tool: (TOOLS as readonly string[]).includes(row.tool) ? (row.tool as Tool) : "brush",
+    filled: row.filled === true,
     color: row.color,
     size: row.width,
     device: "unknown",

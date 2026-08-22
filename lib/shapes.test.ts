@@ -11,6 +11,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   SHAPE_TOOLS,
+  canFill,
   isShapeTool,
   looksRushed,
   strokeFromPayload,
@@ -72,4 +73,37 @@ test("guma se do počtu tahů nepočítá", () => {
     tah("eraser", 8000, [[0.2, 0.2, 0], [0.3, 0.3, 3000]]),
   ];
   assert.ok(looksRushed(strokes), "jeden tah štětcem a dvě gumy je pořád málo");
+});
+
+test("vyplnit jde jen uzavřený tvar", () => {
+  assert.ok(canFill("rect"));
+  assert.ok(canFill("ellipse"));
+  // Čára uzavřená není a štětec ani guma nejsou tvar.
+  assert.ok(!canFill("line"));
+  assert.ok(!canFill("brush"));
+  assert.ok(!canFill("eraser"));
+});
+
+test("výplň se posílá jen tam, kde něco znamená", () => {
+  const vypln = (tool: Tool) =>
+    strokeToPayload({ ...tah(tool, 0, [[0.1, 0.1, 0], [0.5, 0.5, 90]]), filled: true });
+
+  assert.equal(vypln("rect").filled, true);
+  assert.equal(vypln("ellipse").filled, true);
+  // U čáry a štětce se klíč vůbec neposílá — nafukoval by payload za nic.
+  assert.equal("filled" in vypln("line"), false);
+  assert.equal("filled" in vypln("brush"), false);
+});
+
+test("výplň přežije cestu na server a zpátky", () => {
+  const p = strokeToPayload({
+    ...tah("ellipse", 0, [[0.1, 0.1, 0], [0.9, 0.9, 120]]),
+    filled: true,
+  });
+  assert.equal(strokeFromPayload({ ...p, width: p.width }).filled, true);
+});
+
+test("tah bez výplně se načte jako nevyplněný, ne jako undefined", () => {
+  const p = strokeToPayload(tah("rect", 0, [[0.1, 0.1, 0], [0.5, 0.5, 90]]));
+  assert.equal(strokeFromPayload({ ...p, width: p.width }).filled, false);
 });

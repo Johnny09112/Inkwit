@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Circle, Lock, Minus, Shapes, Square } from "lucide-react";
 import { LockedDialog } from "@/components/LockedDialog";
 import { useDismissOnOutside, useFlipWhenNoRoom } from "@/lib/popover";
-import { SHAPE_TOOLS, type ShapeTool, type Tool } from "@/lib/strokes";
+import { SHAPE_TOOLS, canFill, type ShapeTool, type Tool } from "@/lib/strokes";
 
 /**
  * Výběr tvaru — jedno tlačítko, které otevře tři možnosti.
@@ -37,6 +37,9 @@ interface ShapePickerProps {
   iconSize?: number;
   /** Rail na tabletu je svislý — nabídka se otevírá do strany, ne nahoru. */
   side?: boolean;
+  /** Vyplnit uzavřený tvar. U čáry se přepínač nenabízí. */
+  filled?: boolean;
+  onFilledChange?: (v: boolean) => void;
 }
 
 export function ShapePicker({
@@ -46,6 +49,8 @@ export function ShapePicker({
   lockLevel = 4,
   iconSize = 20,
   side = false,
+  filled = false,
+  onFilledChange,
 }: ShapePickerProps) {
   const t = useTranslations("draw");
   const [open, setOpen] = useState(false);
@@ -110,6 +115,21 @@ export function ShapePicker({
           className={`shape-menu${side ? " shape-menu-side" : ""}${dolu ? " shape-menu-down" : ""}`}
           role="group"
         >
+          {/* Přepínač výplně sedí v nabídce tvarů, protože k nim patří —
+              vyplnit jde jen uzavřený tvar. Ikona říká, co bude: prázdný
+              čtverec obrys, plný výplň. */}
+          {onFilledChange && canFill(tool) && (
+            <button
+              type="button"
+              className={`icon-btn${filled ? " is-active" : ""}`}
+              aria-label={t("tools.fill")}
+              title={t("tools.fill")}
+              aria-pressed={filled}
+              onClick={() => onFilledChange(!filled)}
+            >
+              <Square size={iconSize} fill={filled ? "currentColor" : "none"} />
+            </button>
+          )}
           {SHAPE_TOOLS.map((s) => {
             const I = IKONY[s];
             return (

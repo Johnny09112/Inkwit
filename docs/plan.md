@@ -585,6 +585,22 @@ Každá padla z jiného důvodu a při další úvaze o levelech se vrátí jako
 
   *Ověřeno:* osm testů DB, mezi nimi ten, že opakované volání bonus nezopakuje.
 
+- `[x] J11` **Výplň uzavřeného tvaru.** Obdélník a elipsa se dají vyplnit;
+  přepínač sedí v nabídce tvarů, protože k nim patří.
+
+  **Kbelík to není a nebude.** Plošná výplň libovolných pixelů se jako
+  vektorový tah zapsat nedá a při přehrání by se musel pustit znovu tentýž
+  rastrový flood fill — antialiasing se liší podle rozlišení, takže by výplň
+  u hádajícího protekla škvírou. Stejná třída chyby jako to roztahování kresby.
+
+  Výplň je **vlastnost tahu**, ne nový formát, takže pravidlo 2 platí dál
+  a přehrání, export i poměr stran fungují beze změny. U čáry a štětce ji
+  server zahodí — klientu se nevěří.
+
+  *Ověřeno:* pět testů DB (uloží se u obdélníku i elipsy, zahodí se u čáry
+  i štětce), čtyři unit testy a měření pixelů v prohlížeči: vyplněná elipsa má
+  inkoust ve středu, roh opsaného obdélníku zůstává volný.
+
 ### Co zbývá
 
 - `[ ] J5` **Kalibrace prahů.** `[0, 10, 25, 50]` je odhad. Po pozvánkách se

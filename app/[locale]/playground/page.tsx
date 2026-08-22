@@ -27,6 +27,7 @@ export default function PlaygroundPage() {
   const [tool, setTool] = useState<Tool>("brush");
   const [color, setColor] = useState(BASE_COLORS[0]);
   const [size, setSize] = useState(14);
+  const [filled, setFilled] = useState(false);
   const [recent, setRecent] = useState<string[]>([...BASE_COLORS]);
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -49,7 +50,13 @@ export default function PlaygroundPage() {
         </button>
         {/* Tvary jsou v samotné hře za levelem 4; tady bez zámku, ať jdou
             prohlédnout bez účtu. */}
-        <ShapePicker tool={tool} onPick={setTool} iconSize={20} />
+        <ShapePicker
+          tool={tool}
+          onPick={setTool}
+          iconSize={20}
+          filled={filled}
+          onFilledChange={setFilled}
+        />
         <SizePicker
           size={size}
           max={28}
@@ -97,6 +104,7 @@ export default function PlaygroundPage() {
           tool={tool}
           color={color}
           size={size}
+          filled={filled}
           onStrokeEnd={(s) => setStrokes((prev) => [...prev, s])}
         />
       </div>

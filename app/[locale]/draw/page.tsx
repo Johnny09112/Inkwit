@@ -67,6 +67,7 @@ export default function DrawPage({
   const [tool, setTool] = useState<Tool>("brush");
   const [color, setColor] = useState(BASE_COLORS[0]);
   const [size, setSize] = useState(14);
+  const [filled, setFilled] = useState(false);
   /**
    * Naposledy použité barvy. Žijí UŽ JEN v panelu barev — řada pod plátnem je
    * pevná (`BASE_COLORS`). Do 2026-08-20 to byl jeden seznam a přerovnával se,
@@ -218,6 +219,8 @@ export default function DrawPage({
       lockLevel={shapesLevel}
       iconSize={iconSize}
       side={side}
+      filled={filled}
+      onFilledChange={setFilled}
     />
   );
 
@@ -340,6 +343,7 @@ export default function DrawPage({
         tool={tool}
         color={color}
         size={size}
+        filled={filled}
         inputDisabled={mode !== "draw"}
         onStrokeEnd={addStroke}
         onAspectChange={setAspect}

@@ -1113,6 +1113,39 @@ async function main() {
       "neznámý nástroj se odmítne, i když má level na tvary",
     );
 
+    // --- Výplň uzavřeného tvaru ---
+    //
+    // Výplň je vlastnost tahu, ne nový formát. Server ji smí uložit jen
+    // u uzavřeného tvaru — u čáry by neznamenala nic a klientu se nevěří.
+
+    const ulozTvar = async (tool, filled) => {
+      await db.exec("savepoint vypln");
+      const id = (await db.query(`select public.start_drawing('${conceptZaba}') id`)).rows[0].id;
+      await db.query(`select public.submit_drawing('${id}', 'mouse', 0, $1::jsonb, 0.68)`, [
+        JSON.stringify([
+          { tool, filled, color: "#2B261F", width: 8, points: [0.1, 0.1, 0, 0.8, 0.8, 200] },
+        ]),
+      ]);
+      const r = await db.query(
+        `select filled from public.drawing_strokes where drawing_id = '${id}' and seq = 0`,
+      );
+      const out = r.rows[0]?.filled;
+      await db.exec("rollback to savepoint vypln");
+      return out;
+    };
+
+    report((await ulozTvar("rect", true)) === true, "vyplněný obdélník se uloží jako vyplněný");
+    report((await ulozTvar("ellipse", true)) === true, "vyplněná elipsa se uloží jako vyplněná");
+    report((await ulozTvar("rect", false)) === false, "nevyplněný tvar zůstane nevyplněný");
+    report(
+      (await ulozTvar("line", true)) === false,
+      "výplň u čáry server zahodí — klientu se nevěří",
+    );
+    report(
+      (await ulozTvar("brush", true)) === false,
+      "výplň u štětce server zahodí taky",
+    );
+
     // --- Avatar ---------------------------------------------------------------
     //
     // Avatar je vektorová kresba v profilu, ne řádek v `drawings` — nesmí se
